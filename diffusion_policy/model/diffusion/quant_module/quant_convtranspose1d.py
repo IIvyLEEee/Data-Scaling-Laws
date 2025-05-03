@@ -30,7 +30,7 @@ class QuantConvTranspose1d(nn.Module):
         output_padding: int = 0,
         dilation: int = 1,
         groups: int = 1,
-        bias: bool = False,
+        bias: bool = True,
         input_bits: int = 8,
         weight_bits: int = 4
     ):
@@ -52,10 +52,16 @@ class QuantConvTranspose1d(nn.Module):
             self.register_parameter('bias', None)
         self.input_bits = input_bits
         self.weight_bits = weight_bits
-        self.input_delta = None
-        self.weight_delta = None
-        self.output_delta = None
+
+        # 注册scale
+        self.register_buffer('input_delta', torch.tensor(0.))
+        self.register_buffer('weight_delta', torch.tensor(0.))
+        self.register_buffer('output_delta', torch.tensor(0.))
+
+        # 初始化
         self.init = True
+
+        # 初始化权重和偏置
         self.reset_parameters()
 
     def reset_parameters(self):
@@ -81,7 +87,7 @@ class QuantConvTranspose1d(nn.Module):
             output_ = F.conv_transpose1d(
                 input_,
                 weight_,
-                bias=None,
+                bias=self.bias,
                 stride=self.stride,
                 padding=self.padding,
                 output_padding=self.output_padding,
@@ -97,7 +103,7 @@ class QuantConvTranspose1d(nn.Module):
         quant_weight = int_quantizer(self.weight, self.weight_delta, self.weight_bits)
         # 反卷积
         output = F.conv_transpose1d(
-            quant_input, quant_weight, bias=None,
+            quant_input, quant_weight, bias=self.bias,
             stride=self.stride, padding=self.padding,
             output_padding=self.output_padding, dilation=self.dilation, groups=self.groups
         )
@@ -116,7 +122,7 @@ if __name__ == "__main__":
     length = 32
     kernel_size = 3
     input_bits = 8
-    weight_bits = 16
+    weight_bits = 4
     x = torch.randn(batch_size, in_channels, length, requires_grad=True)
     y = x.clone().detach().requires_grad_(True)
     quant_conv_trans = QuantConvTranspose1d(

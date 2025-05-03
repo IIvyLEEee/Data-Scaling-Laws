@@ -36,7 +36,7 @@ class ConditionalResidualBlock1D(nn.Module):
             n_groups=8,
             cond_predict_scale=False,
             input_bits=8,
-            weight_bits=16
+            weight_bits=4
             ):
         super().__init__()
 
@@ -62,8 +62,10 @@ class ConditionalResidualBlock1D(nn.Module):
         # make sure dimensions compatible
         # self.residual_conv = nn.Conv1d(in_channels, out_channels, 1) \
         #     if in_channels != out_channels else nn.Identity()
-        self.residual_conv = QuantLinear(in_channels, out_channels, 1, input_bits=input_bits, weight_bits=weight_bits) \
+        self.residual_conv = QuantConv1d(in_channels, out_channels, 1, input_bits=input_bits, weight_bits=weight_bits) \
             if in_channels != out_channels else nn.Identity()
+        self.input_bits = input_bits
+        self.weight_bits = weight_bits
 
     def forward(self, x, cond):
         '''
@@ -97,7 +99,9 @@ class ConditionalUnet1D(nn.Module):
         down_dims=[256,512,1024],
         kernel_size=3,
         n_groups=8,
-        cond_predict_scale=False
+        cond_predict_scale=False,
+        input_bits=8,
+        weight_bits=4
         ):
         super().__init__()
         all_dims = [input_dim] + list(down_dims)
@@ -110,6 +114,10 @@ class ConditionalUnet1D(nn.Module):
         #     nn.Mish(),
         #     nn.Linear(dsed * 4, dsed),
         # )
+
+        self.input_bits = input_bits
+        self.weight_bits = weight_bits
+
         diffusion_step_encoder = nn.Sequential(
             SinusoidalPosEmb(dsed),
             QuantLinear(dsed, dsed * 4, input_bits=input_bits, weight_bits=weight_bits),
@@ -156,7 +164,7 @@ class ConditionalUnet1D(nn.Module):
             ),
         ])
         for j, sub_module in enumerate(self.mid_modules):
-            hook_manager.register_hooks(sub_module, name=f"mid_modules_{j}")
+            self.hook_manager.register_hooks(sub_module, name=f"mid_modules_{j}")
 
         down_modules = nn.ModuleList([])
         for ind, (dim_in, dim_out) in enumerate(in_out):
@@ -173,7 +181,7 @@ class ConditionalUnet1D(nn.Module):
                 Downsample1d(dim_out) if not is_last else nn.Identity()
             ]))
             for j, sub_module in enumerate(down_modules[-1]):
-                hook_manager.register_hooks(sub_module, name=f"down_modules_{ind}_part_{j}")
+                self.hook_manager.register_hooks(sub_module, name=f"down_modules_{ind}_part_{j}")
 
         up_modules = nn.ModuleList([])
         for ind, (dim_in, dim_out) in enumerate(reversed(in_out[1:])):
@@ -191,16 +199,16 @@ class ConditionalUnet1D(nn.Module):
             ]))
 
             for j, sub_module in enumerate(up_modules[-1]):
-                hook_manager.register_hooks(sub_module, name=f"up_modules_{ind}_part_{j}")
+                self.hook_manager.register_hooks(sub_module, name=f"up_modules_{ind}_part_{j}")
         
         final_conv = nn.Sequential(
             Conv1dBlock(start_dim, start_dim, kernel_size=kernel_size),
             # nn.Conv1d(start_dim, input_dim, 1),
             QuantConv1d(start_dim, input_dim, 1, input_bits=input_bits, weight_bits=weight_bits),
         )
-        hook_manager.register_hooks(final_conv, name="final_conv")
+        self.hook_manager.register_hooks(final_conv, name="final_conv")
 
-        hook_manager.register_hooks(diffusion_step_encoder, name="diffusion_step_encoder")
+        self.hook_manager.register_hooks(diffusion_step_encoder, name="diffusion_step_encoder")
 
         self.diffusion_step_encoder = diffusion_step_encoder
         self.local_cond_encoder = local_cond_encoder
@@ -256,9 +264,9 @@ class ConditionalUnet1D(nn.Module):
         x = sample
         h = []
         for idx, (resnet, resnet2, downsample) in enumerate(self.down_modules):
-            hook_manager.register_hooks(resnet, name=f"down_modules_{idx}_resnet")
-            hook_manager.register_hooks(resnet2, name=f"down_modules_{idx}_resnet2")
-            hook_manager.register_hooks(downsample, name=f"down_modules_{idx}_downsample")
+            self.hook_manager.register_hooks(resnet, name=f"down_modules_{idx}_resnet")
+            self.hook_manager.register_hooks(resnet2, name=f"down_modules_{idx}_resnet2")
+            self.hook_manager.register_hooks(downsample, name=f"down_modules_{idx}_downsample")
             torch.cuda.synchronize()
             start = time.time()
             x = resnet(x, global_feature)
@@ -287,17 +295,17 @@ class ConditionalUnet1D(nn.Module):
         torch.cuda.synchronize()
         start = time.time()
         for mid_module in self.mid_modules:
-            hook_manager.register_hooks(mid_module, name=f"mid_modules")
+            self.hook_manager.register_hooks(mid_module, name=f"mid_modules")
             x = mid_module(x, global_feature)
         torch.cuda.synchronize()
         end = time.time()
         logger.info(f"mid_modules time: {end - start:.4f}s")
 
         for idx, (resnet, resnet2, upsample) in enumerate(self.up_modules):
-            hook_manager.register_hooks(resnet, name=f"up_modules_{idx}_resnet")
-            hook_manager.register_hooks(resnet2, name=f"up_modules_{idx}_resnet2")
-            hook_manager.register_hooks(upsample, name=f"up_modules_{idx}_upsample")
-            x = torch.cat((x, h.pop()), dim=1)\
+            self.hook_manager.register_hooks(resnet, name=f"up_modules_{idx}_resnet")
+            self.hook_manager.register_hooks(resnet2, name=f"up_modules_{idx}_resnet2")
+            self.hook_manager.register_hooks(upsample, name=f"up_modules_{idx}_upsample")
+            x = torch.cat((x, h.pop()), dim=1)
             torch.cuda.synchronize()
             start = time.time()
             x = resnet(x, global_feature)
@@ -322,7 +330,7 @@ class ConditionalUnet1D(nn.Module):
             end = time.time()
             logger.info(f"up_modules_{idx}_upsample time: {end - start:.4f}s")
 
-        hook_manager.register_hooks(self.final_conv, name="final_conv")
+        self.hook_manager.register_hooks(self.final_conv, name="final_conv")
         torch.cuda.synchronize()
         start = time.time()
         x = self.final_conv(x)

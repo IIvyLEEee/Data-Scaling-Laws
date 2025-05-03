@@ -1,0 +1,17 @@
+.ninja_deps
+*.o
+*.json
+*.log
+*.pyc
+*.so
+build/*
+quarot.egg-info/*
+*.cmake
+*.in
+CMakeFiles/*
+CMakeCache.txt
+*.egg
+Makefile
+
+__pycache__/
+*.egg-info/

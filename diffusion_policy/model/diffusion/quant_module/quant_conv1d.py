@@ -44,7 +44,7 @@ class Conv1dFunc(torch.autograd.Function):
         output = F.conv1d(
             quant_input, 
             quant_weight, 
-            bias=None, 
+            bias=bias, 
             stride=stride, 
             padding=padding, 
             dilation=dilation, 
@@ -123,9 +123,9 @@ class QuantConv1d(nn.Module):
         padding: int = 0,
         dilation: int = 1,
         groups: int = 1,
-        bias: bool = False,
+        bias: bool = True,
         input_bits: int = 8,
-        weight_bits: int = 4
+        weight_bits: int = 16
     ):
         super().__init__()
         self.in_channels = in_channels
@@ -150,9 +150,12 @@ class QuantConv1d(nn.Module):
         # 量化参数
         self.input_bits = input_bits
         self.weight_bits = weight_bits
-        self.input_delta = None
-        self.weight_delta = None
-        self.output_delta = None
+
+        # 注册scale
+        self.register_buffer('input_delta', torch.tensor(0.))
+        self.register_buffer('weight_delta', torch.tensor(0.))
+        self.register_buffer('output_delta', torch.tensor(0.))
+
         self.init = True
         
         # 初始化权重和偏置
@@ -163,8 +166,9 @@ class QuantConv1d(nn.Module):
         nn.init.kaiming_uniform_(self.weight, a=math.sqrt(5))
         if self.bias is not None:
             fan_in, _ = nn.init._calculate_fan_in_and_fan_out(self.weight)
-            bound = 1 / math.sqrt(fan_in)
-            nn.init.uniform_(self.bias, -bound, bound)
+            if fan_in != 0:
+                bound = 1 / math.sqrt(fan_in)
+                nn.init.uniform_(self.bias, -bound, bound)
     
     def init_scale(self, x: torch.Tensor, n_bits: int):
         """初始化比例因子"""
@@ -185,7 +189,7 @@ class QuantConv1d(nn.Module):
             output_ = F.conv1d(
                 input_, 
                 weight_, 
-                bias=None, 
+                bias=self.bias, 
                 stride=self.stride, 
                 padding=self.padding, 
                 dilation=self.dilation, 

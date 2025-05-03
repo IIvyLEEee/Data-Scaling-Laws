@@ -1,12 +1,25 @@
 .vscode
 example_demo_session
 data
+dataset
 data_local
 data_workspace
 outputs
 wandb
 **/.DS_Store
 *.lprof
+
+# model
+quant_model
+*.pth
+vit_model
+*.bin
+checkpoint
+*.ckpt
+
+# dataset
+dataset
+dataset.zarr.zip
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -66,7 +79,6 @@ cover/
 *.pot
 
 # Django stuff:
-*.log
 local_settings.py
 db.sqlite3
 db.sqlite3-journal

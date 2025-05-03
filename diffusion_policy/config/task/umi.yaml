@@ -4,10 +4,10 @@ camera_obs_latency: 0.125
 robot_obs_latency: 0.0001
 gripper_obs_latency: 0.02
 dataset_frequeny: 0 #59.94
-obs_down_sample_steps: 3 # 3, 1
+obs_down_sample_steps: [3,15] # 3, 1
 action_down_sample_steps: 3
-low_dim_obs_horizon: 2
-img_obs_horizon: 2
+low_dim_obs_horizon: 3
+img_obs_horizon: 3
 action_horizon: 16
 ignore_proprioception: False
 
@@ -83,8 +83,9 @@ shape_meta: &shape_meta
     rotation_rep: rotation_6d
 
 task_name: &task_name umi
-dataset_path: example_demo_session/dataset.zarr.zip
-in_the_wild_dataset_path: example_demo_session/in_the_wild_dataset.zarr.zip
+dataset_path: dataset/dataset.zarr.zip
+# in_the_wild_dataset_path: example_demo_session/in_the_wild_dataset.zarr.zip
+in_the_wild_dataset_path: dataset/in_the_wild_dataset.zarr.zip
 pose_repr: &pose_repr
   obs_pose_repr: relative # abs or rel
   action_pose_repr: relative # abs or rel or delta
@@ -104,8 +105,8 @@ dataset:
   max_duration: null
   seed: 42
   val_ratio: 0.05
-  use_ratio: 1.0
-  dataset_idx: null
+  use_ratio: 0.5
+  dataset_idx: '1-32'
 
 in_the_wild_dataset:
   _target_: diffusion_policy.dataset.umi_dataset.UmiDataset

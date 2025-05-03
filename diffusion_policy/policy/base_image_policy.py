@@ -5,6 +5,8 @@ from diffusion_policy.model.common.module_attr_mixin import ModuleAttrMixin
 from diffusion_policy.model.common.normalizer import LinearNormalizer
 
 class BaseImagePolicy(ModuleAttrMixin):
+    def __init__(self, *args, **kwargs):
+        super().__init__()
     # init accepts keyword argument shape_meta, see config/task/*_image.yaml
 
     def predict_action(self, obs_dict: Dict[str, torch.Tensor], fixed_action_prefix: torch.Tensor=None) -> Dict[str, torch.Tensor]:

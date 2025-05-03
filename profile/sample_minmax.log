@@ -1,0 +1,973 @@
+Started!
+Obs latency 0.18978238105773926
+[down_modules_0_resnet] Forward Hook - input mean: -0.116797, var: 0.856207, min:-2.351175, max:2.040398
+[down_modules_0_resnet2] Forward Hook - input mean: 0.007932, var: 0.646291, min:-3.450944, max:3.777588
+[down_modules_0_downsample] Forward Hook - input mean: 0.022771, var: 0.622619, min:-3.207536, max:3.660807
+[down_modules_1_resnet] Forward Hook - input mean: -0.390673, var: 31.386673, min:-20.608194, max:22.071381
+[down_modules_1_resnet2] Forward Hook - input mean: 0.565143, var: 258.850281, min:-67.262123, max:80.595734
+[down_modules_1_downsample] Forward Hook - input mean: 0.759946, var: 264.218964, min:-67.559959, max:84.308029
+[down_modules_2_resnet] Forward Hook - input mean: 0.128588, var: 45.291065, min:-97.669388, max:103.732803
+[down_modules_2_resnet2] Forward Hook - input mean: -0.199288, var: 0.486390, min:-6.410572, max:15.134118
+[down_modules_2_downsample] Forward Hook - input mean: -0.054971, var: 0.398067, min:-2.977371, max:14.923313
+[mid_modules] Forward Hook - input mean: -0.054971, var: 0.398067, min:-2.977371, max:14.923313
+[mid_modules] Forward Hook - input mean: -0.042645, var: 0.431893, min:-3.007288, max:15.090375
+[up_modules_0_resnet] Forward Hook - input mean: -0.019539, var: 0.411413, min:-3.315972, max:14.923313
+[up_modules_0_resnet2] Forward Hook - input mean: -0.116891, var: 0.770718, min:-4.644226, max:5.588973
+[up_modules_0_upsample] Forward Hook - input mean: 0.009827, var: 1.053599, min:-4.941066, max:10.834631
+[up_modules_1_resnet] Forward Hook - input mean: 0.397851, var: 133.193237, min:-67.559959, max:84.308029
+[up_modules_1_resnet2] Forward Hook - input mean: 9.808351, var: 11683.194336, min:-444.243469, max:423.154907
+[up_modules_1_upsample] Forward Hook - input mean: 10.053984, var: 11732.004883, min:-444.489868, max:422.878235
+All hooks removed.
+[conditional_unet1d] Forward Hook - input mean: -0.116797, var: 0.856207, min:-2.351175, max:2.040398
+[model of timestep 45] Forward Hook - input mean: -0.116797, var: 0.856207, min:-2.351175, max:2.040398
+[down_modules_0_resnet] Forward Hook - input mean: -0.089709, var: 0.844870, min:-2.332126, max:2.011316
+[down_modules_0_resnet2] Forward Hook - input mean: 0.001490, var: 0.625980, min:-3.394096, max:3.757714
+[down_modules_0_downsample] Forward Hook - input mean: 0.015960, var: 0.603378, min:-3.162938, max:3.646627
+[down_modules_1_resnet] Forward Hook - input mean: -0.384094, var: 30.552788, min:-20.496992, max:21.893114
+[down_modules_1_resnet2] Forward Hook - input mean: 0.558038, var: 252.451263, min:-66.688293, max:79.673523
+[down_modules_1_downsample] Forward Hook - input mean: 0.753418, var: 257.716003, min:-66.992271, max:83.388252
+[down_modules_2_resnet] Forward Hook - input mean: 0.129006, var: 43.210247, min:-95.834412, max:102.249840
+[down_modules_2_resnet2] Forward Hook - input mean: -0.194631, var: 0.468103, min:-6.193871, max:13.834990
+[down_modules_2_downsample] Forward Hook - input mean: -0.051236, var: 0.397727, min:-3.368284, max:13.597780
+[mid_modules] Forward Hook - input mean: -0.051236, var: 0.397727, min:-3.368284, max:13.597780
+[mid_modules] Forward Hook - input mean: -0.031211, var: 0.435236, min:-2.997223, max:13.736943
+[up_modules_0_resnet] Forward Hook - input mean: -0.018724, var: 0.407242, min:-3.368284, max:13.597780
+[up_modules_0_resnet2] Forward Hook - input mean: -0.139674, var: 0.800835, min:-5.412910, max:5.791413
+[up_modules_0_upsample] Forward Hook - input mean: -0.000466, var: 1.098121, min:-5.720040, max:10.201944
+[up_modules_1_resnet] Forward Hook - input mean: 0.382363, var: 130.238525, min:-66.992271, max:83.388252
+[up_modules_1_resnet2] Forward Hook - input mean: 9.712170, var: 11437.892578, min:-440.476868, max:420.068359
+[up_modules_1_upsample] Forward Hook - input mean: 9.957687, var: 11485.946289, min:-440.724548, max:419.790375
+All hooks removed.
+[conditional_unet1d] Forward Hook - input mean: -0.089709, var: 0.844870, min:-2.332126, max:2.011316
+[model of timestep 45] Forward Hook - input mean: -0.089709, var: 0.844870, min:-2.332126, max:2.011316
+[down_modules_0_resnet] Forward Hook - input mean: -0.060946, var: 0.816457, min:-2.283061, max:1.957421
+[down_modules_0_resnet2] Forward Hook - input mean: -0.004367, var: 0.593253, min:-3.295905, max:3.666941
+[down_modules_0_downsample] Forward Hook - input mean: 0.009922, var: 0.571785, min:-3.079007, max:3.561651
+[down_modules_1_resnet] Forward Hook - input mean: -0.373208, var: 29.047977, min:-20.119295, max:21.456068
+[down_modules_1_resnet2] Forward Hook - input mean: 0.545396, var: 240.530365, min:-65.320000, max:77.901176
+[down_modules_1_downsample] Forward Hook - input mean: 0.742807, var: 245.617905, min:-65.626801, max:81.545609
+[down_modules_2_resnet] Forward Hook - input mean: 0.128755, var: 40.505276, min:-93.121544, max:99.897713
+[down_modules_2_resnet2] Forward Hook - input mean: -0.189235, var: 0.447287, min:-5.923028, max:13.085179
+[down_modules_2_downsample] Forward Hook - input mean: -0.048963, var: 0.388932, min:-3.689985, max:13.179238
+[mid_modules] Forward Hook - input mean: -0.048963, var: 0.388932, min:-3.689985, max:13.179238
+[mid_modules] Forward Hook - input mean: -0.020818, var: 0.437274, min:-2.832532, max:12.937316
+[up_modules_0_resnet] Forward Hook - input mean: -0.014194, var: 0.404011, min:-3.689985, max:13.179238
+[up_modules_0_resnet2] Forward Hook - input mean: -0.152179, var: 0.960606, min:-6.363693, max:6.747711
+[up_modules_0_upsample] Forward Hook - input mean: 0.003522, var: 1.328958, min:-6.645225, max:9.154634
+[up_modules_1_resnet] Forward Hook - input mean: 0.370847, var: 124.705811, min:-65.626801, max:81.545609
+[up_modules_1_resnet2] Forward Hook - input mean: 9.541368, var: 10932.452148, min:-431.070557, max:411.401337
+[up_modules_1_upsample] Forward Hook - input mean: 9.786673, var: 10979.368164, min:-431.319092, max:411.124237
+All hooks removed.
+[conditional_unet1d] Forward Hook - input mean: -0.060946, var: 0.816457, min:-2.283061, max:1.957421
+[model of timestep 45] Forward Hook - input mean: -0.060946, var: 0.816457, min:-2.283061, max:1.957421
+[down_modules_0_resnet] Forward Hook - input mean: -0.031235, var: 0.775615, min:-2.209673, max:1.916150
+[down_modules_0_resnet2] Forward Hook - input mean: -0.009634, var: 0.551548, min:-3.166025, max:3.516423
+[down_modules_0_downsample] Forward Hook - input mean: 0.004690, var: 0.531328, min:-2.965808, max:3.416531
+[down_modules_1_resnet] Forward Hook - input mean: -0.358952, var: 27.060747, min:-19.540480, max:20.789303
+[down_modules_1_resnet2] Forward Hook - input mean: 0.527290, var: 224.622437, min:-63.326675, max:75.456581
+[down_modules_1_downsample] Forward Hook - input mean: 0.728123, var: 229.449921, min:-63.635258, max:78.948242
+[down_modules_2_resnet] Forward Hook - input mean: 0.128208, var: 37.338070, min:-89.570045, max:96.806450
+[down_modules_2_resnet2] Forward Hook - input mean: -0.182500, var: 0.422000, min:-5.561913, max:12.620196
+[down_modules_2_downsample] Forward Hook - input mean: -0.048605, var: 0.371661, min:-3.873275, max:12.984845
+[mid_modules] Forward Hook - input mean: -0.048605, var: 0.371661, min:-3.873275, max:12.984845
+[mid_modules] Forward Hook - input mean: -0.014344, var: 0.430895, min:-2.876279, max:12.750510
+[up_modules_0_resnet] Forward Hook - input mean: -0.011066, var: 0.393219, min:-3.873275, max:12.984845
+[up_modules_0_resnet2] Forward Hook - input mean: -0.156291, var: 1.123839, min:-7.134459, max:7.695368
+[up_modules_0_upsample] Forward Hook - input mean: 0.013107, var: 1.610504, min:-7.379326, max:9.980566
+[up_modules_1_resnet] Forward Hook - input mean: 0.360175, var: 117.258369, min:-63.635258, max:78.948242
+[up_modules_1_resnet2] Forward Hook - input mean: 9.312163, var: 10235.226562, min:-417.237915, max:398.597687
+[up_modules_1_upsample] Forward Hook - input mean: 9.557650, var: 10280.529297, min:-417.488220, max:398.319153
+All hooks removed.
+[conditional_unet1d] Forward Hook - input mean: -0.031235, var: 0.775615, min:-2.209673, max:1.916150
+[model of timestep 45] Forward Hook - input mean: -0.031235, var: 0.775615, min:-2.209673, max:1.916150
+[down_modules_0_resnet] Forward Hook - input mean: -0.000980, var: 0.724924, min:-2.114327, max:1.916261
+[down_modules_0_resnet2] Forward Hook - input mean: -0.014384, var: 0.502872, min:-3.008115, max:3.319192
+[down_modules_0_downsample] Forward Hook - input mean: 0.000205, var: 0.483674, min:-2.824675, max:3.224308
+[down_modules_1_resnet] Forward Hook - input mean: -0.341792, var: 24.673588, min:-18.767281, max:19.917336
+[down_modules_1_resnet2] Forward Hook - input mean: 0.503365, var: 205.339371, min:-60.717068, max:72.373825
+[down_modules_1_downsample] Forward Hook - input mean: 0.708857, var: 209.801971, min:-61.025723, max:75.588852
+[down_modules_2_resnet] Forward Hook - input mean: 0.126225, var: 33.782700, min:-85.269463, max:92.910164
+[down_modules_2_resnet2] Forward Hook - input mean: -0.173838, var: 0.392578, min:-5.176378, max:12.046237
+[down_modules_2_downsample] Forward Hook - input mean: -0.046870, var: 0.355700, min:-3.965785, max:12.685972
+[mid_modules] Forward Hook - input mean: -0.046870, var: 0.355700, min:-3.965785, max:12.685972
+[mid_modules] Forward Hook - input mean: -0.007462, var: 0.425516, min:-3.174150, max:12.465264
+[up_modules_0_resnet] Forward Hook - input mean: -0.007273, var: 0.383152, min:-3.965785, max:12.685972
+[up_modules_0_resnet2] Forward Hook - input mean: -0.159709, var: 1.271182, min:-7.815385, max:8.368931
+[up_modules_0_upsample] Forward Hook - input mean: 0.019985, var: 1.907447, min:-8.038780, max:11.936888
+[up_modules_1_resnet] Forward Hook - input mean: 0.347357, var: 108.145966, min:-61.025723, max:75.588852
+[up_modules_1_resnet2] Forward Hook - input mean: 9.008947, var: 9375.499023, min:-399.570190, max:381.751404
+[up_modules_1_upsample] Forward Hook - input mean: 9.254189, var: 9418.837891, min:-399.821594, max:381.474335
+All hooks removed.
+[conditional_unet1d] Forward Hook - input mean: -0.000980, var: 0.724924, min:-2.114327, max:1.916261
+[model of timestep 45] Forward Hook - input mean: -0.000980, var: 0.724924, min:-2.114327, max:1.916261
+[down_modules_0_resnet] Forward Hook - input mean: 0.029573, var: 0.666820, min:-1.998826, max:1.902798
+[down_modules_0_resnet2] Forward Hook - input mean: -0.018575, var: 0.449271, min:-2.824830, max:3.082427
+[down_modules_0_downsample] Forward Hook - input mean: -0.003520, var: 0.430988, min:-2.659092, max:2.992132
+[down_modules_1_resnet] Forward Hook - input mean: -0.321986, var: 22.007687, min:-17.823862, max:18.862398
+[down_modules_1_resnet2] Forward Hook - input mean: 0.475060, var: 183.673737, min:-57.572636, max:68.719193
+[down_modules_1_downsample] Forward Hook - input mean: 0.685130, var: 187.680573, min:-57.879700, max:71.545372
+[down_modules_2_resnet] Forward Hook - input mean: 0.123027, var: 29.968111, min:-80.249062, max:88.288506
+[down_modules_2_resnet2] Forward Hook - input mean: -0.164173, var: 0.360793, min:-5.149270, max:11.376304
+[down_modules_2_downsample] Forward Hook - input mean: -0.044813, var: 0.340492, min:-3.931664, max:12.291693
+[mid_modules] Forward Hook - input mean: -0.044813, var: 0.340492, min:-3.931664, max:12.291693
+[mid_modules] Forward Hook - input mean: -0.001565, var: 0.419987, min:-3.360037, max:12.086944
+[up_modules_0_resnet] Forward Hook - input mean: -0.004165, var: 0.373394, min:-3.931664, max:12.291693
+[up_modules_0_resnet2] Forward Hook - input mean: -0.163590, var: 1.393020, min:-8.343416, max:8.843836
+[up_modules_0_upsample] Forward Hook - input mean: 0.022963, var: 2.197430, min:-8.557515, max:13.552189
+[up_modules_1_resnet] Forward Hook - input mean: 0.332660, var: 97.821373, min:-57.879700, max:71.545372
+[up_modules_1_resnet2] Forward Hook - input mean: 8.633956, var: 8397.873047, min:-378.445984, max:361.468933
+[up_modules_1_upsample] Forward Hook - input mean: 8.879184, var: 8438.795898, min:-378.698883, max:361.192413
+All hooks removed.
+[conditional_unet1d] Forward Hook - input mean: 0.029573, var: 0.666820, min:-1.998826, max:1.902798
+[model of timestep 45] Forward Hook - input mean: 0.029573, var: 0.666820, min:-1.998826, max:1.902798
+[down_modules_0_resnet] Forward Hook - input mean: 0.060097, var: 0.603524, min:-1.864602, max:1.875445
+[down_modules_0_resnet2] Forward Hook - input mean: -0.022253, var: 0.392480, min:-2.617607, max:2.822634
+[down_modules_0_downsample] Forward Hook - input mean: -0.006560, var: 0.374536, min:-2.466433, max:2.736595
+[down_modules_1_resnet] Forward Hook - input mean: -0.299799, var: 19.124939, min:-16.696083, max:17.632860
+[down_modules_1_resnet2] Forward Hook - input mean: 0.443083, var: 160.076431, min:-53.860462, max:64.455498
+[down_modules_1_downsample] Forward Hook - input mean: 0.657339, var: 163.519379, min:-54.163105, max:66.789307
+[down_modules_2_resnet] Forward Hook - input mean: 0.117993, var: 25.977335, min:-74.580917, max:82.915398
+[down_modules_2_resnet2] Forward Hook - input mean: -0.153899, var: 0.328296, min:-5.878344, max:10.611847
+[down_modules_2_downsample] Forward Hook - input mean: -0.040842, var: 0.324015, min:-3.758408, max:11.695311
+[mid_modules] Forward Hook - input mean: -0.040842, var: 0.324015, min:-3.758408, max:11.695311
+[mid_modules] Forward Hook - input mean: 0.004559, var: 0.408637, min:-3.341914, max:11.508061
+[up_modules_0_resnet] Forward Hook - input mean: 0.000007, var: 0.360340, min:-3.758408, max:11.695311
+[up_modules_0_resnet2] Forward Hook - input mean: -0.167600, var: 1.485742, min:-8.669479, max:9.120454
+[up_modules_0_upsample] Forward Hook - input mean: 0.021974, var: 2.457684, min:-8.886203, max:14.920977
+[up_modules_1_resnet] Forward Hook - input mean: 0.316171, var: 86.442566, min:-54.163105, max:66.789307
+[up_modules_1_resnet2] Forward Hook - input mean: 8.160770, var: 7323.060059, min:-353.735779, max:337.498138
+[up_modules_1_upsample] Forward Hook - input mean: 8.405167, var: 7361.374023, min:-353.989075, max:337.225800
+All hooks removed.
+[conditional_unet1d] Forward Hook - input mean: 0.060097, var: 0.603524, min:-1.864602, max:1.875445
+[model of timestep 45] Forward Hook - input mean: 0.060097, var: 0.603524, min:-1.864602, max:1.875445
+[down_modules_0_resnet] Forward Hook - input mean: 0.090284, var: 0.537528, min:-1.713281, max:1.833974
+[down_modules_0_resnet2] Forward Hook - input mean: -0.025317, var: 0.334525, min:-2.389381, max:2.541302
+[down_modules_0_downsample] Forward Hook - input mean: -0.008891, var: 0.316595, min:-2.251063, max:2.458999
+[down_modules_1_resnet] Forward Hook - input mean: -0.275242, var: 16.149839, min:-15.403796, max:16.244436
+[down_modules_1_resnet2] Forward Hook - input mean: 0.408640, var: 135.578873, min:-49.645962, max:59.632515
+[down_modules_1_downsample] Forward Hook - input mean: 0.625624, var: 138.399628, min:-49.942127, max:61.438332
+[down_modules_2_resnet] Forward Hook - input mean: 0.111137, var: 21.960056, min:-68.329247, max:76.874794
+[down_modules_2_resnet2] Forward Hook - input mean: -0.143108, var: 0.295220, min:-6.240519, max:9.774378
+[down_modules_2_downsample] Forward Hook - input mean: -0.036483, var: 0.303871, min:-3.475156, max:10.922517
+[mid_modules] Forward Hook - input mean: -0.036483, var: 0.303871, min:-3.475156, max:10.922517
+[mid_modules] Forward Hook - input mean: 0.009951, var: 0.390540, min:-3.173372, max:10.761851
+[up_modules_0_resnet] Forward Hook - input mean: 0.004113, var: 0.342101, min:-3.475156, max:10.922517
+[up_modules_0_resnet2] Forward Hook - input mean: -0.169966, var: 1.544129, min:-8.822113, max:9.248703
+[up_modules_0_upsample] Forward Hook - input mean: 0.021290, var: 2.671809, min:-9.051006, max:16.037203
+[up_modules_1_resnet] Forward Hook - input mean: 0.298611, var: 74.490944, min:-49.942127, max:61.438332
+[up_modules_1_resnet2] Forward Hook - input mean: 7.589203, var: 6199.473633, min:-325.748169, max:310.281067
+[up_modules_1_upsample] Forward Hook - input mean: 7.833218, var: 6234.745605, min:-326.003265, max:310.010223
+All hooks removed.
+[conditional_unet1d] Forward Hook - input mean: 0.090284, var: 0.537528, min:-1.713281, max:1.833974
+[model of timestep 45] Forward Hook - input mean: 0.090284, var: 0.537528, min:-1.713281, max:1.833974
+[down_modules_0_resnet] Forward Hook - input mean: 0.119861, var: 0.471277, min:-1.546317, max:1.778809
+[down_modules_0_resnet2] Forward Hook - input mean: -0.027839, var: 0.277442, min:-2.142916, max:2.249556
+[down_modules_0_downsample] Forward Hook - input mean: -0.010663, var: 0.259281, min:-2.015659, max:2.170588
+[down_modules_1_resnet] Forward Hook - input mean: -0.248717, var: 13.195681, min:-13.960010, max:14.719361
+[down_modules_1_resnet2] Forward Hook - input mean: 0.372707, var: 111.089432, min:-44.983273, max:54.301521
+[down_modules_1_downsample] Forward Hook - input mean: 0.590335, var: 113.258148, min:-45.270004, max:55.602455
+[down_modules_2_resnet] Forward Hook - input mean: 0.102348, var: 18.036880, min:-61.528538, max:70.218216
+[down_modules_2_resnet2] Forward Hook - input mean: -0.131487, var: 0.258750, min:-6.087352, max:8.895300
+[down_modules_2_downsample] Forward Hook - input mean: -0.032807, var: 0.274611, min:-3.057599, max:10.004324
+[mid_modules] Forward Hook - input mean: -0.032807, var: 0.274611, min:-3.057599, max:10.004324
+[mid_modules] Forward Hook - input mean: 0.013944, var: 0.360861, min:-2.831578, max:9.861079
+[up_modules_0_resnet] Forward Hook - input mean: 0.007121, var: 0.313487, min:-3.057599, max:10.004324
+[up_modules_0_resnet2] Forward Hook - input mean: -0.170771, var: 1.565536, min:-8.903018, max:9.453712
+[up_modules_0_upsample] Forward Hook - input mean: 0.021767, var: 2.823946, min:-9.133846, max:16.869104
+[up_modules_1_resnet] Forward Hook - input mean: 0.279637, var: 62.378048, min:-45.270004, max:55.602455
+[up_modules_1_resnet2] Forward Hook - input mean: 6.910882, var: 5070.428711, min:-294.792847, max:280.236969
+[up_modules_1_upsample] Forward Hook - input mean: 7.154738, var: 5102.299805, min:-295.048981, max:279.968658
+All hooks removed.
+[conditional_unet1d] Forward Hook - input mean: 0.119861, var: 0.471277, min:-1.546317, max:1.778809
+[model of timestep 45] Forward Hook - input mean: 0.119861, var: 0.471277, min:-1.546317, max:1.778809
+[down_modules_0_resnet] Forward Hook - input mean: 0.148621, var: 0.407211, min:-1.365196, max:1.710994
+[down_modules_0_resnet2] Forward Hook - input mean: -0.029723, var: 0.222824, min:-1.880332, max:1.952767
+[down_modules_0_downsample] Forward Hook - input mean: -0.011872, var: 0.204241, min:-1.762609, max:1.876706
+[down_modules_1_resnet] Forward Hook - input mean: -0.220082, var: 10.352286, min:-12.370389, max:13.069732
+[down_modules_1_resnet2] Forward Hook - input mean: 0.334898, var: 87.379517, min:-39.904678, max:48.477688
+[down_modules_1_downsample] Forward Hook - input mean: 0.550038, var: 88.918983, min:-40.180397, max:49.343620
+[down_modules_2_resnet] Forward Hook - input mean: 0.091871, var: 14.304225, min:-54.220516, max:62.875900
+[down_modules_2_resnet2] Forward Hook - input mean: -0.118413, var: 0.219456, min:-5.421564, max:7.953745
+[down_modules_2_downsample] Forward Hook - input mean: -0.030007, var: 0.237830, min:-2.556975, max:8.971941
+[mid_modules] Forward Hook - input mean: -0.030007, var: 0.237830, min:-2.556975, max:8.971941
+[mid_modules] Forward Hook - input mean: 0.016168, var: 0.320519, min:-2.380933, max:8.833963
+[up_modules_0_resnet] Forward Hook - input mean: 0.008974, var: 0.275623, min:-2.556975, max:8.971941
+[up_modules_0_resnet2] Forward Hook - input mean: -0.169857, var: 1.547592, min:-8.808819, max:9.571799
+[up_modules_0_upsample] Forward Hook - input mean: 0.023819, var: 2.895824, min:-9.066768, max:17.346458
+[up_modules_1_resnet] Forward Hook - input mean: 0.258395, var: 50.469688, min:-42.533367, max:49.343620
+[up_modules_1_resnet2] Forward Hook - input mean: 6.140640, var: 3974.306641, min:-261.205780, max:247.595764
+[up_modules_1_upsample] Forward Hook - input mean: 6.385039, var: 4002.383057, min:-261.463806, max:247.326172
+All hooks removed.
+[conditional_unet1d] Forward Hook - input mean: 0.148621, var: 0.407211, min:-1.365196, max:1.710994
+[model of timestep 45] Forward Hook - input mean: 0.148621, var: 0.407211, min:-1.365196, max:1.710994
+[down_modules_0_resnet] Forward Hook - input mean: 0.176261, var: 0.347534, min:-1.171525, max:1.631133
+[down_modules_0_resnet2] Forward Hook - input mean: -0.030954, var: 0.172562, min:-1.604731, max:1.661165
+[down_modules_0_downsample] Forward Hook - input mean: -0.012558, var: 0.153596, min:-1.495629, max:1.587825
+[down_modules_1_resnet] Forward Hook - input mean: -0.189799, var: 7.726000, min:-10.651013, max:11.316826
+[down_modules_1_resnet2] Forward Hook - input mean: 0.295405, var: 65.349861, min:-34.487686, max:42.198822
+[down_modules_1_downsample] Forward Hook - input mean: 0.504500, var: 66.314072, min:-34.756676, max:42.717014
+[down_modules_2_resnet] Forward Hook - input mean: 0.080676, var: 10.884726, min:-47.407154, max:54.991268
+[down_modules_2_resnet2] Forward Hook - input mean: -0.104023, var: 0.178631, min:-4.322575, max:6.952840
+[down_modules_2_downsample] Forward Hook - input mean: -0.026894, var: 0.197216, min:-2.587859, max:7.840584
+[mid_modules] Forward Hook - input mean: -0.026894, var: 0.197216, min:-2.587859, max:7.840584
+[mid_modules] Forward Hook - input mean: 0.017601, var: 0.273659, min:-1.822315, max:7.711660
+[up_modules_0_resnet] Forward Hook - input mean: 0.010732, var: 0.232466, min:-2.587859, max:7.840584
+[up_modules_0_resnet2] Forward Hook - input mean: -0.164967, var: 1.493909, min:-8.533940, max:9.663791
+[up_modules_0_upsample] Forward Hook - input mean: 0.030227, var: 2.894012, min:-8.812141, max:17.529184
+[up_modules_1_resnet] Forward Hook - input mean: 0.235255, var: 39.236691, min:-42.414341, max:44.403461
+[up_modules_1_resnet2] Forward Hook - input mean: 5.286484, var: 2953.565674, min:-225.401505, max:212.783844
+[up_modules_1_upsample] Forward Hook - input mean: 5.532279, var: 2977.509033, min:-225.661041, max:212.513229
+All hooks removed.
+[conditional_unet1d] Forward Hook - input mean: 0.176261, var: 0.347534, min:-1.171525, max:1.631133
+[model of timestep 45] Forward Hook - input mean: 0.176261, var: 0.347534, min:-1.171525, max:1.631133
+[down_modules_0_resnet] Forward Hook - input mean: 0.202562, var: 0.294358, min:-0.967038, max:1.539927
+[down_modules_0_resnet2] Forward Hook - input mean: -0.031420, var: 0.127855, min:-1.318388, max:1.365073
+[down_modules_0_downsample] Forward Hook - input mean: -0.012675, var: 0.108746, min:-1.300296, max:1.293473
+[down_modules_1_resnet] Forward Hook - input mean: -0.157835, var: 5.395503, min:-8.830142, max:9.475003
+[down_modules_1_resnet2] Forward Hook - input mean: 0.251933, var: 45.704784, min:-28.756704, max:35.502022
+[down_modules_1_downsample] Forward Hook - input mean: 0.452205, var: 46.192703, min:-29.022957, max:35.782536
+[down_modules_2_resnet] Forward Hook - input mean: 0.068389, var: 7.856928, min:-41.580032, max:46.530193
+[down_modules_2_resnet2] Forward Hook - input mean: -0.089293, var: 0.138437, min:-3.275099, max:5.914994
+[down_modules_2_downsample] Forward Hook - input mean: -0.024799, var: 0.154248, min:-3.304855, max:6.636797
+[mid_modules] Forward Hook - input mean: -0.024799, var: 0.154248, min:-3.304855, max:6.636797
+[mid_modules] Forward Hook - input mean: 0.016623, var: 0.220469, min:-1.506391, max:6.607959
+[up_modules_0_resnet] Forward Hook - input mean: 0.010957, var: 0.184753, min:-3.304855, max:6.636797
+[up_modules_0_resnet2] Forward Hook - input mean: -0.157619, var: 1.401197, min:-8.026381, max:9.788539
+[up_modules_0_upsample] Forward Hook - input mean: 0.039594, var: 2.807135, min:-8.317513, max:17.473322
+[up_modules_1_resnet] Forward Hook - input mean: 0.208403, var: 29.021524, min:-41.493011, max:44.162266
+[up_modules_1_resnet2] Forward Hook - input mean: 4.361297, var: 2043.804810, min:-187.866074, max:176.264587
+[up_modules_1_upsample] Forward Hook - input mean: 4.607876, var: 2063.569580, min:-188.134201, max:175.977600
+All hooks removed.
+[conditional_unet1d] Forward Hook - input mean: 0.202562, var: 0.294358, min:-0.967038, max:1.539927
+[model of timestep 45] Forward Hook - input mean: 0.202562, var: 0.294358, min:-0.967038, max:1.539927
+[down_modules_0_resnet] Forward Hook - input mean: 0.227299, var: 0.249578, min:-0.753290, max:1.437778
+[down_modules_0_resnet2] Forward Hook - input mean: -0.031211, var: 0.090266, min:-1.122416, max:1.257301
+[down_modules_0_downsample] Forward Hook - input mean: -0.012339, var: 0.071197, min:-1.129830, max:1.016778
+[down_modules_1_resnet] Forward Hook - input mean: -0.124482, var: 3.434315, min:-6.919893, max:7.560922
+[down_modules_1_resnet2] Forward Hook - input mean: 0.203004, var: 29.062237, min:-22.796003, max:28.368103
+[down_modules_1_downsample] Forward Hook - input mean: 0.392514, var: 29.184834, min:-23.065409, max:28.508974
+[down_modules_2_resnet] Forward Hook - input mean: 0.055058, var: 5.312126, min:-35.333008, max:37.542645
+[down_modules_2_resnet2] Forward Hook - input mean: -0.074217, var: 0.102792, min:-3.696550, max:5.280341
+[down_modules_2_downsample] Forward Hook - input mean: -0.021681, var: 0.115213, min:-3.847105, max:5.665812
+[mid_modules] Forward Hook - input mean: -0.021681, var: 0.115213, min:-3.847105, max:5.665812
+[mid_modules] Forward Hook - input mean: 0.015378, var: 0.167864, min:-1.399577, max:5.752070
+[up_modules_0_resnet] Forward Hook - input mean: 0.011685, var: 0.139116, min:-3.847105, max:5.713996
+[up_modules_0_resnet2] Forward Hook - input mean: -0.147286, var: 1.277913, min:-7.275006, max:9.827309
+[up_modules_0_upsample] Forward Hook - input mean: 0.051385, var: 2.654546, min:-7.572361, max:17.246746
+[up_modules_1_resnet] Forward Hook - input mean: 0.178037, var: 20.193617, min:-39.866215, max:43.109051
+[up_modules_1_resnet2] Forward Hook - input mean: 3.374861, var: 1274.630737, min:-148.643845, max:138.276138
+[up_modules_1_upsample] Forward Hook - input mean: 3.625076, var: 1289.938477, min:-148.924728, max:137.971329
+All hooks removed.
+[conditional_unet1d] Forward Hook - input mean: 0.227299, var: 0.249578, min:-0.753290, max:1.437778
+[model of timestep 45] Forward Hook - input mean: 0.227299, var: 0.249578, min:-0.753290, max:1.437778
+[down_modules_0_resnet] Forward Hook - input mean: 0.250235, var: 0.214787, min:-0.541353, max:1.324781
+[down_modules_0_resnet2] Forward Hook - input mean: -0.030267, var: 0.060803, min:-1.122063, max:1.361290
+[down_modules_0_downsample] Forward Hook - input mean: -0.011493, var: 0.042037, min:-0.952944, max:1.110451
+[down_modules_1_resnet] Forward Hook - input mean: -0.090233, var: 1.903999, min:-4.947906, max:5.589426
+[down_modules_1_resnet2] Forward Hook - input mean: 0.149129, var: 15.995981, min:-16.755888, max:20.862078
+[down_modules_1_downsample] Forward Hook - input mean: 0.328210, var: 15.867689, min:-16.935326, max:20.926943
+[down_modules_2_resnet] Forward Hook - input mean: 0.041244, var: 3.333030, min:-28.759239, max:27.994961
+[down_modules_2_resnet2] Forward Hook - input mean: -0.059649, var: 0.075386, min:-4.168216, max:4.512916
+[down_modules_2_downsample] Forward Hook - input mean: -0.018351, var: 0.083235, min:-4.135391, max:4.713833
+[mid_modules] Forward Hook - input mean: -0.018351, var: 0.083235, min:-4.135391, max:4.713833
+[mid_modules] Forward Hook - input mean: 0.013049, var: 0.120763, min:-1.354093, max:4.747234
+[up_modules_0_resnet] Forward Hook - input mean: 0.012074, var: 0.099806, min:-4.135391, max:4.713833
+[up_modules_0_resnet2] Forward Hook - input mean: -0.137736, var: 1.131824, min:-6.405878, max:9.760036
+[up_modules_0_upsample] Forward Hook - input mean: 0.060517, var: 2.437375, min:-6.704681, max:16.885578
+[up_modules_1_resnet] Forward Hook - input mean: 0.144914, var: 13.035670, min:-37.579548, max:41.173508
+[up_modules_1_resnet2] Forward Hook - input mean: 2.379653, var: 672.747925, min:-108.087715, max:99.875763
+[up_modules_1_upsample] Forward Hook - input mean: 2.648176, var: 682.462036, min:-108.375755, max:99.596680
+All hooks removed.
+[conditional_unet1d] Forward Hook - input mean: 0.250235, var: 0.214787, min:-0.541353, max:1.324781
+[model of timestep 45] Forward Hook - input mean: 0.250235, var: 0.214787, min:-0.541353, max:1.324781
+[down_modules_0_resnet] Forward Hook - input mean: 0.271084, var: 0.191232, min:-0.395148, max:1.198992
+[down_modules_0_resnet2] Forward Hook - input mean: -0.028360, var: 0.040268, min:-1.101032, max:1.419060
+[down_modules_0_downsample] Forward Hook - input mean: -0.009956, var: 0.022042, min:-0.770444, max:1.156336
+[down_modules_1_resnet] Forward Hook - input mean: -0.055479, var: 0.846119, min:-2.962702, max:3.612087
+[down_modules_1_resnet2] Forward Hook - input mean: 0.091934, var: 6.931648, min:-12.288246, max:13.088116
+[down_modules_1_downsample] Forward Hook - input mean: 0.262053, var: 6.654191, min:-11.910713, max:13.124460
+[down_modules_2_resnet] Forward Hook - input mean: 0.028216, var: 1.941520, min:-21.680420, max:19.706335
+[down_modules_2_resnet2] Forward Hook - input mean: -0.045042, var: 0.056994, min:-4.244351, max:3.897075
+[down_modules_2_downsample] Forward Hook - input mean: -0.013079, var: 0.060313, min:-4.159968, max:3.620461
+[mid_modules] Forward Hook - input mean: -0.013079, var: 0.060313, min:-4.159968, max:3.620461
+[mid_modules] Forward Hook - input mean: 0.010254, var: 0.081226, min:-2.433640, max:3.615721
+[up_modules_0_resnet] Forward Hook - input mean: 0.013096, var: 0.068917, min:-4.159968, max:3.620461
+[up_modules_0_resnet2] Forward Hook - input mean: -0.127236, var: 0.952286, min:-5.343778, max:9.664337
+[up_modules_0_upsample] Forward Hook - input mean: 0.066967, var: 2.123880, min:-5.639269, max:16.114258
+[up_modules_1_resnet] Forward Hook - input mean: 0.111391, var: 7.674279, min:-34.127991, max:37.791035
+[up_modules_1_resnet2] Forward Hook - input mean: 1.467172, var: 256.581543, min:-66.517769, max:61.714516
+[up_modules_1_upsample] Forward Hook - input mean: 1.735158, var: 259.918060, min:-66.770813, max:61.572647
+All hooks removed.
+[conditional_unet1d] Forward Hook - input mean: 0.271084, var: 0.191232, min:-0.395148, max:1.198992
+[model of timestep 45] Forward Hook - input mean: 0.271084, var: 0.191232, min:-0.395148, max:1.198992
+[down_modules_0_resnet] Forward Hook - input mean: 0.289653, var: 0.179817, min:-0.243276, max:1.059671
+[down_modules_0_resnet2] Forward Hook - input mean: -0.024602, var: 0.029227, min:-1.052446, max:1.384920
+[down_modules_0_downsample] Forward Hook - input mean: -0.007044, var: 0.011966, min:-0.594575, max:1.106543
+[down_modules_1_resnet] Forward Hook - input mean: -0.020017, var: 0.285662, min:-1.818405, max:1.975166
+[down_modules_1_resnet2] Forward Hook - input mean: 0.045487, var: 2.080891, min:-8.230052, max:8.914427
+[down_modules_1_downsample] Forward Hook - input mean: 0.200738, var: 1.728187, min:-7.759480, max:8.695468
+[down_modules_2_resnet] Forward Hook - input mean: 0.018574, var: 1.122236, min:-17.809433, max:17.360537
+[down_modules_2_resnet2] Forward Hook - input mean: -0.028667, var: 0.046464, min:-4.714350, max:4.647756
+[down_modules_2_downsample] Forward Hook - input mean: -0.004892, var: 0.044046, min:-4.889445, max:4.350558
+[mid_modules] Forward Hook - input mean: -0.004892, var: 0.044046, min:-4.889445, max:4.350558
+[mid_modules] Forward Hook - input mean: 0.006801, var: 0.051115, min:-3.570573, max:4.632984
+[up_modules_0_resnet] Forward Hook - input mean: 0.015038, var: 0.046249, min:-4.889445, max:4.569382
+[up_modules_0_resnet2] Forward Hook - input mean: -0.118026, var: 0.684133, min:-4.155506, max:8.407239
+[up_modules_0_upsample] Forward Hook - input mean: 0.065224, var: 1.600128, min:-4.388878, max:14.238922
+[up_modules_1_resnet] Forward Hook - input mean: 0.082311, var: 4.079556, min:-29.318018, max:31.787363
+[up_modules_1_resnet2] Forward Hook - input mean: 0.642321, var: 36.184895, min:-23.337822, max:21.910698
+[up_modules_1_upsample] Forward Hook - input mean: 0.849898, var: 35.904957, min:-23.366077, max:21.814526
+All hooks removed.
+[conditional_unet1d] Forward Hook - input mean: 0.289653, var: 0.179817, min:-0.243276, max:1.059671
+[model of timestep 45] Forward Hook - input mean: 0.289653, var: 0.179817, min:-0.243276, max:1.059671
+All hooks removed.
+Inference latency: 0.14248323440551758
+0 Submitted 14 steps of actions.
+Obs latency 0.18897247314453125
+[down_modules_0_resnet] Forward Hook - input mean: 0.109620, var: 0.797413, min:-1.821206, max:2.427990
+[down_modules_0_resnet2] Forward Hook - input mean: 0.035786, var: 0.610897, min:-2.689354, max:4.092668
+[down_modules_0_downsample] Forward Hook - input mean: 0.050526, var: 0.579098, min:-2.539237, max:4.001178
+[down_modules_1_resnet] Forward Hook - input mean: 0.026139, var: 29.988115, min:-24.249489, max:21.011244
+[down_modules_1_resnet2] Forward Hook - input mean: 0.806671, var: 250.457718, min:-72.039101, max:65.858185
+[down_modules_1_downsample] Forward Hook - input mean: 1.000839, var: 255.160263, min:-72.082657, max:65.733749
+[down_modules_2_resnet] Forward Hook - input mean: 0.097733, var: 33.495846, min:-82.331345, max:81.004662
+[down_modules_2_resnet2] Forward Hook - input mean: -0.208743, var: 0.362954, min:-5.261665, max:11.127989
+[down_modules_2_downsample] Forward Hook - input mean: -0.062763, var: 0.268090, min:-3.287620, max:10.966028
+[mid_modules] Forward Hook - input mean: -0.062763, var: 0.268090, min:-3.287620, max:10.966028
+[mid_modules] Forward Hook - input mean: -0.050330, var: 0.302747, min:-2.681577, max:10.970718
+[up_modules_0_resnet] Forward Hook - input mean: -0.027342, var: 0.287052, min:-3.287620, max:10.966028
+[up_modules_0_resnet2] Forward Hook - input mean: -0.113793, var: 0.739198, min:-4.478191, max:5.266120
+[up_modules_0_upsample] Forward Hook - input mean: 0.012013, var: 1.035294, min:-4.781543, max:11.415066
+[up_modules_1_resnet] Forward Hook - input mean: 0.522567, var: 128.801239, min:-72.082657, max:65.733749
+[up_modules_1_resnet2] Forward Hook - input mean: 11.790771, var: 11015.503906, min:-393.558533, max:466.284546
+[up_modules_1_upsample] Forward Hook - input mean: 12.035969, var: 11067.199219, min:-393.751312, max:466.199219
+All hooks removed.
+[conditional_unet1d] Forward Hook - input mean: 0.109620, var: 0.797413, min:-1.821206, max:2.427990
+[model of timestep 45] Forward Hook - input mean: 0.109620, var: 0.797413, min:-1.821206, max:2.427990
+[down_modules_0_resnet] Forward Hook - input mean: 0.135760, var: 0.774973, min:-1.812457, max:2.401300
+[down_modules_0_resnet2] Forward Hook - input mean: 0.028846, var: 0.593405, min:-2.628857, max:4.040617
+[down_modules_0_downsample] Forward Hook - input mean: 0.043221, var: 0.563398, min:-2.516135, max:3.954205
+[down_modules_1_resnet] Forward Hook - input mean: 0.028003, var: 29.292215, min:-23.752476, max:20.919472
+[down_modules_1_resnet2] Forward Hook - input mean: 0.794132, var: 245.071457, min:-71.944458, max:65.180206
+[down_modules_1_downsample] Forward Hook - input mean: 0.988850, var: 249.711975, min:-72.001961, max:65.010483
+[down_modules_2_resnet] Forward Hook - input mean: 0.097648, var: 32.287960, min:-81.529121, max:74.765724
+[down_modules_2_resnet2] Forward Hook - input mean: -0.202499, var: 0.363541, min:-5.096422, max:10.887845
+[down_modules_2_downsample] Forward Hook - input mean: -0.057032, var: 0.281926, min:-3.019068, max:10.952684
+[mid_modules] Forward Hook - input mean: -0.057032, var: 0.281926, min:-3.019068, max:10.952684
+[mid_modules] Forward Hook - input mean: -0.036977, var: 0.321434, min:-2.591030, max:10.849470
+[up_modules_0_resnet] Forward Hook - input mean: -0.024737, var: 0.296130, min:-3.019068, max:10.952684
+[up_modules_0_resnet2] Forward Hook - input mean: -0.134185, var: 0.758537, min:-5.375498, max:5.692539
+[up_modules_0_upsample] Forward Hook - input mean: 0.003883, var: 1.072472, min:-5.679322, max:10.844823
+[up_modules_1_resnet] Forward Hook - input mean: 0.504963, var: 126.355453, min:-72.001961, max:65.010483
+[up_modules_1_resnet2] Forward Hook - input mean: 11.647700, var: 10807.513672, min:-392.270172, max:460.532074
+[up_modules_1_upsample] Forward Hook - input mean: 11.892816, var: 10858.481445, min:-392.469513, max:460.418854
+All hooks removed.
+[conditional_unet1d] Forward Hook - input mean: 0.135760, var: 0.774973, min:-1.812457, max:2.401300
+[model of timestep 45] Forward Hook - input mean: 0.135760, var: 0.774973, min:-1.812457, max:2.401300
+[down_modules_0_resnet] Forward Hook - input mean: 0.160598, var: 0.736595, min:-1.778636, max:2.338571
+[down_modules_0_resnet2] Forward Hook - input mean: 0.022206, var: 0.563723, min:-2.538266, max:3.917997
+[down_modules_0_downsample] Forward Hook - input mean: 0.036398, var: 0.535588, min:-2.471218, max:3.837031
+[down_modules_1_resnet] Forward Hook - input mean: 0.029532, var: 27.925688, min:-22.994616, max:20.562452
+[down_modules_1_resnet2] Forward Hook - input mean: 0.774107, var: 234.074509, min:-70.692078, max:63.824974
+[down_modules_1_downsample] Forward Hook - input mean: 0.970829, var: 238.595505, min:-70.768059, max:63.617699
+[down_modules_2_resnet] Forward Hook - input mean: 0.097517, var: 30.565487, min:-79.834534, max:70.654984
+[down_modules_2_resnet2] Forward Hook - input mean: -0.196387, var: 0.358375, min:-4.824338, max:10.541294
+[down_modules_2_downsample] Forward Hook - input mean: -0.053510, var: 0.287497, min:-3.060078, max:10.821966
+[mid_modules] Forward Hook - input mean: -0.053510, var: 0.287497, min:-3.060078, max:10.821966
+[mid_modules] Forward Hook - input mean: -0.025958, var: 0.335932, min:-2.455057, max:10.694768
+[up_modules_0_resnet] Forward Hook - input mean: -0.019437, var: 0.305775, min:-3.060078, max:10.821966
+[up_modules_0_resnet2] Forward Hook - input mean: -0.147707, var: 0.910074, min:-6.258344, max:7.432069
+[up_modules_0_upsample] Forward Hook - input mean: 0.006933, var: 1.295646, min:-6.547456, max:9.792015
+[up_modules_1_resnet] Forward Hook - input mean: 0.489433, var: 121.289536, min:-70.768059, max:63.617699
+[up_modules_1_resnet2] Forward Hook - input mean: 11.414669, var: 10342.909180, min:-385.439514, max:449.526245
+[up_modules_1_upsample] Forward Hook - input mean: 11.659581, var: 10392.743164, min:-385.646545, max:449.394775
+All hooks removed.
+[conditional_unet1d] Forward Hook - input mean: 0.160598, var: 0.736595, min:-1.778636, max:2.338571
+[model of timestep 45] Forward Hook - input mean: 0.160598, var: 0.736595, min:-1.778636, max:2.338571
+[down_modules_0_resnet] Forward Hook - input mean: 0.183985, var: 0.687670, min:-1.725615, max:2.249879
+[down_modules_0_resnet2] Forward Hook - input mean: 0.015931, var: 0.525316, min:-2.425329, max:3.739607
+[down_modules_0_downsample] Forward Hook - input mean: 0.030155, var: 0.499091, min:-2.396031, max:3.663910
+[down_modules_1_resnet] Forward Hook - input mean: 0.030669, var: 26.082361, min:-22.019869, max:19.998520
+[down_modules_1_resnet2] Forward Hook - input mean: 0.747050, var: 219.080063, min:-68.587227, max:61.844200
+[down_modules_1_downsample] Forward Hook - input mean: 0.947204, var: 223.418732, min:-68.679695, max:61.629189
+[down_modules_2_resnet] Forward Hook - input mean: 0.097567, var: 28.492716, min:-77.435097, max:68.776443
+[down_modules_2_resnet2] Forward Hook - input mean: -0.189805, var: 0.346486, min:-4.917909, max:10.122669
+[down_modules_2_downsample] Forward Hook - input mean: -0.052416, var: 0.283819, min:-3.504983, max:10.547801
+[mid_modules] Forward Hook - input mean: -0.052416, var: 0.283819, min:-3.504983, max:10.547801
+[mid_modules] Forward Hook - input mean: -0.019330, var: 0.339943, min:-2.186852, max:10.437690
+[up_modules_0_resnet] Forward Hook - input mean: -0.015929, var: 0.306948, min:-3.504983, max:10.547801
+[up_modules_0_resnet2] Forward Hook - input mean: -0.153466, var: 1.068394, min:-6.971736, max:8.405128
+[up_modules_0_upsample] Forward Hook - input mean: 0.014971, var: 1.568901, min:-7.227185, max:10.269796
+[up_modules_1_resnet] Forward Hook - input mean: 0.473974, var: 114.315712, min:-68.679695, max:61.629189
+[up_modules_1_resnet2] Forward Hook - input mean: 11.106215, var: 9695.203125, min:-374.419769, max:434.344543
+[up_modules_1_upsample] Forward Hook - input mean: 11.351309, var: 9743.341797, min:-374.633636, max:434.192780
+All hooks removed.
+[conditional_unet1d] Forward Hook - input mean: 0.183985, var: 0.687670, min:-1.725615, max:2.249879
+[model of timestep 45] Forward Hook - input mean: 0.183985, var: 0.687670, min:-1.725615, max:2.249879
+[down_modules_0_resnet] Forward Hook - input mean: 0.205746, var: 0.631094, min:-1.655350, max:2.137989
+[down_modules_0_resnet2] Forward Hook - input mean: 0.009971, var: 0.480092, min:-2.293355, max:3.514961
+[down_modules_0_downsample] Forward Hook - input mean: 0.024456, var: 0.455460, min:-2.294976, max:3.444256
+[down_modules_1_resnet] Forward Hook - input mean: 0.031078, var: 23.839375, min:-20.849354, max:19.238865
+[down_modules_1_resnet2] Forward Hook - input mean: 0.712443, var: 200.664154, min:-65.753609, max:59.257870
+[down_modules_1_downsample] Forward Hook - input mean: 0.917350, var: 204.726166, min:-65.858269, max:59.039963
+[down_modules_2_resnet] Forward Hook - input mean: 0.096689, var: 26.084898, min:-74.346176, max:66.254562
+[down_modules_2_resnet2] Forward Hook - input mean: -0.181779, var: 0.328586, min:-4.943523, max:9.622887
+[down_modules_2_downsample] Forward Hook - input mean: -0.050820, var: 0.279359, min:-3.755304, max:10.175434
+[mid_modules] Forward Hook - input mean: -0.050820, var: 0.279359, min:-3.755304, max:10.175434
+[mid_modules] Forward Hook - input mean: -0.012996, var: 0.342853, min:-1.986223, max:10.087255
+[up_modules_0_resnet] Forward Hook - input mean: -0.012492, var: 0.306754, min:-3.755304, max:10.175434
+[up_modules_0_resnet2] Forward Hook - input mean: -0.158159, var: 1.211349, min:-7.586200, max:8.998033
+[up_modules_0_upsample] Forward Hook - input mean: 0.020749, var: 1.856586, min:-7.821068, max:12.156216
+[up_modules_1_resnet] Forward Hook - input mean: 0.455714, var: 105.661118, min:-65.858269, max:59.039963
+[up_modules_1_resnet2] Forward Hook - input mean: 10.710191, var: 8889.624023, min:-359.724274, max:415.214691
+[up_modules_1_upsample] Forward Hook - input mean: 10.955030, var: 8935.730469, min:-359.944458, max:415.049591
+All hooks removed.
+[conditional_unet1d] Forward Hook - input mean: 0.205746, var: 0.631094, min:-1.655350, max:2.137989
+[model of timestep 45] Forward Hook - input mean: 0.205746, var: 0.631094, min:-1.655350, max:2.137989
+[down_modules_0_resnet] Forward Hook - input mean: 0.225763, var: 0.569540, min:-1.569323, max:2.004884
+[down_modules_0_resnet2] Forward Hook - input mean: 0.004392, var: 0.430036, min:-2.170910, max:3.252007
+[down_modules_0_downsample] Forward Hook - input mean: 0.019342, var: 0.406813, min:-2.170411, max:3.185998
+[down_modules_1_resnet] Forward Hook - input mean: 0.030964, var: 21.316435, min:-19.507793, max:18.305367
+[down_modules_1_resnet2] Forward Hook - input mean: 0.672062, var: 179.833939, min:-62.405357, max:56.145187
+[down_modules_1_downsample] Forward Hook - input mean: 0.881694, var: 183.529358, min:-62.502747, max:55.928825
+[down_modules_2_resnet] Forward Hook - input mean: 0.095289, var: 23.455791, min:-70.668999, max:63.165833
+[down_modules_2_resnet2] Forward Hook - input mean: -0.172957, var: 0.306473, min:-4.878870, max:9.040321
+[down_modules_2_downsample] Forward Hook - input mean: -0.049545, var: 0.273484, min:-3.884047, max:9.705606
+[mid_modules] Forward Hook - input mean: -0.049545, var: 0.273484, min:-3.884047, max:9.705606
+[mid_modules] Forward Hook - input mean: -0.008141, var: 0.344106, min:-2.274261, max:9.638091
+[up_modules_0_resnet] Forward Hook - input mean: -0.010278, var: 0.304930, min:-3.884047, max:9.705606
+[up_modules_0_resnet2] Forward Hook - input mean: -0.162733, var: 1.326775, min:-8.046325, max:9.400980
+[up_modules_0_upsample] Forward Hook - input mean: 0.023217, var: 2.134749, min:-8.272048, max:13.742506
+[up_modules_1_resnet] Forward Hook - input mean: 0.434970, var: 95.775917, min:-62.502747, max:55.928825
+[up_modules_1_resnet2] Forward Hook - input mean: 10.232981, var: 7970.999512, min:-341.765869, max:392.635986
+[up_modules_1_upsample] Forward Hook - input mean: 10.477786, var: 8014.562500, min:-341.991669, max:392.458160
+All hooks removed.
+[conditional_unet1d] Forward Hook - input mean: 0.225763, var: 0.569540, min:-1.569323, max:2.004884
+[model of timestep 45] Forward Hook - input mean: 0.225763, var: 0.569540, min:-1.569323, max:2.004884
+[down_modules_0_resnet] Forward Hook - input mean: 0.243875, var: 0.505411, min:-1.468672, max:1.916465
+[down_modules_0_resnet2] Forward Hook - input mean: -0.000849, var: 0.376855, min:-2.030827, max:2.962540
+[down_modules_0_downsample] Forward Hook - input mean: 0.014735, var: 0.354387, min:-2.023577, max:2.900762
+[down_modules_1_resnet] Forward Hook - input mean: 0.029825, var: 18.571409, min:-18.008497, max:17.197695
+[down_modules_1_resnet2] Forward Hook - input mean: 0.626410, var: 157.004517, min:-58.542458, max:52.482635
+[down_modules_1_downsample] Forward Hook - input mean: 0.840344, var: 160.220291, min:-58.674713, max:52.278301
+[down_modules_2_resnet] Forward Hook - input mean: 0.092394, var: 20.620428, min:-66.299980, max:60.367870
+[down_modules_2_resnet2] Forward Hook - input mean: -0.163490, var: 0.280654, min:-4.705180, max:8.399459
+[down_modules_2_downsample] Forward Hook - input mean: -0.047063, var: 0.264609, min:-3.817818, max:9.114227
+[mid_modules] Forward Hook - input mean: -0.047063, var: 0.264609, min:-3.817818, max:9.114227
+[mid_modules] Forward Hook - input mean: -0.003575, var: 0.339730, min:-2.501152, max:9.064212
+[up_modules_0_resnet] Forward Hook - input mean: -0.007604, var: 0.298860, min:-3.817818, max:9.114227
+[up_modules_0_resnet2] Forward Hook - input mean: -0.166742, var: 1.412494, min:-8.356309, max:9.606418
+[up_modules_0_upsample] Forward Hook - input mean: 0.022308, var: 2.382319, min:-8.573184, max:15.096544
+[up_modules_1_resnet] Forward Hook - input mean: 0.411677, var: 84.799248, min:-58.674713, max:52.278301
+[up_modules_1_resnet2] Forward Hook - input mean: 9.646797, var: 6958.420898, min:-320.493927, max:366.478729
+[up_modules_1_upsample] Forward Hook - input mean: 9.890764, var: 6999.252441, min:-320.725250, max:366.293732
+All hooks removed.
+[conditional_unet1d] Forward Hook - input mean: 0.243875, var: 0.505411, min:-1.468672, max:1.916465
+[model of timestep 45] Forward Hook - input mean: 0.243875, var: 0.505411, min:-1.468672, max:1.916465
+[down_modules_0_resnet] Forward Hook - input mean: 0.259914, var: 0.441233, min:-1.354672, max:1.867066
+[down_modules_0_resnet2] Forward Hook - input mean: -0.005635, var: 0.322375, min:-1.919934, max:2.650139
+[down_modules_0_downsample] Forward Hook - input mean: 0.010676, var: 0.300297, min:-1.856731, max:2.592162
+[down_modules_1_resnet] Forward Hook - input mean: 0.028093, var: 15.725515, min:-16.372908, max:15.936217
+[down_modules_1_resnet2] Forward Hook - input mean: 0.576946, var: 133.214462, min:-54.105236, max:48.343285
+[down_modules_1_downsample] Forward Hook - input mean: 0.793670, var: 135.884094, min:-54.272644, max:48.158562
+[down_modules_2_resnet] Forward Hook - input mean: 0.088024, var: 17.712477, min:-61.337208, max:57.971363
+[down_modules_2_resnet2] Forward Hook - input mean: -0.152564, var: 0.253512, min:-4.467284, max:7.735752
+[down_modules_2_downsample] Forward Hook - input mean: -0.043628, var: 0.252117, min:-3.664949, max:8.446543
+[mid_modules] Forward Hook - input mean: -0.043628, var: 0.252117, min:-3.664949, max:8.446543
+[mid_modules] Forward Hook - input mean: 0.000929, var: 0.329637, min:-2.457171, max:8.421477
+[up_modules_0_resnet] Forward Hook - input mean: -0.004372, var: 0.288027, min:-3.664949, max:8.446543
+[up_modules_0_resnet2] Forward Hook - input mean: -0.168612, var: 1.465059, min:-8.638209, max:9.655221
+[up_modules_0_upsample] Forward Hook - input mean: 0.022038, var: 2.585432, min:-8.848912, max:16.210188
+[up_modules_1_resnet] Forward Hook - input mean: 0.386637, var: 73.212685, min:-54.272644, max:48.158562
+[up_modules_1_resnet2] Forward Hook - input mean: 8.952184, var: 5897.802246, min:-296.165039, max:337.166779
+[up_modules_1_upsample] Forward Hook - input mean: 9.195755, var: 5935.408203, min:-296.401337, max:336.970703
+All hooks removed.
+[conditional_unet1d] Forward Hook - input mean: 0.259914, var: 0.441233, min:-1.354672, max:1.867066
+[model of timestep 45] Forward Hook - input mean: 0.259914, var: 0.441233, min:-1.354672, max:1.867066
+[down_modules_0_resnet] Forward Hook - input mean: 0.273739, var: 0.379393, min:-1.228467, max:1.804545
+[down_modules_0_resnet2] Forward Hook - input mean: -0.010011, var: 0.268463, min:-1.813918, max:2.326071
+[down_modules_0_downsample] Forward Hook - input mean: 0.007043, var: 0.246522, min:-1.672764, max:2.271544
+[down_modules_1_resnet] Forward Hook - input mean: 0.025627, var: 12.885534, min:-14.631900, max:14.537113
+[down_modules_1_resnet2] Forward Hook - input mean: 0.524777, var: 109.345497, min:-49.130424, max:43.777008
+[down_modules_1_downsample] Forward Hook - input mean: 0.742143, var: 111.427429, min:-49.324604, max:43.621925
+[down_modules_2_resnet] Forward Hook - input mean: 0.081932, var: 14.806096, min:-55.727501, max:54.887367
+[down_modules_2_resnet2] Forward Hook - input mean: -0.140348, var: 0.224319, min:-4.192344, max:7.049935
+[down_modules_2_downsample] Forward Hook - input mean: -0.040521, var: 0.232733, min:-3.421173, max:7.712088
+[mid_modules] Forward Hook - input mean: -0.040521, var: 0.232733, min:-3.421173, max:7.712088
+[mid_modules] Forward Hook - input mean: 0.004533, var: 0.311153, min:-2.137611, max:7.696112
+[up_modules_0_resnet] Forward Hook - input mean: -0.001768, var: 0.269457, min:-3.421173, max:7.712088
+[up_modules_0_resnet2] Forward Hook - input mean: -0.168545, var: 1.486954, min:-8.760459, max:9.776592
+[up_modules_0_upsample] Forward Hook - input mean: 0.023172, var: 2.733672, min:-9.005184, max:17.054785
+[up_modules_1_resnet] Forward Hook - input mean: 0.359350, var: 61.421730, min:-49.324604, max:43.621925
+[up_modules_1_resnet2] Forward Hook - input mean: 8.142892, var: 4830.274414, min:-269.096344, max:304.981750
+[up_modules_1_upsample] Forward Hook - input mean: 8.386375, var: 4864.247070, min:-269.336853, max:304.777466
+All hooks removed.
+[conditional_unet1d] Forward Hook - input mean: 0.273739, var: 0.379393, min:-1.228467, max:1.804545
+[model of timestep 45] Forward Hook - input mean: 0.273739, var: 0.379393, min:-1.228467, max:1.804545
+[down_modules_0_resnet] Forward Hook - input mean: 0.285259, var: 0.322160, min:-1.091019, max:1.730110
+[down_modules_0_resnet2] Forward Hook - input mean: -0.013877, var: 0.216650, min:-1.694519, max:1.993984
+[down_modules_0_downsample] Forward Hook - input mean: 0.003846, var: 0.194680, min:-1.504889, max:1.942462
+[down_modules_1_resnet] Forward Hook - input mean: 0.022720, var: 10.138478, min:-12.794454, max:13.005683
+[down_modules_1_resnet2] Forward Hook - input mean: 0.469716, var: 86.159485, min:-43.653267, max:38.822090
+[down_modules_1_downsample] Forward Hook - input mean: 0.684537, var: 87.663010, min:-43.862667, max:38.702370
+[down_modules_2_resnet] Forward Hook - input mean: 0.074344, var: 11.969871, min:-49.502308, max:51.150105
+[down_modules_2_resnet2] Forward Hook - input mean: -0.126445, var: 0.194113, min:-3.953740, max:6.316241
+[down_modules_2_downsample] Forward Hook - input mean: -0.037843, var: 0.208128, min:-3.162564, max:6.927477
+[mid_modules] Forward Hook - input mean: -0.037843, var: 0.208128, min:-3.162564, max:6.927477
+[mid_modules] Forward Hook - input mean: 0.007008, var: 0.284609, min:-1.863978, max:6.901783
+[up_modules_0_resnet] Forward Hook - input mean: 0.000272, var: 0.244145, min:-3.162564, max:6.927477
+[up_modules_0_resnet2] Forward Hook - input mean: -0.166852, var: 1.478395, min:-8.715144, max:9.832804
+[up_modules_0_upsample] Forward Hook - input mean: 0.025737, var: 2.812561, min:-8.985733, max:17.549839
+[up_modules_1_resnet] Forward Hook - input mean: 0.329005, var: 49.792332, min:-43.862667, max:43.381783
+[up_modules_1_resnet2] Forward Hook - input mean: 7.231086, var: 3791.164062, min:-239.411606, max:270.135162
+[up_modules_1_upsample] Forward Hook - input mean: 7.475220, var: 3821.070557, min:-239.656693, max:269.918427
+All hooks removed.
+[conditional_unet1d] Forward Hook - input mean: 0.285259, var: 0.322160, min:-1.091019, max:1.730110
+[model of timestep 45] Forward Hook - input mean: 0.285259, var: 0.322160, min:-1.091019, max:1.730110
+[down_modules_0_resnet] Forward Hook - input mean: 0.294351, var: 0.271586, min:-0.943517, max:1.644026
+[down_modules_0_resnet2] Forward Hook - input mean: -0.017234, var: 0.168749, min:-1.563024, max:1.662454
+[down_modules_0_downsample] Forward Hook - input mean: 0.001034, var: 0.146805, min:-1.363928, max:1.613496
+[down_modules_1_resnet] Forward Hook - input mean: 0.019398, var: 7.591479, min:-10.889099, max:11.363922
+[down_modules_1_resnet2] Forward Hook - input mean: 0.412093, var: 64.573730, min:-37.746277, max:33.911594
+[down_modules_1_downsample] Forward Hook - input mean: 0.620790, var: 65.539665, min:-37.961388, max:33.715706
+[down_modules_2_resnet] Forward Hook - input mean: 0.066109, var: 9.316847, min:-42.706379, max:46.872051
+[down_modules_2_resnet2] Forward Hook - input mean: -0.111107, var: 0.163411, min:-3.779364, max:5.531521
+[down_modules_2_downsample] Forward Hook - input mean: -0.034399, var: 0.179691, min:-3.960651, max:6.075874
+[mid_modules] Forward Hook - input mean: -0.034399, var: 0.179691, min:-3.960651, max:6.075874
+[mid_modules] Forward Hook - input mean: 0.009339, var: 0.252057, min:-1.888464, max:6.468681
+[up_modules_0_resnet] Forward Hook - input mean: 0.002811, var: 0.213869, min:-3.960651, max:6.503997
+[up_modules_0_resnet2] Forward Hook - input mean: -0.161653, var: 1.442324, min:-8.500681, max:9.871469
+[up_modules_0_upsample] Forward Hook - input mean: 0.032244, var: 2.828480, min:-8.788848, max:17.741234
+[up_modules_1_resnet] Forward Hook - input mean: 0.296009, var: 38.807270, min:-42.027691, max:44.110516
+[up_modules_1_resnet2] Forward Hook - input mean: 6.227232, var: 2821.838623, min:-207.498413, max:233.113220
+[up_modules_1_upsample] Forward Hook - input mean: 6.472991, var: 2847.318604, min:-207.748077, max:232.885529
+All hooks removed.
+[conditional_unet1d] Forward Hook - input mean: 0.294351, var: 0.271586, min:-0.943517, max:1.644026
+[model of timestep 45] Forward Hook - input mean: 0.294351, var: 0.271586, min:-0.943517, max:1.644026
+[down_modules_0_resnet] Forward Hook - input mean: 0.300932, var: 0.229491, min:-0.787109, max:1.546974
+[down_modules_0_resnet2] Forward Hook - input mean: -0.019969, var: 0.125844, min:-1.420282, max:1.325908
+[down_modules_0_downsample] Forward Hook - input mean: -0.001339, var: 0.104207, min:-1.215497, max:1.278581
+[down_modules_1_resnet] Forward Hook - input mean: 0.016048, var: 5.321372, min:-8.917339, max:9.621959
+[down_modules_1_resnet2] Forward Hook - input mean: 0.349373, var: 45.271286, min:-31.501160, max:28.831778
+[down_modules_1_downsample] Forward Hook - input mean: 0.549221, var: 45.780354, min:-31.707785, max:28.618385
+[down_modules_2_resnet] Forward Hook - input mean: 0.056949, var: 6.901524, min:-35.500225, max:41.915527
+[down_modules_2_resnet2] Forward Hook - input mean: -0.094824, var: 0.133569, min:-4.610855, max:4.682897
+[down_modules_2_downsample] Forward Hook - input mean: -0.031268, var: 0.148272, min:-4.831602, max:5.533109
+[mid_modules] Forward Hook - input mean: -0.031268, var: 0.148272, min:-4.831602, max:5.533109
+[mid_modules] Forward Hook - input mean: 0.010128, var: 0.212666, min:-1.934707, max:5.864135
+[up_modules_0_resnet] Forward Hook - input mean: 0.004588, var: 0.178554, min:-4.831602, max:5.845657
+[up_modules_0_resnet2] Forward Hook - input mean: -0.154574, var: 1.372319, min:-8.048271, max:9.944757
+[up_modules_0_upsample] Forward Hook - input mean: 0.041297, var: 2.766068, min:-8.346781, max:17.695526
+[up_modules_1_resnet] Forward Hook - input mean: 0.258708, var: 28.788637, min:-41.217899, max:43.895863
+[up_modules_1_resnet2] Forward Hook - input mean: 5.143246, var: 1955.721436, min:-173.628967, max:194.053482
+[up_modules_1_upsample] Forward Hook - input mean: 5.389615, var: 1976.755859, min:-173.887115, max:193.795166
+All hooks removed.
+[conditional_unet1d] Forward Hook - input mean: 0.300932, var: 0.229491, min:-0.787109, max:1.546974
+[model of timestep 45] Forward Hook - input mean: 0.300932, var: 0.229491, min:-0.787109, max:1.546974
+[down_modules_0_resnet] Forward Hook - input mean: 0.304946, var: 0.197456, min:-0.623075, max:1.439976
+[down_modules_0_resnet2] Forward Hook - input mean: -0.022168, var: 0.089511, min:-1.267068, max:1.270481
+[down_modules_0_downsample] Forward Hook - input mean: -0.003388, var: 0.068407, min:-1.061438, max:1.032902
+[down_modules_1_resnet] Forward Hook - input mean: 0.012663, var: 3.403607, min:-7.044982, max:7.785533
+[down_modules_1_resnet2] Forward Hook - input mean: 0.279876, var: 28.886459, min:-24.994612, max:23.433960
+[down_modules_1_downsample] Forward Hook - input mean: 0.468968, var: 29.033007, min:-25.175232, max:23.205381
+[down_modules_2_resnet] Forward Hook - input mean: 0.046876, var: 4.830260, min:-28.110207, max:36.340324
+[down_modules_2_resnet2] Forward Hook - input mean: -0.077816, var: 0.106346, min:-5.302152, max:4.084641
+[down_modules_2_downsample] Forward Hook - input mean: -0.026588, var: 0.117907, min:-5.447120, max:4.914196
+[mid_modules] Forward Hook - input mean: -0.026588, var: 0.117907, min:-5.447120, max:4.914196
+[mid_modules] Forward Hook - input mean: 0.011220, var: 0.170612, min:-2.550653, max:5.346400
+[up_modules_0_resnet] Forward Hook - input mean: 0.007348, var: 0.142311, min:-5.447120, max:5.164725
+[up_modules_0_resnet2] Forward Hook - input mean: -0.144793, var: 1.271170, min:-7.325860, max:9.929113
+[up_modules_0_upsample] Forward Hook - input mean: 0.052724, var: 2.638836, min:-7.628758, max:17.466980
+[up_modules_1_resnet] Forward Hook - input mean: 0.217296, var: 20.109283, min:-39.693047, max:42.900097
+[up_modules_1_resnet2] Forward Hook - input mean: 3.987821, var: 1221.241211, min:-137.921768, max:153.269485
+[up_modules_1_upsample] Forward Hook - input mean: 4.237008, var: 1237.515503, min:-138.190369, max:152.976379
+All hooks removed.
+[conditional_unet1d] Forward Hook - input mean: 0.304946, var: 0.197456, min:-0.623075, max:1.439976
+[model of timestep 45] Forward Hook - input mean: 0.304946, var: 0.197456, min:-0.623075, max:1.439976
+[down_modules_0_resnet] Forward Hook - input mean: 0.306331, var: 0.176740, min:-0.452576, max:1.323920
+[down_modules_0_resnet2] Forward Hook - input mean: -0.023752, var: 0.060774, min:-1.128889, max:1.350015
+[down_modules_0_downsample] Forward Hook - input mean: -0.005037, var: 0.040485, min:-0.903419, max:1.100371
+[down_modules_1_resnet] Forward Hook - input mean: 0.008976, var: 1.899776, min:-5.188349, max:5.869267
+[down_modules_1_resnet2] Forward Hook - input mean: 0.204517, var: 15.983802, min:-18.750965, max:17.669847
+[down_modules_1_downsample] Forward Hook - input mean: 0.383211, var: 15.871360, min:-18.812111, max:17.429058
+[down_modules_2_resnet] Forward Hook - input mean: 0.036445, var: 3.174640, min:-20.893702, max:30.039951
+[down_modules_2_resnet2] Forward Hook - input mean: -0.061324, var: 0.083056, min:-5.613832, max:4.400289
+[down_modules_2_downsample] Forward Hook - input mean: -0.021353, var: 0.090157, min:-5.718301, max:4.181931
+[mid_modules] Forward Hook - input mean: -0.021353, var: 0.090157, min:-5.718301, max:4.181931
+[mid_modules] Forward Hook - input mean: 0.011182, var: 0.128199, min:-2.914891, max:4.725486
+[up_modules_0_resnet] Forward Hook - input mean: 0.009815, var: 0.107260, min:-5.718301, max:4.545173
+[up_modules_0_resnet2] Forward Hook - input mean: -0.135808, var: 1.139194, min:-6.443739, max:9.825884
+[up_modules_0_upsample] Forward Hook - input mean: 0.061660, var: 2.439193, min:-6.746800, max:17.068857
+[up_modules_1_resnet] Forward Hook - input mean: 0.172847, var: 13.038168, min:-37.506401, max:41.024971
+[up_modules_1_resnet2] Forward Hook - input mean: 2.817077, var: 645.303284, min:-100.756516, max:111.233330
+[up_modules_1_upsample] Forward Hook - input mean: 3.084213, var: 655.588196, min:-101.028252, max:110.924492
+All hooks removed.
+[conditional_unet1d] Forward Hook - input mean: 0.306331, var: 0.176740, min:-0.452576, max:1.323920
+[model of timestep 45] Forward Hook - input mean: 0.306331, var: 0.176740, min:-0.452576, max:1.323920
+[down_modules_0_resnet] Forward Hook - input mean: 0.304995, var: 0.168231, min:-0.277008, max:1.198979
+[down_modules_0_resnet2] Forward Hook - input mean: -0.024485, var: 0.040520, min:-1.045623, max:1.384378
+[down_modules_0_downsample] Forward Hook - input mean: -0.006101, var: 0.021322, min:-0.742217, max:1.121212
+[down_modules_1_resnet] Forward Hook - input mean: 0.004803, var: 0.854054, min:-3.262804, max:3.869764
+[down_modules_1_resnet2] Forward Hook - input mean: 0.125513, var: 6.983343, min:-12.208215, max:11.795011
+[down_modules_1_downsample] Forward Hook - input mean: 0.295254, var: 6.710538, min:-12.245316, max:12.016841
+[down_modules_2_resnet] Forward Hook - input mean: 0.026584, var: 1.960233, min:-19.829412, max:22.857004
+[down_modules_2_resnet2] Forward Hook - input mean: -0.045577, var: 0.063746, min:-5.606904, max:4.745427
+[down_modules_2_downsample] Forward Hook - input mean: -0.014714, var: 0.066637, min:-5.687737, max:4.492518
+[mid_modules] Forward Hook - input mean: -0.014714, var: 0.066637, min:-5.687737, max:4.492518
+[mid_modules] Forward Hook - input mean: 0.009559, var: 0.087907, min:-3.293085, max:4.249734
+[up_modules_0_resnet] Forward Hook - input mean: 0.012002, var: 0.075477, min:-5.687737, max:4.492518
+[up_modules_0_resnet2] Forward Hook - input mean: -0.126143, var: 0.962355, min:-5.351711, max:9.705581
+[up_modules_0_upsample] Forward Hook - input mean: 0.067606, var: 2.131792, min:-5.649950, max:16.242397
+[up_modules_1_resnet] Forward Hook - input mean: 0.128278, var: 7.704811, min:-34.163418, max:37.689388
+[up_modules_1_resnet2] Forward Hook - input mean: 1.726290, var: 246.148834, min:-62.315643, max:68.182327
+[up_modules_1_upsample] Forward Hook - input mean: 1.995710, var: 249.681091, min:-62.569946, max:67.873688
+All hooks removed.
+[conditional_unet1d] Forward Hook - input mean: 0.304995, var: 0.168231, min:-0.277008, max:1.198979
+[model of timestep 45] Forward Hook - input mean: 0.304995, var: 0.168231, min:-0.277008, max:1.198979
+[down_modules_0_resnet] Forward Hook - input mean: 0.300700, var: 0.172479, min:-0.183072, max:1.062483
+[down_modules_0_resnet2] Forward Hook - input mean: -0.023454, var: 0.029427, min:-1.006881, max:1.352711
+[down_modules_0_downsample] Forward Hook - input mean: -0.005868, var: 0.011775, min:-0.590435, max:1.072901
+[down_modules_1_resnet] Forward Hook - input mean: -0.000181, var: 0.291384, min:-1.861519, max:1.740092
+[down_modules_1_resnet2] Forward Hook - input mean: 0.057095, var: 2.100790, min:-7.573490, max:8.188684
+[down_modules_1_downsample] Forward Hook - input mean: 0.212453, var: 1.748828, min:-7.420318, max:7.884765
+[down_modules_2_resnet] Forward Hook - input mean: 0.019799, var: 1.162249, min:-18.227730, max:18.227741
+[down_modules_2_resnet2] Forward Hook - input mean: -0.028529, var: 0.049259, min:-5.283774, max:5.004803
+[down_modules_2_downsample] Forward Hook - input mean: -0.004957, var: 0.046613, min:-5.355629, max:4.713140
+[mid_modules] Forward Hook - input mean: -0.004957, var: 0.046613, min:-5.355629, max:4.713140
+[mid_modules] Forward Hook - input mean: 0.006980, var: 0.054484, min:-3.970403, max:5.228459
+[up_modules_0_resnet] Forward Hook - input mean: 0.015071, var: 0.049168, min:-5.355629, max:5.155521
+[up_modules_0_resnet2] Forward Hook - input mean: -0.118641, var: 0.687036, min:-4.193638, max:8.417452
+[up_modules_0_upsample] Forward Hook - input mean: 0.064524, var: 1.602451, min:-4.431393, max:14.311296
+[up_modules_1_resnet] Forward Hook - input mean: 0.088346, var: 4.087713, min:-29.404564, max:31.676889
+[up_modules_1_resnet2] Forward Hook - input mean: 0.732201, var: 34.685619, min:-22.083286, max:24.097263
+[up_modules_1_upsample] Forward Hook - input mean: 0.941936, var: 34.447392, min:-22.313025, max:23.808689
+All hooks removed.
+[conditional_unet1d] Forward Hook - input mean: 0.300700, var: 0.172479, min:-0.183072, max:1.062483
+[model of timestep 45] Forward Hook - input mean: 0.300700, var: 0.172479, min:-0.183072, max:1.062483
+All hooks removed.
+Inference latency: 0.14099740982055664
+1 Submitted 14 steps of actions.
+Obs latency 0.18894696235656738
+[down_modules_0_resnet] Forward Hook - input mean: 0.039432, var: 0.986697, min:-2.656068, max:2.559684
+[down_modules_0_resnet2] Forward Hook - input mean: 0.015560, var: 0.754836, min:-3.670888, max:3.507095
+[down_modules_0_downsample] Forward Hook - input mean: 0.030239, var: 0.724262, min:-3.842066, max:3.393944
+[down_modules_1_resnet] Forward Hook - input mean: -0.251052, var: 36.499397, min:-22.669420, max:19.848360
+[down_modules_1_resnet2] Forward Hook - input mean: 0.940023, var: 295.131104, min:-70.891502, max:92.825188
+[down_modules_1_downsample] Forward Hook - input mean: 1.136326, var: 299.616180, min:-71.173141, max:92.720695
+[down_modules_2_resnet] Forward Hook - input mean: 0.329761, var: 40.758514, min:-87.908089, max:93.287560
+[down_modules_2_resnet2] Forward Hook - input mean: -0.199256, var: 0.451128, min:-9.738889, max:7.606041
+[down_modules_2_downsample] Forward Hook - input mean: -0.053386, var: 0.317999, min:-3.792519, max:7.347250
+[mid_modules] Forward Hook - input mean: -0.053386, var: 0.317999, min:-3.792519, max:7.347250
+[mid_modules] Forward Hook - input mean: -0.040087, var: 0.341068, min:-2.673430, max:7.383928
+[up_modules_0_resnet] Forward Hook - input mean: -0.018118, var: 0.326687, min:-3.792519, max:7.347250
+[up_modules_0_resnet2] Forward Hook - input mean: -0.113517, var: 0.776803, min:-5.353524, max:6.239200
+[up_modules_0_upsample] Forward Hook - input mean: 0.013822, var: 1.063940, min:-5.657515, max:12.063281
+[up_modules_1_resnet] Forward Hook - input mean: 0.590448, var: 151.107239, min:-71.173141, max:92.720695
+[up_modules_1_resnet2] Forward Hook - input mean: 8.678832, var: 13001.948242, min:-471.189270, max:445.589569
+[up_modules_1_upsample] Forward Hook - input mean: 8.923607, var: 13054.325195, min:-471.488831, max:445.365051
+All hooks removed.
+[conditional_unet1d] Forward Hook - input mean: 0.039432, var: 0.986697, min:-2.656068, max:2.559684
+[model of timestep 45] Forward Hook - input mean: 0.039432, var: 0.986697, min:-2.656068, max:2.559684
+[down_modules_0_resnet] Forward Hook - input mean: 0.065964, var: 0.971277, min:-2.643323, max:2.545910
+[down_modules_0_resnet2] Forward Hook - input mean: 0.008637, var: 0.738248, min:-3.678741, max:3.481377
+[down_modules_0_downsample] Forward Hook - input mean: 0.022888, var: 0.708737, min:-3.811455, max:3.374894
+[down_modules_1_resnet] Forward Hook - input mean: -0.246466, var: 35.875214, min:-22.269279, max:19.561077
+[down_modules_1_resnet2] Forward Hook - input mean: 0.924975, var: 290.393799, min:-70.407310, max:92.285378
+[down_modules_1_downsample] Forward Hook - input mean: 1.121745, var: 294.800232, min:-70.696327, max:92.178085
+[down_modules_2_resnet] Forward Hook - input mean: 0.326168, var: 40.342072, min:-86.914856, max:94.981041
+[down_modules_2_resnet2] Forward Hook - input mean: -0.193430, var: 0.472428, min:-10.617626, max:7.332623
+[down_modules_2_downsample] Forward Hook - input mean: -0.048036, var: 0.342979, min:-4.144835, max:7.575945
+[mid_modules] Forward Hook - input mean: -0.048036, var: 0.342979, min:-4.144835, max:7.575945
+[mid_modules] Forward Hook - input mean: -0.027345, var: 0.369725, min:-2.484732, max:7.500111
+[up_modules_0_resnet] Forward Hook - input mean: -0.016018, var: 0.348333, min:-4.144835, max:7.575945
+[up_modules_0_resnet2] Forward Hook - input mean: -0.134405, var: 0.799169, min:-5.798567, max:5.900751
+[up_modules_0_upsample] Forward Hook - input mean: 0.005406, var: 1.100635, min:-6.106565, max:11.455000
+[up_modules_1_resnet] Forward Hook - input mean: 0.571098, var: 148.981674, min:-70.696327, max:92.178085
+[up_modules_1_resnet2] Forward Hook - input mean: 8.544724, var: 12780.980469, min:-467.583588, max:442.395569
+[up_modules_1_upsample] Forward Hook - input mean: 8.789387, var: 12832.808594, min:-467.885925, max:442.180878
+All hooks removed.
+[conditional_unet1d] Forward Hook - input mean: 0.065964, var: 0.971277, min:-2.643323, max:2.545910
+[model of timestep 45] Forward Hook - input mean: 0.065964, var: 0.971277, min:-2.643323, max:2.545910
+[down_modules_0_resnet] Forward Hook - input mean: 0.092306, var: 0.935341, min:-2.595295, max:2.499507
+[down_modules_0_resnet2] Forward Hook - input mean: 0.002293, var: 0.705837, min:-3.644087, max:3.387921
+[down_modules_0_downsample] Forward Hook - input mean: 0.016294, var: 0.677280, min:-3.743593, max:3.288388
+[down_modules_1_resnet] Forward Hook - input mean: -0.238888, var: 34.402443, min:-21.619253, max:19.049767
+[down_modules_1_resnet2] Forward Hook - input mean: 0.901110, var: 278.812408, min:-69.001305, max:90.611328
+[down_modules_1_downsample] Forward Hook - input mean: 1.099736, var: 283.076294, min:-69.296371, max:90.510246
+[down_modules_2_resnet] Forward Hook - input mean: 0.319999, var: 39.131130, min:-84.912811, max:95.289940
+[down_modules_2_resnet2] Forward Hook - input mean: -0.187305, var: 0.483056, min:-11.291975, max:7.624673
+[down_modules_2_downsample] Forward Hook - input mean: -0.044097, var: 0.360101, min:-4.611819, max:8.221529
+[mid_modules] Forward Hook - input mean: -0.044097, var: 0.360101, min:-4.611819, max:8.221529
+[mid_modules] Forward Hook - input mean: -0.016078, var: 0.394593, min:-2.329918, max:8.207763
+[up_modules_0_resnet] Forward Hook - input mean: -0.010387, var: 0.369487, min:-4.611819, max:8.221529
+[up_modules_0_resnet2] Forward Hook - input mean: -0.145498, var: 0.946407, min:-6.255749, max:6.918130
+[up_modules_0_upsample] Forward Hook - input mean: 0.010552, var: 1.318452, min:-6.562599, max:10.402634
+[up_modules_1_resnet] Forward Hook - input mean: 0.553506, var: 143.603409, min:-69.296371, max:90.510246
+[up_modules_1_resnet2] Forward Hook - input mean: 8.351353, var: 12256.296875, min:-458.352203, max:433.460663
+[up_modules_1_upsample] Forward Hook - input mean: 8.595861, var: 12307.019531, min:-458.655670, max:433.250397
+All hooks removed.
+[conditional_unet1d] Forward Hook - input mean: 0.092306, var: 0.935341, min:-2.595295, max:2.499507
+[model of timestep 45] Forward Hook - input mean: 0.092306, var: 0.935341, min:-2.595295, max:2.499507
+[down_modules_0_resnet] Forward Hook - input mean: 0.117924, var: 0.884392, min:-2.519402, max:2.426827
+[down_modules_0_resnet2] Forward Hook - input mean: -0.003463, var: 0.661611, min:-3.574249, max:3.238174
+[down_modules_0_downsample] Forward Hook - input mean: 0.010508, var: 0.634074, min:-3.644087, max:3.145244
+[down_modules_1_resnet] Forward Hook - input mean: -0.229068, var: 32.303268, min:-20.894789, max:18.363916
+[down_modules_1_resnet2] Forward Hook - input mean: 0.868715, var: 262.180145, min:-66.901741, max:88.025269
+[down_modules_1_downsample] Forward Hook - input mean: 1.070453, var: 266.234680, min:-67.201172, max:87.936897
+[down_modules_2_resnet] Forward Hook - input mean: 0.312015, var: 37.316559, min:-81.987457, max:94.578644
+[down_modules_2_resnet2] Forward Hook - input mean: -0.180341, var: 0.483768, min:-11.744619, max:7.878462
+[down_modules_2_downsample] Forward Hook - input mean: -0.041914, var: 0.366224, min:-5.001113, max:8.645177
+[mid_modules] Forward Hook - input mean: -0.041914, var: 0.366224, min:-5.001113, max:8.645177
+[mid_modules] Forward Hook - input mean: -0.008776, var: 0.407224, min:-2.167595, max:8.707204
+[up_modules_0_resnet] Forward Hook - input mean: -0.005875, var: 0.379995, min:-5.001113, max:8.645177
+[up_modules_0_resnet2] Forward Hook - input mean: -0.149113, var: 1.098664, min:-6.919007, max:7.847284
+[up_modules_0_upsample] Forward Hook - input mean: 0.020491, var: 1.583912, min:-7.039924, max:10.153429
+[up_modules_1_resnet] Forward Hook - input mean: 0.535332, var: 135.778595, min:-67.201172, max:87.936897
+[up_modules_1_resnet2] Forward Hook - input mean: 8.114558, var: 11505.533203, min:-444.474426, max:420.199341
+[up_modules_1_upsample] Forward Hook - input mean: 8.359280, var: 11554.622070, min:-444.779358, max:419.996521
+All hooks removed.
+[conditional_unet1d] Forward Hook - input mean: 0.117924, var: 0.884392, min:-2.519402, max:2.426827
+[model of timestep 45] Forward Hook - input mean: 0.117924, var: 0.884392, min:-2.519402, max:2.426827
+[down_modules_0_resnet] Forward Hook - input mean: 0.142521, var: 0.821673, min:-2.418341, max:2.330376
+[down_modules_0_resnet2] Forward Hook - input mean: -0.008700, var: 0.607829, min:-3.472538, max:3.043799
+[down_modules_0_downsample] Forward Hook - input mean: 0.005481, var: 0.581076, min:-3.514210, max:2.956992
+[down_modules_1_resnet] Forward Hook - input mean: -0.217589, var: 29.674023, min:-20.028263, max:17.504831
+[down_modules_1_resnet2] Forward Hook - input mean: 0.827725, var: 241.207779, min:-64.155098, max:84.551331
+[down_modules_1_downsample] Forward Hook - input mean: 1.033645, var: 244.971283, min:-64.458237, max:84.490868
+[down_modules_2_resnet] Forward Hook - input mean: 0.300859, var: 34.903179, min:-78.234863, max:92.753899
+[down_modules_2_resnet2] Forward Hook - input mean: -0.171795, var: 0.475070, min:-11.964055, max:7.999424
+[down_modules_2_downsample] Forward Hook - input mean: -0.039329, var: 0.369017, min:-5.274276, max:8.902686
+[mid_modules] Forward Hook - input mean: -0.039329, var: 0.369017, min:-5.274276, max:8.902686
+[mid_modules] Forward Hook - input mean: -0.001911, var: 0.416338, min:-2.104306, max:9.033657
+[up_modules_0_resnet] Forward Hook - input mean: -0.001464, var: 0.386366, min:-5.274276, max:9.004541
+[up_modules_0_resnet2] Forward Hook - input mean: -0.152610, var: 1.235319, min:-7.624430, max:8.389747
+[up_modules_0_upsample] Forward Hook - input mean: 0.027187, var: 1.861564, min:-7.760205, max:11.974882
+[up_modules_1_resnet] Forward Hook - input mean: 0.513604, var: 125.813362, min:-64.458237, max:84.490868
+[up_modules_1_resnet2] Forward Hook - input mean: 7.822265, var: 10562.000977, min:-426.383362, max:402.752563
+[up_modules_1_upsample] Forward Hook - input mean: 8.066814, var: 10608.961914, min:-426.688416, max:402.550110
+All hooks removed.
+[conditional_unet1d] Forward Hook - input mean: 0.142521, var: 0.821673, min:-2.418341, max:2.330376
+[model of timestep 45] Forward Hook - input mean: 0.142521, var: 0.821673, min:-2.418341, max:2.330376
+[down_modules_0_resnet] Forward Hook - input mean: 0.165933, var: 0.750126, min:-2.293899, max:2.264395
+[down_modules_0_resnet2] Forward Hook - input mean: -0.013367, var: 0.546966, min:-3.341030, max:2.815652
+[down_modules_0_downsample] Forward Hook - input mean: 0.001234, var: 0.520945, min:-3.355124, max:2.734564
+[down_modules_1_resnet] Forward Hook - input mean: -0.204485, var: 26.654583, min:-18.986692, max:16.495132
+[down_modules_1_resnet2] Forward Hook - input mean: 0.779943, var: 217.024948, min:-60.821217, max:80.303688
+[down_modules_1_downsample] Forward Hook - input mean: 0.989876, var: 220.430954, min:-61.127029, max:80.280548
+[down_modules_2_resnet] Forward Hook - input mean: 0.287197, var: 32.038719, min:-73.735771, max:90.487831
+[down_modules_2_resnet2] Forward Hook - input mean: -0.162559, var: 0.459493, min:-11.994693, max:8.141454
+[down_modules_2_downsample] Forward Hook - input mean: -0.037372, var: 0.369776, min:-5.486080, max:9.035645
+[mid_modules] Forward Hook - input mean: -0.037372, var: 0.369776, min:-5.486080, max:9.035645
+[mid_modules] Forward Hook - input mean: 0.003269, var: 0.423401, min:-2.077716, max:9.246501
+[up_modules_0_resnet] Forward Hook - input mean: 0.001458, var: 0.390462, min:-5.486080, max:9.254139
+[up_modules_0_resnet2] Forward Hook - input mean: -0.156957, var: 1.348411, min:-8.203379, max:8.774992
+[up_modules_0_upsample] Forward Hook - input mean: 0.029722, var: 2.132006, min:-8.365773, max:13.483238
+[up_modules_1_resnet] Forward Hook - input mean: 0.488775, var: 114.226585, min:-61.127029, max:80.280548
+[up_modules_1_resnet2] Forward Hook - input mean: 7.479003, var: 9476.947266, min:-404.519348, max:381.643250
+[up_modules_1_upsample] Forward Hook - input mean: 7.723589, var: 9521.307617, min:-404.824860, max:381.443359
+All hooks removed.
+[conditional_unet1d] Forward Hook - input mean: 0.165933, var: 0.750126, min:-2.293899, max:2.264395
+[model of timestep 45] Forward Hook - input mean: 0.165933, var: 0.750126, min:-2.293899, max:2.264395
+[down_modules_0_resnet] Forward Hook - input mean: 0.187939, var: 0.672713, min:-2.147639, max:2.217340
+[down_modules_0_resnet2] Forward Hook - input mean: -0.017502, var: 0.481023, min:-3.181541, max:2.565905
+[down_modules_0_downsample] Forward Hook - input mean: -0.002298, var: 0.455313, min:-3.169204, max:2.516185
+[down_modules_1_resnet] Forward Hook - input mean: -0.190123, var: 23.326658, min:-17.781555, max:15.409667
+[down_modules_1_resnet2] Forward Hook - input mean: 0.726089, var: 190.237518, min:-56.905388, max:75.214432
+[down_modules_1_downsample] Forward Hook - input mean: 0.939695, var: 193.210052, min:-57.213306, max:75.243530
+[down_modules_2_resnet] Forward Hook - input mean: 0.270432, var: 28.784531, min:-68.677536, max:88.028290
+[down_modules_2_resnet2] Forward Hook - input mean: -0.152596, var: 0.434356, min:-11.910957, max:8.322181
+[down_modules_2_downsample] Forward Hook - input mean: -0.034538, var: 0.363389, min:-5.697614, max:9.025391
+[mid_modules] Forward Hook - input mean: -0.034538, var: 0.363389, min:-5.697614, max:9.025391
+[mid_modules] Forward Hook - input mean: 0.008020, var: 0.420862, min:-2.040128, max:9.284348
+[up_modules_0_resnet] Forward Hook - input mean: 0.004605, var: 0.386293, min:-5.697614, max:9.319870
+[up_modules_0_resnet2] Forward Hook - input mean: -0.160621, var: 1.432617, min:-8.651798, max:8.970054
+[up_modules_0_upsample] Forward Hook - input mean: 0.028902, var: 2.370975, min:-8.845221, max:14.735901
+[up_modules_1_resnet] Forward Hook - input mean: 0.460930, var: 101.260025, min:-57.213306, max:75.243530
+[up_modules_1_resnet2] Forward Hook - input mean: 7.054266, var: 8277.583008, min:-378.465851, max:356.735382
+[up_modules_1_upsample] Forward Hook - input mean: 7.298119, var: 8318.979492, min:-378.769562, max:356.523895
+All hooks removed.
+[conditional_unet1d] Forward Hook - input mean: 0.187939, var: 0.672713, min:-2.147639, max:2.217340
+[model of timestep 45] Forward Hook - input mean: 0.187939, var: 0.672713, min:-2.147639, max:2.217340
+[down_modules_0_resnet] Forward Hook - input mean: 0.208357, var: 0.592534, min:-1.981406, max:2.150222
+[down_modules_0_resnet2] Forward Hook - input mean: -0.021017, var: 0.412523, min:-2.995964, max:2.365860
+[down_modules_0_downsample] Forward Hook - input mean: -0.005108, var: 0.386964, min:-2.958317, max:2.308965
+[down_modules_1_resnet] Forward Hook - input mean: -0.174355, var: 19.838352, min:-16.427366, max:14.243293
+[down_modules_1_resnet2] Forward Hook - input mean: 0.667641, var: 162.054047, min:-52.459290, max:69.411797
+[down_modules_1_downsample] Forward Hook - input mean: 0.883507, var: 164.553482, min:-52.768063, max:69.498970
+[down_modules_2_resnet] Forward Hook - input mean: 0.250530, var: 25.269413, min:-63.056240, max:84.685425
+[down_modules_2_resnet2] Forward Hook - input mean: -0.141306, var: 0.403792, min:-11.736704, max:8.390806
+[down_modules_2_downsample] Forward Hook - input mean: -0.031147, var: 0.350552, min:-5.891430, max:8.844226
+[mid_modules] Forward Hook - input mean: -0.031147, var: 0.350552, min:-5.891430, max:8.844226
+[mid_modules] Forward Hook - input mean: 0.012507, var: 0.410558, min:-1.979573, max:9.142512
+[up_modules_0_resnet] Forward Hook - input mean: 0.007949, var: 0.375061, min:-5.891430, max:9.204150
+[up_modules_0_resnet2] Forward Hook - input mean: -0.162552, var: 1.487640, min:-8.969613, max:9.011764
+[up_modules_0_upsample] Forward Hook - input mean: 0.028196, var: 2.569740, min:-9.197788, max:15.770433
+[up_modules_1_resnet] Forward Hook - input mean: 0.430849, var: 87.488205, min:-52.768063, max:69.498970
+[up_modules_1_resnet2] Forward Hook - input mean: 6.549656, var: 7018.815430, min:-348.956512, max:328.495270
+[up_modules_1_upsample] Forward Hook - input mean: 6.793206, var: 7056.806641, min:-349.257965, max:328.274078
+All hooks removed.
+[conditional_unet1d] Forward Hook - input mean: 0.208357, var: 0.592534, min:-1.981406, max:2.150222
+[model of timestep 45] Forward Hook - input mean: 0.208357, var: 0.592534, min:-1.981406, max:2.150222
+[down_modules_0_resnet] Forward Hook - input mean: 0.227005, var: 0.512612, min:-1.797001, max:2.063677
+[down_modules_0_resnet2] Forward Hook - input mean: -0.023961, var: 0.343886, min:-2.786010, max:2.179895
+[down_modules_0_downsample] Forward Hook - input mean: -0.007326, var: 0.318461, min:-2.724964, max:2.086640
+[down_modules_1_resnet] Forward Hook - input mean: -0.157571, var: 16.325201, min:-14.943679, max:12.932150
+[down_modules_1_resnet2] Forward Hook - input mean: 0.606028, var: 133.551163, min:-47.536755, max:62.967369
+[down_modules_1_downsample] Forward Hook - input mean: 0.822080, var: 135.539383, min:-47.845299, max:63.114368
+[down_modules_2_resnet] Forward Hook - input mean: 0.227667, var: 21.583248, min:-56.973141, max:80.327766
+[down_modules_2_resnet2] Forward Hook - input mean: -0.128838, var: 0.365929, min:-11.512193, max:8.337648
+[down_modules_2_downsample] Forward Hook - input mean: -0.028565, var: 0.326428, min:-6.143286, max:8.475828
+[mid_modules] Forward Hook - input mean: -0.028565, var: 0.326428, min:-6.143286, max:8.475828
+[mid_modules] Forward Hook - input mean: 0.015899, var: 0.388291, min:-2.024862, max:8.912453
+[up_modules_0_resnet] Forward Hook - input mean: 0.010255, var: 0.352179, min:-6.143286, max:8.874096
+[up_modules_0_resnet2] Forward Hook - input mean: -0.162982, var: 1.513716, min:-9.116434, max:9.123564
+[up_modules_0_upsample] Forward Hook - input mean: 0.028214, var: 2.715571, min:-9.376677, max:16.563372
+[up_modules_1_resnet] Forward Hook - input mean: 0.398177, var: 73.402588, min:-47.845299, max:63.114368
+[up_modules_1_resnet2] Forward Hook - input mean: 5.954553, var: 5749.264160, min:-316.171204, max:297.301270
+[up_modules_1_upsample] Forward Hook - input mean: 6.198082, var: 5783.413574, min:-316.467834, max:297.064758
+All hooks removed.
+[conditional_unet1d] Forward Hook - input mean: 0.227005, var: 0.512612, min:-1.797001, max:2.063677
+[model of timestep 45] Forward Hook - input mean: 0.227005, var: 0.512612, min:-1.797001, max:2.063677
+[down_modules_0_resnet] Forward Hook - input mean: 0.243737, var: 0.435848, min:-1.596042, max:1.958380
+[down_modules_0_resnet2] Forward Hook - input mean: -0.026260, var: 0.277302, min:-2.553693, max:1.972322
+[down_modules_0_downsample] Forward Hook - input mean: -0.008960, var: 0.252041, min:-2.471324, max:1.870525
+[down_modules_1_resnet] Forward Hook - input mean: -0.139559, var: 12.902532, min:-13.336871, max:11.489027
+[down_modules_1_resnet2] Forward Hook - input mean: 0.540888, var: 105.683243, min:-42.159744, max:55.943771
+[down_modules_1_downsample] Forward Hook - input mean: 0.754130, var: 107.157318, min:-42.467438, max:56.143753
+[down_modules_2_resnet] Forward Hook - input mean: 0.202332, var: 17.830460, min:-50.450420, max:74.906136
+[down_modules_2_resnet2] Forward Hook - input mean: -0.115075, var: 0.323827, min:-11.294485, max:8.145145
+[down_modules_2_downsample] Forward Hook - input mean: -0.026990, var: 0.295403, min:-6.582519, max:7.971497
+[mid_modules] Forward Hook - input mean: -0.026990, var: 0.295403, min:-6.582519, max:7.971497
+[mid_modules] Forward Hook - input mean: 0.017977, var: 0.356712, min:-2.454001, max:8.724627
+[up_modules_0_resnet] Forward Hook - input mean: 0.011536, var: 0.321064, min:-6.582519, max:8.423385
+[up_modules_0_resnet2] Forward Hook - input mean: -0.162617, var: 1.514450, min:-9.087926, max:9.196117
+[up_modules_0_upsample] Forward Hook - input mean: 0.028879, var: 2.799975, min:-9.370328, max:17.052959
+[up_modules_1_resnet] Forward Hook - input mean: 0.362218, var: 59.467766, min:-42.467438, max:56.143753
+[up_modules_1_resnet2] Forward Hook - input mean: 5.283211, var: 4513.006348, min:-280.363159, max:263.383423
+[up_modules_1_upsample] Forward Hook - input mean: 5.527444, var: 4542.922363, min:-280.652954, max:263.132843
+All hooks removed.
+[conditional_unet1d] Forward Hook - input mean: 0.243737, var: 0.435848, min:-1.596042, max:1.958380
+[model of timestep 45] Forward Hook - input mean: 0.243737, var: 0.435848, min:-1.596042, max:1.958380
+[down_modules_0_resnet] Forward Hook - input mean: 0.258385, var: 0.365004, min:-1.380338, max:1.835141
+[down_modules_0_resnet2] Forward Hook - input mean: -0.027939, var: 0.215247, min:-2.301035, max:1.745044
+[down_modules_0_downsample] Forward Hook - input mean: -0.010084, var: 0.190373, min:-2.199932, max:1.636868
+[down_modules_1_resnet] Forward Hook - input mean: -0.120571, var: 9.706646, min:-11.630312, max:9.939086
+[down_modules_1_resnet2] Forward Hook - input mean: 0.472765, var: 79.565750, min:-36.390938, max:48.430561
+[down_modules_1_downsample] Forward Hook - input mean: 0.679895, var: 80.545479, min:-36.697590, max:48.677345
+[down_modules_2_resnet] Forward Hook - input mean: 0.175309, var: 14.172638, min:-43.451878, max:68.544632
+[down_modules_2_resnet2] Forward Hook - input mean: -0.100550, var: 0.279427, min:-11.102203, max:7.851379
+[down_modules_2_downsample] Forward Hook - input mean: -0.025016, var: 0.258329, min:-7.067902, max:7.677814
+[mid_modules] Forward Hook - input mean: -0.025016, var: 0.258329, min:-7.067902, max:7.677814
+[mid_modules] Forward Hook - input mean: 0.019926, var: 0.317565, min:-2.876308, max:8.348055
+[up_modules_0_resnet] Forward Hook - input mean: 0.013124, var: 0.283316, min:-7.067902, max:8.051316
+[up_modules_0_resnet2] Forward Hook - input mean: -0.159161, var: 1.490560, min:-8.884917, max:9.243946
+[up_modules_0_upsample] Forward Hook - input mean: 0.033180, var: 2.828958, min:-9.181245, max:17.308264
+[up_modules_1_resnet] Forward Hook - input mean: 0.323567, var: 46.262920, min:-42.128883, max:48.677345
+[up_modules_1_resnet2] Forward Hook - input mean: 4.540142, var: 3358.454102, min:-242.125351, max:227.194061
+[up_modules_1_upsample] Forward Hook - input mean: 4.786011, var: 3383.798828, min:-242.404358, max:226.929306
+All hooks removed.
+[conditional_unet1d] Forward Hook - input mean: 0.258385, var: 0.365004, min:-1.380338, max:1.835141
+[model of timestep 45] Forward Hook - input mean: 0.258385, var: 0.365004, min:-1.380338, max:1.835141
+[down_modules_0_resnet] Forward Hook - input mean: 0.270812, var: 0.302613, min:-1.151640, max:1.695056
+[down_modules_0_resnet2] Forward Hook - input mean: -0.028897, var: 0.159367, min:-2.030555, max:1.512773
+[down_modules_0_downsample] Forward Hook - input mean: -0.010656, var: 0.135277, min:-1.913107, max:1.387611
+[down_modules_1_resnet] Forward Hook - input mean: -0.100458, var: 6.839649, min:-9.824059, max:8.293426
+[down_modules_1_resnet2] Forward Hook - input mean: 0.399497, var: 56.073162, min:-30.250895, max:40.481956
+[down_modules_1_downsample] Forward Hook - input mean: 0.597941, var: 56.610920, min:-30.558186, max:40.760201
+[down_modules_2_resnet] Forward Hook - input mean: 0.146582, var: 10.712092, min:-36.108570, max:61.187340
+[down_modules_2_resnet2] Forward Hook - input mean: -0.086129, var: 0.234116, min:-10.924387, max:7.442786
+[down_modules_2_downsample] Forward Hook - input mean: -0.023446, var: 0.216713, min:-7.631604, max:7.259434
+[mid_modules] Forward Hook - input mean: -0.023446, var: 0.216713, min:-7.631604, max:7.259434
+[mid_modules] Forward Hook - input mean: 0.020343, var: 0.269731, min:-3.443717, max:7.787990
+[up_modules_0_resnet] Forward Hook - input mean: 0.013891, var: 0.239047, min:-7.631604, max:7.496821
+[up_modules_0_resnet2] Forward Hook - input mean: -0.154081, var: 1.433013, min:-8.440735, max:9.300198
+[up_modules_0_upsample] Forward Hook - input mean: 0.040072, var: 2.784526, min:-8.744416, max:17.377892
+[up_modules_1_resnet] Forward Hook - input mean: 0.280792, var: 34.196445, min:-41.480976, max:43.202045
+[up_modules_1_resnet2] Forward Hook - input mean: 3.736829, var: 2326.191650, min:-201.595184, max:189.124573
+[up_modules_1_upsample] Forward Hook - input mean: 3.983513, var: 2347.127686, min:-201.873840, max:188.861099
+All hooks removed.
+[conditional_unet1d] Forward Hook - input mean: 0.270812, var: 0.302613, min:-1.151640, max:1.695056
+[model of timestep 45] Forward Hook - input mean: 0.270812, var: 0.302613, min:-1.151640, max:1.695056
+[down_modules_0_resnet] Forward Hook - input mean: 0.280916, var: 0.250985, min:-0.911800, max:1.539089
+[down_modules_0_resnet2] Forward Hook - input mean: -0.029240, var: 0.111705, min:-1.744612, max:1.550247
+[down_modules_0_downsample] Forward Hook - input mean: -0.010809, var: 0.088673, min:-1.613635, max:1.311980
+[down_modules_1_resnet] Forward Hook - input mean: -0.079363, var: 4.400433, min:-7.936268, max:6.574513
+[down_modules_1_resnet2] Forward Hook - input mean: 0.319745, var: 36.008163, min:-23.781845, max:32.163414
+[down_modules_1_downsample] Forward Hook - input mean: 0.507613, var: 36.179279, min:-24.089808, max:32.459496
+[down_modules_2_resnet] Forward Hook - input mean: 0.116407, var: 7.617626, min:-28.416222, max:52.941196
+[down_modules_2_resnet2] Forward Hook - input mean: -0.071833, var: 0.188928, min:-10.605499, max:6.974698
+[down_modules_2_downsample] Forward Hook - input mean: -0.020330, var: 0.174652, min:-8.075445, max:6.770514
+[mid_modules] Forward Hook - input mean: -0.020330, var: 0.174652, min:-8.075445, max:6.770514
+[mid_modules] Forward Hook - input mean: 0.020739, var: 0.217333, min:-3.990737, max:7.113540
+[up_modules_0_resnet] Forward Hook - input mean: 0.015500, var: 0.192361, min:-8.075445, max:6.828582
+[up_modules_0_resnet2] Forward Hook - input mean: -0.145341, var: 1.337168, min:-7.700216, max:9.338757
+[up_modules_0_upsample] Forward Hook - input mean: 0.050601, var: 2.671669, min:-8.006311, max:17.308483
+[up_modules_1_resnet] Forward Hook - input mean: 0.234246, var: 23.710934, min:-40.096634, max:42.484257
+[up_modules_1_resnet2] Forward Hook - input mean: 2.878425, var: 1451.165161, min:-159.272430, max:149.435272
+[up_modules_1_upsample] Forward Hook - input mean: 3.128443, var: 1467.534546, min:-159.564590, max:149.197418
+All hooks removed.
+[conditional_unet1d] Forward Hook - input mean: 0.280916, var: 0.250985, min:-0.911800, max:1.539089
+[model of timestep 45] Forward Hook - input mean: 0.280916, var: 0.250985, min:-0.911800, max:1.539089
+[down_modules_0_resnet] Forward Hook - input mean: 0.288599, var: 0.212069, min:-0.662786, max:1.368392
+[down_modules_0_resnet2] Forward Hook - input mean: -0.028889, var: 0.073632, min:-1.445781, max:1.548236
+[down_modules_0_downsample] Forward Hook - input mean: -0.010468, var: 0.051995, min:-1.304169, max:1.298780
+[down_modules_1_resnet] Forward Hook - input mean: -0.057718, var: 2.469199, min:-5.974771, max:5.014799
+[down_modules_1_resnet2] Forward Hook - input mean: 0.233986, var: 20.070379, min:-17.888191, max:23.966562
+[down_modules_1_downsample] Forward Hook - input mean: 0.411583, var: 19.969156, min:-17.637712, max:24.345694
+[down_modules_2_resnet] Forward Hook - input mean: 0.085753, var: 5.001634, min:-25.845867, max:43.773151
+[down_modules_2_resnet2] Forward Hook - input mean: -0.057957, var: 0.144136, min:-9.872897, max:6.507620
+[down_modules_2_downsample] Forward Hook - input mean: -0.016759, var: 0.133713, min:-8.267411, max:6.361945
+[mid_modules] Forward Hook - input mean: -0.016759, var: 0.133713, min:-8.267411, max:6.361945
+[mid_modules] Forward Hook - input mean: 0.019034, var: 0.162897, min:-4.478676, max:6.454489
+[up_modules_0_resnet] Forward Hook - input mean: 0.016278, var: 0.145306, min:-8.267411, max:6.361945
+[up_modules_0_resnet2] Forward Hook - input mean: -0.137004, var: 1.198497, min:-6.767887, max:9.307416
+[up_modules_0_upsample] Forward Hook - input mean: 0.059105, var: 2.474900, min:-7.073202, max:17.056309
+[up_modules_1_resnet] Forward Hook - input mean: 0.184954, var: 15.129396, min:-37.875484, max:40.779297
+[up_modules_1_resnet2] Forward Hook - input mean: 2.014907, var: 765.221619, min:-115.473389, max:108.396286
+[up_modules_1_upsample] Forward Hook - input mean: 2.283113, var: 775.802002, min:-115.779427, max:108.261208
+All hooks removed.
+[conditional_unet1d] Forward Hook - input mean: 0.288599, var: 0.212069, min:-0.662786, max:1.368392
+[model of timestep 45] Forward Hook - input mean: 0.288599, var: 0.212069, min:-0.662786, max:1.368392
+[down_modules_0_resnet] Forward Hook - input mean: 0.293730, var: 0.187368, min:-0.419472, max:1.183972
+[down_modules_0_resnet2] Forward Hook - input mean: -0.027614, var: 0.046316, min:-1.169018, max:1.496683
+[down_modules_0_downsample] Forward Hook - input mean: -0.009451, var: 0.026377, min:-0.986797, max:1.235251
+[down_modules_1_resnet] Forward Hook - input mean: -0.035885, var: 1.104653, min:-3.978954, max:3.476234
+[down_modules_1_resnet2] Forward Hook - input mean: 0.143915, var: 8.803843, min:-13.516253, max:16.119942
+[down_modules_1_downsample] Forward Hook - input mean: 0.312703, var: 8.529061, min:-13.287456, max:16.457254
+[down_modules_2_resnet] Forward Hook - input mean: 0.055888, var: 2.934645, min:-23.325460, max:33.696163
+[down_modules_2_resnet2] Forward Hook - input mean: -0.044012, var: 0.099165, min:-8.362149, max:5.981103
+[down_modules_2_downsample] Forward Hook - input mean: -0.011937, var: 0.093410, min:-7.702748, max:5.762171
+[mid_modules] Forward Hook - input mean: -0.011937, var: 0.093410, min:-7.702748, max:5.762171
+[mid_modules] Forward Hook - input mean: 0.014187, var: 0.107826, min:-4.745221, max:5.896298
+[up_modules_0_resnet] Forward Hook - input mean: 0.015843, var: 0.098189, min:-7.702748, max:5.762171
+[up_modules_0_resnet2] Forward Hook - input mean: -0.126801, var: 0.997565, min:-5.557975, max:9.259405
+[up_modules_0_upsample] Forward Hook - input mean: 0.065845, var: 2.152278, min:-5.857512, max:16.326988
+[up_modules_1_resnet] Forward Hook - input mean: 0.135688, var: 8.641724, min:-34.466335, max:37.546185
+[up_modules_1_resnet2] Forward Hook - input mean: 1.237170, var: 291.210083, min:-70.873428, max:66.049751
+[up_modules_1_upsample] Forward Hook - input mean: 1.505921, var: 295.092896, min:-71.182213, max:66.209366
+All hooks removed.
+[conditional_unet1d] Forward Hook - input mean: 0.293730, var: 0.187368, min:-0.419472, max:1.183972
+[model of timestep 45] Forward Hook - input mean: 0.293730, var: 0.187368, min:-0.419472, max:1.183972
+[down_modules_0_resnet] Forward Hook - input mean: 0.296171, var: 0.177957, min:-0.243411, max:1.048361
+[down_modules_0_resnet2] Forward Hook - input mean: -0.024513, var: 0.030566, min:-1.081534, max:1.358445
+[down_modules_0_downsample] Forward Hook - input mean: -0.007038, var: 0.012779, min:-0.660196, max:1.082946
+[down_modules_1_resnet] Forward Hook - input mean: -0.013673, var: 0.339326, min:-2.188716, max:2.023103
+[down_modules_1_resnet2] Forward Hook - input mean: 0.062179, var: 2.468744, min:-8.809616, max:8.815860
+[down_modules_1_downsample] Forward Hook - input mean: 0.216908, var: 2.116236, min:-8.510868, max:8.527754
+[down_modules_2_resnet] Forward Hook - input mean: 0.029128, var: 1.426653, min:-18.999102, max:22.398735
+[down_modules_2_resnet2] Forward Hook - input mean: -0.028231, var: 0.059201, min:-6.173463, max:5.287684
+[down_modules_2_downsample] Forward Hook - input mean: -0.004342, var: 0.054496, min:-6.152824, max:5.001202
+[mid_modules] Forward Hook - input mean: -0.004342, var: 0.054496, min:-6.152824, max:5.001202
+[mid_modules] Forward Hook - input mean: 0.007771, var: 0.060061, min:-4.707784, max:5.845766
+[up_modules_0_resnet] Forward Hook - input mean: 0.015787, var: 0.055841, min:-6.152824, max:5.769219
+[up_modules_0_resnet2] Forward Hook - input mean: -0.116717, var: 0.696283, min:-4.403116, max:8.586529
+[up_modules_0_upsample] Forward Hook - input mean: 0.065717, var: 1.604829, min:-4.646289, max:14.427031
+[up_modules_1_resnet] Forward Hook - input mean: 0.090000, var: 4.269747, min:-29.487799, max:31.599039
+[up_modules_1_resnet2] Forward Hook - input mean: 0.565934, var: 40.394970, min:-25.376274, max:22.960613
+[up_modules_1_upsample] Forward Hook - input mean: 0.774570, var: 40.349880, min:-25.676043, max:22.936401
+All hooks removed.
+[conditional_unet1d] Forward Hook - input mean: 0.296171, var: 0.177957, min:-0.243411, max:1.048361
+[model of timestep 45] Forward Hook - input mean: 0.296171, var: 0.177957, min:-0.243411, max:1.048361
+All hooks removed.
+Inference latency: 0.13327741622924805
+2 Submitted 14 steps of actions.

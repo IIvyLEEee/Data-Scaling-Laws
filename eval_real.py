@@ -254,7 +254,7 @@ def main(input, output, robot_config,
 
             # quant model
             policy.input_bits = 8
-            policy.weight_bits = 16
+            policy.weight_bits = 4
 
             # load quant model
             load_path = '/home/liyixuan23/Data-Scaling-Laws/diffusion_policy/model/diffusion/quant_model/quant_model.pth'

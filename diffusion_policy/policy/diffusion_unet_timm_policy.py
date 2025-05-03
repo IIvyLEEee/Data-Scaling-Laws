@@ -46,12 +46,12 @@ class DiffusionUnetTimmPolicy(BaseImagePolicy):
             input_pertub=0.1,
             inpaint_fixed_action_prefix=False,
             train_diffusion_n_samples=1,
-            # parameters passed to step
-            **kwargs,
             input_bits=8,
-            weight_bits=16,
+            weight_bits=4,
             load_path=None,
-            save_path=None
+            save_path=None,
+            # parameters passed to step
+            **kwargs
         ):
         super().__init__()
 
@@ -68,6 +68,9 @@ class DiffusionUnetTimmPolicy(BaseImagePolicy):
         assert obs_as_global_cond
         input_dim = action_dim
         global_cond_dim = obs_feature_dim
+
+        self.input_bits = input_bits
+        self.weight_bits = weight_bits
 
         model = ConditionalUnet1D(
             input_dim=input_dim,

@@ -102,6 +102,11 @@ class TimmObsEncoder(ModuleAttrMixin):
                 image_shape = shape[1:]
 
         assert global_pool == ''
+        pretrained_cfg = timm.models.create_model(model_name).default_cfg
+        pretrained_cfg["file"] = (
+            r"/home/liyixuan23/.cache/huggingface/hub/vit_large_patch14_dinov2.bin"
+        )
+
         if 'resnet' in model_name:
             model = timm.create_model(
                 model_name=model_name,
@@ -113,6 +118,7 @@ class TimmObsEncoder(ModuleAttrMixin):
             model = timm.create_model(
                 model_name=model_name,
                 pretrained=pretrained,
+                pretrained_cfg=pretrained_cfg,
                 global_pool=global_pool,    # '' means no pooling
                 num_classes=0,              # remove classification layer
                 img_size=image_shape[0],    # 224
