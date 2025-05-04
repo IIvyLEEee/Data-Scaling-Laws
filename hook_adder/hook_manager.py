@@ -7,14 +7,17 @@ class HookManager:
     def forward_hook(self, name):
         def hook(module, input, output):
             input = input[0]  # input是tuple，取第一个
-            print(f"[{name}] Forward Hook - input mean: {input.float().mean():.6f}, var: {input.float().var():.6f}")
+            output = output[0]  # output是tuple
+            print(f"[{name}] Forward Hook - input mean: {input.float().mean():.6f}, var: {input.float().var():.6f}, min: {input.float().min():.6f}, max: {input.float().max():.6f}")
+            print(f"[{name}] Forward Hook - output mean: {output.float().mean():.6f}, var: {output.float().var():.6f}, min: {output.float().min():.6f}, max: {output.float().max():.6f}")
         return hook
 
     def backward_hook(self, name):
         def hook(module, grad_input, grad_output):
             grad_input = grad_input[0]  # grad_input是tuple，取第一个
             grad_output = grad_output[0]  # grad_output是tuple
-            print(f"[{name}] Backward Hook - grad_output mean: {grad_output.float().mean():.6f}, var: {grad_output.float().var():.6f}")
+            print(f"[{name}] Backward Hook - grad_output mean: {grad_output.float().mean():.6f}, var: {grad_output.float().var():.6f}, min: {grad_output.float().min():.6f}, max: {grad_output.float().max():.6f}")
+            print(f"[{name}] Backward Hook - grad_input mean: {grad_input.float().mean():.6f}, var: {grad_input.float().var():.6f}, min: {grad_input.float().min():.6f}, max: {grad_input.float().max():.6f}")
         return hook
 
     def register_hooks(self, module, name, forward=True, backward=True):
