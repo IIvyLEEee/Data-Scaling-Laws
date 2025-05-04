@@ -3,13 +3,47 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 def round_ste(x: torch.Tensor):
-    return torch.round(x.clamp(-128, 127))
+    return (x.round() - x).detach() + x
 
-def int_quantizer(x: torch.Tensor, delta: torch.Tensor, n_bits: int):
-    return round_ste(x / delta) * delta
+def int8_quantizer(x: torch.Tensor, delta: torch.Tensor, n_bits: int):
+    return torch.clamp(x / delta, -2 ** (n_bits - 1), 2 ** (n_bits - 1) - 1)
 
-def int_dequantizer(x_quant: torch.Tensor, delta: torch.Tensor):
-    return x_quant * delta
+# def int_dequantizer(x_quant: torch.Tensor, delta: torch.Tensor):
+#     return x_quant * delta
+
+class LinearFunc(torch.autograd.Function):
+    @staticmethod
+    def forward(
+        ctx, 
+        input: torch.Tensor,
+        weight: torch.Tensor,
+        input_delta: torch.Tensor,
+        weight_delta: torch.Tensor, 
+        bias=None,
+        scale=2,
+        ):
+        quant_input = int8_quantizer(input, input_delta)
+        quant_weight = int8_quantizer(weight, weight_delta)
+        ctx.save_for_backward(input, weight)
+        ctx.bias = bias
+        output = F.linear(input, weight, bias)
+        return output
+
+    @staticmethod
+    def backward(ctx, grad_output):
+        input, weight = ctx.saved_tensors
+        grad_input = grad_weight = grad_bias = None
+
+        if ctx.needs_input_grad[0]:
+            grad_input = grad_output.mm(weight.t())
+        if ctx.needs_input_grad[1]:
+            grad_weight = input.t().mm(grad_output)
+
+        if ctx.bias is not None:
+            if ctx.needs_input_grad[2]:
+                grad_bias = grad_output.sum(0)
+
+        return grad_input, grad_weight, grad_bias
 
 class QuantLinear(nn.Module):
     def __init__(self, in_features, out_features, bias=True, input_bits=8, weight_bits=4):
@@ -25,9 +59,12 @@ class QuantLinear(nn.Module):
         self.weight_bits = weight_bits
 
         # 注册scale
-        self.register_buffer('input_delta', torch.tensor(0.))
-        self.register_buffer('weight_delta', torch.tensor(0.))
-        self.register_buffer('output_delta', torch.tensor(0.))
+        # self.register_buffer('input_delta', torch.tensor(0.))
+        # self.register_buffer('weight_delta', torch.tensor(0.))
+        # self.register_buffer('output_delta', torch.tensor(0.))
+        self.register_buffer('input_delta', None)
+        self.register_buffer('weight_delta', None)
+        self.register_buffer('output_delta', None)
 
         self.init = True
         

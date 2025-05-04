@@ -7,18 +7,26 @@ import pathlib
 
 from diffusion_policy.policy.diffusion_unet_image_policy import DiffusionUnetImagePolicy
 
-def merge_model_into_ckpt(cfg, new_ckpt_path, model_path, device='cuda'):
+def merge_model_into_ckpt(cfg, new_ckpt_path, model_path, ema_model_path, device='cuda'):
     # 1. 加载ckpt
     policy: DiffusionUnetImagePolicy = hydra.utils.instantiate(cfg.policy)
     ckpt = torch.load(cfg.checkpoint.ckpt, map_location=device)
     # 2. 加载模型参数
     model = torch.load(model_path, map_location=device)
     print("model_path:", model_path)
+    ema_model = torch.load(ema_model_path, map_location=device)
+    print("ema_model_path:", ema_model_path)
     # policy.load_state_dict(model)
     # 3. 将模型参数加载到policy中
     ckpt['state_dicts']['model'] = model
+    ckpt['state_dicts']['ema_model'] = ema_model
     torch.save(ckpt, new_ckpt_path)
     print("new ckpt save to:", new_ckpt_path)
+
+    print("model keys:")
+    print(ckpt['state_dicts']['model'].keys())
+    print("ema_model keys:")
+    print(ckpt['state_dicts']['ema_model'].keys())
 
 OmegaConf.register_new_resolver("eval", eval, replace=True)
 
@@ -33,8 +41,9 @@ def main(cfg: OmegaConf):
 
     merge_model_into_ckpt(
         cfg,
-        new_ckpt_path='checkpoint/calibrated_int8.ckpt',
-        model_path='quant_model/calibrated_int8_model.pth',
+        new_ckpt_path='checkpoint/calibrated_fp32_ema.ckpt',
+        model_path='quant_model/calibrated_fp32_model.pth',
+        ema_model_path='quant_model/calibrated_fp32_ema_model.pth',
     )
 
     print("ckpt模型合并完成！")

@@ -43,7 +43,7 @@ def calibrate_model(cfg, quant_model, device='cuda', max_batches=100):
     # 打印模型参数
     print(quant_model.state_dict().keys())
 
-def model_quantization(policy_bf16, int_bits=8, clip_ratio=0.99):
+def model_quantization(policy_bf16, model_path, int_bits=8, clip_ratio=0.99):
     # 计算量化范围
     qmax = 2 ** (int_bits - 1) - 1
     qmin = -2 ** (int_bits - 1)
@@ -91,7 +91,7 @@ def model_quantization(policy_bf16, int_bits=8, clip_ratio=0.99):
                 )
     print("5")
 
-    torch.save(policy_bf16.state_dict(), 'quant_model/calibrated_int8_model.pth')
+    torch.save(policy_bf16.state_dict(), model_path)
     print("int8模型保存完成!")
 
 OmegaConf.register_new_resolver("eval", eval, replace=True)
@@ -102,15 +102,44 @@ OmegaConf.register_new_resolver("eval", eval, replace=True)
     config_name="calibration_diffusion_unet_timm_umi_workspace.yaml"
 )
 def main(cfg: OmegaConf):
-    # cal = 1
-    # quan = 0
-    cal = 0
-    quan = 1
+    sw = 3 # 0:从fp32 ckpt 添加delta，1:校准，2：量化，3:只量化到bf16
 
     # 解析插值
     OmegaConf.resolve(cfg)
 
-    if cal and not quan:
+    if sw == 0:
+        # 执行校准代码
+        print("Running FIRST calibration...")
+        quant_model: DiffusionUnetImagePolicy = hydra.utils.instantiate(cfg.policy)
+        print("1")
+        checkpoint = torch.load(cfg.checkpoint.ckpt, map_location='cpu')
+        print(checkpoint.keys())
+        model = checkpoint['state_dicts']['model']
+        print("2")
+        ema_model = checkpoint['state_dicts']['ema_model']
+        print("2.5")
+        # print(model.keys())
+        # quant_model.load_state_dict(model)
+        # print("3")
+        # calibrate_model(
+        #     cfg,
+        #     quant_model,
+        # )
+        # print("4")
+        # torch.save(quant_model.state_dict(), 'quant_model/calibrated_fp32_model.pth')
+        # print("fp32模型校准完成！")
+
+        quant_model.load_state_dict(ema_model)
+        print("5")
+        calibrate_model(
+            cfg,
+            quant_model,
+        )
+        print("6")
+        torch.save(quant_model.state_dict(), 'quant_model/calibrated_fp32_ema_model.pth')
+        print("fp32 EMA模型校准完成！")
+    
+    elif sw == 1:
         # 执行校准代码
         print("Running calibration...")
         quant_model: DiffusionUnetImagePolicy = hydra.utils.instantiate(cfg.policy)
@@ -134,32 +163,88 @@ def main(cfg: OmegaConf):
         torch.save(quant_model.state_dict(), 'quant_model/calibrated_fp32_model.pth')
         print("fp32模型校准完成！")    
 
-    elif quan and not cal:
+    elif sw == 2:
         # 执行量化代码
         print("Running quantization...")
         policy: DiffusionUnetImagePolicy = hydra.utils.instantiate(cfg.policy)
         print("1")
         model_path = 'quant_model/calibrated_fp32_model.pth'
+        ema_model_path = 'quant_model/calibrated_fp32_ema_model.pth'
         fp32_model = torch.load(model_path, map_location='cpu')
+        fp32_ema_model = torch.load(ema_model_path, map_location='cpu')
         print("2")
         print(fp32_model['model.down_modules.0.0.residual_conv.weight_delta'])
         print(fp32_model['model.down_modules.0.0.residual_conv.input_delta'])
         print(fp32_model['model.down_modules.0.0.residual_conv.output_delta'])
+        print(fp32_ema_model['model.down_modules.0.0.residual_conv.weight_delta'])
+        print(fp32_ema_model['model.down_modules.0.0.residual_conv.input_delta'])
+        print(fp32_ema_model['model.down_modules.0.0.residual_conv.output_delta'])
         policy.load_state_dict(fp32_model)
         print("3")
         policy_bf16 = policy.to(torch.bfloat16)
         torch.save(policy_bf16.state_dict(), 'quant_model/calibrated_bf16_model.pth')
         print("bf16模型保存完成!")
+        policy.load_state_dict(fp32_ema_model)
+        policy_bf16_ema = policy.to(torch.bfloat16)
+        torch.save(policy_bf16_ema.state_dict(), 'quant_model/calibrated_bf16_ema_model.pth')
+        print("bf16 EMA模型保存完成!")
         print("4")
         model_quantization(
             policy_bf16,
+            model_path='quant_model/calibrated_int8_model.pth',
+            int_bits=8,
+            clip_ratio=0.99,
+        )
+        model_quantization(
+            policy_bf16_ema,
+            model_path='quant_model/calibrated_int8_ema_model.pth',
             int_bits=8,
             clip_ratio=0.99,
         )
         print("5")
+
+    elif sw == 3:
+        # 只量化到bf16
+        print("Running bf16 quantization...")
+        quant_model: DiffusionUnetImagePolicy = hydra.utils.instantiate(cfg.policy)
+        print("1")
+        checkpoint = torch.load(cfg.checkpoint.ckpt, map_location='cpu')
+        print(checkpoint['state_dicts']['model'].keys())
+        model = checkpoint['state_dicts']['model']
+        ema_model = checkpoint['state_dicts']['ema_model']
+        print("2")
+        quant_model.load_state_dict(model)
+        for name, module in quant_model.named_modules():
+            if (
+                name.startswith('model.down_modules')
+                or name.startswith('model.mid_modules')
+                or name.startswith('model.up_modules')
+            ):
+                module.to(torch.bfloat16)
+        torch.save(quant_model.state_dict(), 'quant_model/bf16_model.pth')
+        print("bf16模型保存完成!")
+        bf16_model = torch.load('quant_model/bf16_model.pth', map_location='cpu')
+        checkpoint['state_dicts']['model'] = bf16_model
+        print("model 量化完成！")
+        quant_model.load_state_dict(ema_model)
+        for name, module in quant_model.named_modules():
+            if (
+                name.startswith('model.down_modules')
+                or name.startswith('model.mid_modules')
+                or name.startswith('model.up_modules')
+            ):
+                module.to(torch.bfloat16)
+        torch.save(quant_model.state_dict(), 'quant_model/bf16_ema_model.pth')
+        print("bf16 ema_model 保存完成!")
+        bf16_ema_model = torch.load('quant_model/bf16_ema_model.pth', map_location='cpu')
+        checkpoint['state_dicts']['ema_model'] = bf16_ema_model
+        print("ema_model 量化完成！")
+        print("3")
+        torch.save(checkpoint, 'checkpoint/bf16_model.ckpt')
+        print("bf16模型保存完成!")
     
     else:
-        print("请指定 cal 或 quan 参数来执行校准或量化。")
+        print("请指定 sw 参数来执行校准或量化。")
 
 if __name__ == "__main__":
     main()

@@ -54,9 +54,12 @@ class QuantConvTranspose1d(nn.Module):
         self.weight_bits = weight_bits
 
         # 注册scale
-        self.register_buffer('input_delta', torch.tensor(0.))
-        self.register_buffer('weight_delta', torch.tensor(0.))
-        self.register_buffer('output_delta', torch.tensor(0.))
+        # self.register_buffer('input_delta', torch.tensor(0.))
+        # self.register_buffer('weight_delta', torch.tensor(0.))
+        # self.register_buffer('output_delta', torch.tensor(0.))
+        self.register_buffer('input_delta', None)
+        self.register_buffer('weight_delta', None)
+        self.register_buffer('output_delta', None)
 
         # 初始化
         self.init = True
