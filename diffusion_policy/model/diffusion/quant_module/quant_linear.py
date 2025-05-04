@@ -5,11 +5,11 @@ import torch.nn.functional as F
 def round_ste(x: torch.Tensor):
     return (x.round() - x).detach() + x
 
-def int8_quantizer(x: torch.Tensor, delta: torch.Tensor, n_bits: int):
-    return torch.clamp(x / delta, -2 ** (n_bits - 1), 2 ** (n_bits - 1) - 1)
+def int8_quantizer(x: torch.Tensor, delta: torch.Tensor):
+    return torch.clamp(x / delta, -127, 127)
 
-# def int_dequantizer(x_quant: torch.Tensor, delta: torch.Tensor):
-#     return x_quant * delta
+def int4_quantizer(x: torch.Tensor, delta: torch.Tensor):
+    pass
 
 class LinearFunc(torch.autograd.Function):
     @staticmethod
@@ -19,109 +19,118 @@ class LinearFunc(torch.autograd.Function):
         weight: torch.Tensor,
         input_delta: torch.Tensor,
         weight_delta: torch.Tensor, 
-        bias=None,
-        scale=2,
+        bias=None
         ):
         quant_input = int8_quantizer(input, input_delta)
         quant_weight = int8_quantizer(weight, weight_delta)
-        ctx.save_for_backward(input, weight)
-        ctx.bias = bias
-        output = F.linear(input, weight, bias)
-        return output
+        output = quant_input @ quant_weight.transpose(0, 1)
+        scaling_factor = input_delta * (2.0 ** (-weight_delta + 1)) 
+        scaling_factor = scaling_factor.transpose(0, 1)
+        dequant_output = output * scaling_factor
+        
+        ctx.save_for_backward(
+            input, weight, input_delta, weight_delta, bias
+        )
+        return dequant_output
 
     @staticmethod
-    def backward(ctx, grad_output):
-        input, weight = ctx.saved_tensors
-        grad_input = grad_weight = grad_bias = None
-
-        if ctx.needs_input_grad[0]:
-            grad_input = grad_output.mm(weight.t())
-        if ctx.needs_input_grad[1]:
-            grad_weight = input.t().mm(grad_output)
-
-        if ctx.bias is not None:
-            if ctx.needs_input_grad[2]:
-                grad_bias = grad_output.sum(0)
-
-        return grad_input, grad_weight, grad_bias
+    def backward(ctx, dequant_grad_output: torch.Tensor):
+        input, weight, input_delta, weight_delta, _ = (
+            ctx.saved_tensors
+        )
+        dequant_grad_input = dequant_grad_weight = None
+        dequant_grad_input = dequant_grad_output @ weight
+        dequant_grad_weight = dequant_grad_output.transpose(-2, -1) @ input
+        return dequant_grad_input, dequant_grad_weight, None, None, None, None
 
 class QuantLinear(nn.Module):
-    def __init__(self, in_features, out_features, bias=True, input_bits=8, weight_bits=4):
-        super(QuantLinear, self).__init__()
-        self.in_features = in_features
-        self.out_features = out_features
-        self.weight = nn.Parameter(torch.Tensor(out_features, in_features))
+    def __init__(self, in_feature: int, out_feature: int, bias: bool = False):
+        super().__init__()
+        self.in_feature = in_feature
+        self.out_feature = out_feature
+        self.weight = nn.Parameter(torch.empty((out_feature, in_feature)))
         if bias:
-            self.bias = nn.Parameter(torch.Tensor(out_features))
+            self.bias = nn.Parameter(torch.empty(out_feature))
         else:
-            self.register_parameter('bias', None)
-        self.input_bits = input_bits
-        self.weight_bits = weight_bits
+            self.register_parameter("bias", None)
+
+        self.weight_n_bits = 8
+        self.weight_n_levels = 2 ** (self.weight_n_bits - 1) - 1
+        self.weight_delta = nn.Parameter(torch.empty((out_feature)), requires_grad=False)
+        self.input_n_bits = 8
+        self.input_n_levels = 2 ** (self.input_n_bits - 1) - 1
+        self.input_delta = nn.Parameter(torch.full((1,), 0.0), requires_grad=False)
+        self.init = True
 
         # 注册scale
         # self.register_buffer('input_delta', torch.tensor(0.))
         # self.register_buffer('weight_delta', torch.tensor(0.))
         # self.register_buffer('output_delta', torch.tensor(0.))
-        self.register_buffer('input_delta', None)
-        self.register_buffer('weight_delta', None)
-        self.register_buffer('output_delta', None)
+        # self.register_buffer('input_delta', None)
+        # self.register_buffer('weight_delta', None)
+        # self.register_buffer('output_delta', None)
 
         self.init = True
-        
-        # 初始化权重和偏置
-        self.reset_parameters()
     
-    def reset_parameters(self):
-        nn.init.kaiming_uniform_(self.weight, nonlinearity='relu')
-        if self.bias is not None:
-            nn.init.zeros_(self.bias)
+    # def reset_parameters(self):
+    #     nn.init.kaiming_uniform_(self.weight, nonlinearity='relu')
+    #     if self.bias is not None:
+    #         nn.init.zeros_(self.bias)
             
-    def init_scale(self, x, n_bits):
-        """
-        根据输入张量x和bit数n_bits，计算量化比例因子scale。
-        返回值为Tensor，shape与x的统计方式有关，通常为标量。
-        """
-        # 防止x为None
-        if x is None:
-            raise ValueError("init_scale: 输入x不能为None")
-        # 计算scale，防止全零导致除零
-        x_min = x.min()
-        x_max = x.max()
-        scale = (x_max - x_min) / (2 ** n_bits - 1)
-        # 防止scale为0
-        if scale == 0:
-            scale = torch.tensor(1.0, device=x.device, dtype=x.dtype)
-        return scale
+    def int8_init_scale(self, x: torch.Tensor):
+        delta = None
 
-    def forward(self, input):
-        # 初始化比例因子
-        if self.init and self.weight_delta is None:
+        x_min = min(x.data.min().item(), 0)
+        x_max = max(x.data.max().item(), 0)
+        x_absmax = max(abs(x_min), x_max)
+        delta = x_absmax / self.input_n_levels
+
+        delta = torch.tensor(delta).type_as(x)
+        return delta
+
+    def forward(self, input: torch.Tensor, init=False):
+        if self.init is True and self.input_delta.data == 0:
             weight_ = self.weight.clone().detach()
             input_ = input.clone().detach()
-            output_ = F.linear(input_, weight_, self.bias)
-            # print("weight_.shape: ", weight_.shape)
-            # print("input_.shape: ", input_.shape)
-            # print("output_.shape: ", output_.shape)
-            self.weight_delta = self.init_scale(weight_, self.weight_bits).requires_grad_(False)
-            self.input_delta = self.init_scale(input_, self.input_bits).requires_grad_(False)
-            self.output_delta = self.init_scale(output_, self.input_bits).requires_grad_(False)
-            self.init = False
-        # 量化输入和权重
-        quant_input = int_quantizer(input, self.input_delta, self.input_bits)
-        quant_weight = int_quantizer(self.weight, self.weight_delta, self.weight_bits)
-        # 线性变换
-        output = F.linear(quant_input, quant_weight, self.bias)
-        # 反量化
-        scaling_factor = (self.input_delta * self.weight_delta) / self.output_delta
-        quant_output = output * scaling_factor
-        dequant_output = quant_output * self.output_delta
-        return dequant_output
+            self.weight_delta.data = self.int8_init_scale(weight_).requires_grad_(False) * 2
+            self.input_delta.data = self.int8_init_scale(input_).requires_grad_(False) * 2
 
-def test():
-    quant_linear = QuantLinear(10, 10)
-    input = torch.randn(10)
-    output = quant_linear(input)
-    print(output)
+            self.init = False
+
+        return LinearFunc.apply(
+            input,
+            self.weight,
+            self.input_delta,
+            self.weight_delta,
+            self.bias,
+        )
 
 if __name__ == "__main__":
-    test()
+    in_features = 5
+    batch_size = 10
+    out_features = 5
+    x = torch.randn(batch_size, in_features, requires_grad=True)  # .type(torch.int8)
+    y = x.clone().detach().requires_grad_(True)
+    w = torch.randn(out_features, in_features, requires_grad=True)
+    b = torch.randn(out_features, requires_grad=True).to(torch.bfloat16)
+
+    layer = nn.Linear(in_features, out_features, True)
+    layer.weight = nn.Parameter(w)
+    # layer.bias = nn.Parameter(b).to(torch.bfloat16)
+    out = layer(x)
+    outy = y.matmul(w.transpose(0, 1))  # + b  # .type(torch.float32)
+
+    # print("outy: ", outy)
+
+    dout = torch.randn(batch_size, out_features) / 10  # .type(torch.float32)
+
+    fakeloss = (out * dout).sum()
+    fakeloss.backward()
+
+    loss = (outy * dout).sum()
+    loss.backward()
+    # print("out: ", out)
+    print("dx: ", x.grad)
+    print("dy: ", y.grad)
+    print(torch.min(x.grad / y.grad).item())
+    print(torch.max(x.grad / y.grad).item())

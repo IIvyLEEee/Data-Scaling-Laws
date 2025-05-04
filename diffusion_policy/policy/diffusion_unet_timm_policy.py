@@ -46,8 +46,6 @@ class DiffusionUnetTimmPolicy(BaseImagePolicy):
             input_pertub=0.1,
             inpaint_fixed_action_prefix=False,
             train_diffusion_n_samples=1,
-            input_bits=8,
-            weight_bits=4,
             load_path=None,
             save_path=None,
             # parameters passed to step
@@ -69,9 +67,6 @@ class DiffusionUnetTimmPolicy(BaseImagePolicy):
         input_dim = action_dim
         global_cond_dim = obs_feature_dim
 
-        self.input_bits = input_bits
-        self.weight_bits = weight_bits
-
         model = ConditionalUnet1D(
             input_dim=input_dim,
             local_cond_dim=None,
@@ -81,8 +76,6 @@ class DiffusionUnetTimmPolicy(BaseImagePolicy):
             kernel_size=kernel_size,
             n_groups=n_groups,
             cond_predict_scale=cond_predict_scale,
-            input_bits=input_bits,
-            weight_bits=weight_bits
         )
 
         if load_path is not None:

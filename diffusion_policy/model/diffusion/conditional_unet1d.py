@@ -35,8 +35,6 @@ class ConditionalResidualBlock1D(nn.Module):
             kernel_size=3,
             n_groups=8,
             cond_predict_scale=False,
-            input_bits=8,
-            weight_bits=4
             ):
         super().__init__()
 
@@ -54,18 +52,16 @@ class ConditionalResidualBlock1D(nn.Module):
         self.out_channels = out_channels
         self.cond_encoder = nn.Sequential(
             nn.Mish(),
-            nn.Linear(cond_dim, cond_channels),
-            # QuantLinear(cond_dim, cond_channels, input_bits=input_bits, weight_bits=weight_bits),
+            # nn.Linear(cond_dim, cond_channels),
+            QuantLinear(cond_dim, cond_channels),
             Rearrange('batch t -> batch t 1'),
         )
 
         # make sure dimensions compatible
-        self.residual_conv = nn.Conv1d(in_channels, out_channels, 1) \
-            if in_channels != out_channels else nn.Identity()
-        # self.residual_conv = QuantConv1d(in_channels, out_channels, 1, input_bits=input_bits, weight_bits=weight_bits) \
+        # self.residual_conv = nn.Conv1d(in_channels, out_channels, 1) \
         #     if in_channels != out_channels else nn.Identity()
-        self.input_bits = input_bits
-        self.weight_bits = weight_bits
+        self.residual_conv = QuantConv1d(in_channels, out_channels, 1) \
+            if in_channels != out_channels else nn.Identity()
 
     def forward(self, x, cond):
         '''
@@ -100,30 +96,25 @@ class ConditionalUnet1D(nn.Module):
         kernel_size=3,
         n_groups=8,
         cond_predict_scale=False,
-        input_bits=8,
-        weight_bits=4
         ):
         super().__init__()
         all_dims = [input_dim] + list(down_dims)
         start_dim = down_dims[0]
 
         dsed = diffusion_step_embed_dim
-        diffusion_step_encoder = nn.Sequential(
-            SinusoidalPosEmb(dsed),
-            nn.Linear(dsed, dsed * 4),
-            nn.Mish(),
-            nn.Linear(dsed * 4, dsed),
-        )
-
-        self.input_bits = input_bits
-        self.weight_bits = weight_bits
-
         # diffusion_step_encoder = nn.Sequential(
         #     SinusoidalPosEmb(dsed),
-        #     QuantLinear(dsed, dsed * 4, input_bits=input_bits, weight_bits=weight_bits),
+        #     nn.Linear(dsed, dsed * 4),
         #     nn.Mish(),
-        #     QuantLinear(dsed * 4, dsed, input_bits=input_bits, weight_bits=weight_bits),
+        #     nn.Linear(dsed * 4, dsed),
         # )
+
+        diffusion_step_encoder = nn.Sequential(
+            SinusoidalPosEmb(dsed),
+            QuantLinear(dsed, dsed * 4),
+            nn.Mish(),
+            QuantLinear(dsed * 4, dsed),
+        )
         cond_dim = dsed
         if global_cond_dim is not None:
             cond_dim += global_cond_dim
@@ -203,8 +194,8 @@ class ConditionalUnet1D(nn.Module):
         
         final_conv = nn.Sequential(
             Conv1dBlock(start_dim, start_dim, kernel_size=kernel_size),
-            nn.Conv1d(start_dim, input_dim, 1),
-            # QuantConv1d(start_dim, input_dim, 1, input_bits=input_bits, weight_bits=weight_bits),
+            # nn.Conv1d(start_dim, input_dim, 1),
+            QuantConv1d(start_dim, input_dim, 1),
         )
         self.hook_manager.register_hooks(final_conv, name="final_conv")
 

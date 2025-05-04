@@ -252,16 +252,12 @@ def main(input, output, robot_config,
                 policy = workspace.ema_model
             policy.num_inference_steps = 16 # DDIM inference iterations
 
-            # quant model
-            policy.input_bits = 8
-            policy.weight_bits = 4
+            # # load quant model
+            # load_path = '/home/liyixuan23/Data-Scaling-Laws/diffusion_policy/model/diffusion/quant_model/quant_model.pth'
+            # policy.load_quant_model(load_path)
 
-            # load quant model
-            load_path = '/home/liyixuan23/Data-Scaling-Laws/diffusion_policy/model/diffusion/quant_model/quant_model.pth'
-            policy.load_quant_model(load_path)
-
-            # save quant model
-            save_path = '/home/liyixuan23/Data-Scaling-Laws/diffusion_policy/model/diffusion/quant_model/.pth'
+            # # save quant model
+            # save_path = '/home/liyixuan23/Data-Scaling-Laws/diffusion_policy/model/diffusion/quant_model/.pth'
 
             obs_pose_rep = cfg.task.pose_repr.obs_pose_repr
             action_pose_repr = cfg.task.pose_repr.action_pose_repr
@@ -612,7 +608,7 @@ def main(input, output, robot_config,
                             if key_stroke == KeyCode(char='s'):
                                 # Stop episode
                                 # Hand control back to human
-                                policy.save_quant_model(save_path)
+                                # policy.save_quant_model(save_path)
                                 print('Stopped.')
                                 stop_episode = True
 

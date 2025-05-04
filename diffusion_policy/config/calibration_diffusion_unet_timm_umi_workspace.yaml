@@ -11,13 +11,8 @@ exp_name: "default"
 
 n_action_steps: 8
 
-input_bits: 8
-weight_bits: 16
-
 policy:
   _target_: diffusion_policy.policy.diffusion_unet_timm_policy.DiffusionUnetTimmPolicy
-  input_bits: ${input_bits}
-  weight_bits: ${weight_bits}
 
   shape_meta: ${shape_meta}
   

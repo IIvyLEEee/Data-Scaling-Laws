@@ -16,7 +16,7 @@ def read_dataset(dataset_path):
     return replay_buffer
 
 task_name = 'pour_water' # or 'arrange_mouse' 'fold_towel' 'unplug_charger'
-dataset_dir = f'data/dataset/{task_name}'
+dataset_dir = f'dataset'
 save_dir = f'data/data_vis/{task_name}'
 os.makedirs(save_dir, exist_ok=True)
 
