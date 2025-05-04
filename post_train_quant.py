@@ -43,50 +43,10 @@ def calibrate_model(cfg, quant_model, device='cuda', max_batches=100):
     # 打印模型参数
     print(quant_model.state_dict().keys())
 
-
-
-OmegaConf.register_new_resolver("eval", eval, replace=True)
-
-@hydra.main(
-    version_base="1.2",
-    config_path="diffusion_policy/config",
-    config_name="calibration_diffusion_unet_timm_umi_workspace.yaml"
-)
-def main(cfg: OmegaConf):
-    # 2. 解析插值
-    OmegaConf.resolve(cfg)
-
-    # # 3. 加载模型
-    # quant_model: DiffusionUnetImagePolicy = hydra.utils.instantiate(cfg.policy)
-    # print("1")
-    # checkpoint = torch.load(cfg.checkpoint.ckpt, map_location='cpu')
-    # print("2")
-    # print(checkpoint.keys())
-    # model = checkpoint['state_dicts']['model']
-    # print("3")
-    # # print(model.keys())
-    # quant_model.load_state_dict(model)
-    # print("4")
-
-
-    # 3. 加载模型
-    policy: DiffusionUnetImagePolicy = hydra.utils.instantiate(cfg.policy)
-    print("1")
-    model_path = 'quant_model/calibrated_fp32_model.pth'
-    fp32_model = torch.load(model_path, map_location='cpu')
-    print("2")
-    print(fp32_model['model.down_modules.0.0.residual_conv.weight_delta'])
-    print(fp32_model['model.down_modules.0.0.residual_conv.input_delta'])
-    print(fp32_model['model.down_modules.0.0.residual_conv.output_delta'])
-    policy.load_state_dict(fp32_model)
-    print("3")
-    policy_bf16 = policy.to(torch.bfloat16)
-    torch.save(policy_bf16.state_dict(), 'quant_model/calibrated_bf16_model.pth')
-    print("bf16模型保存完成!")
-    print("4")
-    
-    int_bits = 8  # 可选4或8
-    clip_ratio = 0.99  # 例如0.95，表示只保留绝对值前95%的权重，极值clip掉
+def model_quantization(policy_bf16, int_bits=8, clip_ratio=0.99):
+    # 计算量化范围
+    qmax = 2 ** (int_bits - 1) - 1
+    qmin = -2 ** (int_bits - 1)
 
     for name, module in policy_bf16.named_modules():
         if (
@@ -98,10 +58,6 @@ def main(cfg: OmegaConf):
             if isinstance(module, (QuantLinear, QuantConv1d, QuantConvTranspose1d)):
                 scale = module.weight_delta
                 weight_fp = module.weight.data
-
-                # 计算量化范围
-                qmax = 2 ** (int_bits - 1) - 1
-                qmin = -2 ** (int_bits - 1)
 
                 # 归一化到整数区间
                 weight_norm = weight_fp / scale
@@ -118,20 +74,92 @@ def main(cfg: OmegaConf):
                     weight_int = torch.round(weight_norm).to(torch.int8)
                 elif int_bits == 4:
                     # int4 PyTorch没有原生类型，通常用int8存储，推理时解包
+                    # TODO: 需要实现int4的量化
                     weight_int = torch.round(weight_norm).to(torch.int8)
+                    # weight_int = (weight_int & 0x0F) | ((weight_int & 0xF0) >> 4)
+                    # weight_int = weight_int.to(torch.int8)
+                    # weight_int = weight_int.view(-1, 2)
+                    # weight_int = weight_int.permute(1, 0).contiguous()
+                    # weight_int = weight_int.view(-1)
+                    # weight_int = weight_int.to(torch.int8)
                 else:
                     raise ValueError("只支持int4或int8")
 
-                module.weight.data = weight_int
+                module.register_buffer(
+                    name='weight_int',
+                    tensor=weight_int,
+                )
+    print("5")
 
-    torch.save(policy_bf16.state_dict(), 'quant_model/calibrated_bf16_model.pth')
-    print("6")
-    # # 4. 校准
-    # calibrate_model(
-    #     cfg,
-    #     quant_model,
-    # )
+    torch.save(policy_bf16.state_dict(), 'quant_model/calibrated_int8_model.pth')
+    print("int8模型保存完成!")
 
+OmegaConf.register_new_resolver("eval", eval, replace=True)
+
+@hydra.main(
+    version_base="1.2",
+    config_path="diffusion_policy/config",
+    config_name="calibration_diffusion_unet_timm_umi_workspace.yaml"
+)
+def main(cfg: OmegaConf):
+    # cal = 1
+    # quan = 0
+    cal = 0
+    quan = 1
+
+    # 解析插值
+    OmegaConf.resolve(cfg)
+
+    if cal and not quan:
+        # 执行校准代码
+        print("Running calibration...")
+        quant_model: DiffusionUnetImagePolicy = hydra.utils.instantiate(cfg.policy)
+        print("1")
+        model_path = 'quant_model/calibrated_fp32_model.pth'
+        model = torch.load(model_path, map_location='cpu')
+        print("model_path:", model_path)
+        # checkpoint = torch.load(cfg.checkpoint.ckpt, map_location='cpu')
+        # print("2")
+        # print(checkpoint.keys())
+        # model = checkpoint['state_dicts']['model']
+        print("2")
+        # print(model.keys())
+        quant_model.load_state_dict(model)
+        print("3")
+        calibrate_model(
+            cfg,
+            quant_model,
+        )
+        print("4")
+        torch.save(quant_model.state_dict(), 'quant_model/calibrated_fp32_model.pth')
+        print("fp32模型校准完成！")    
+
+    elif quan and not cal:
+        # 执行量化代码
+        print("Running quantization...")
+        policy: DiffusionUnetImagePolicy = hydra.utils.instantiate(cfg.policy)
+        print("1")
+        model_path = 'quant_model/calibrated_fp32_model.pth'
+        fp32_model = torch.load(model_path, map_location='cpu')
+        print("2")
+        print(fp32_model['model.down_modules.0.0.residual_conv.weight_delta'])
+        print(fp32_model['model.down_modules.0.0.residual_conv.input_delta'])
+        print(fp32_model['model.down_modules.0.0.residual_conv.output_delta'])
+        policy.load_state_dict(fp32_model)
+        print("3")
+        policy_bf16 = policy.to(torch.bfloat16)
+        torch.save(policy_bf16.state_dict(), 'quant_model/calibrated_bf16_model.pth')
+        print("bf16模型保存完成!")
+        print("4")
+        model_quantization(
+            policy_bf16,
+            int_bits=8,
+            clip_ratio=0.99,
+        )
+        print("5")
+    
+    else:
+        print("请指定 cal 或 quan 参数来执行校准或量化。")
 
 if __name__ == "__main__":
     main()

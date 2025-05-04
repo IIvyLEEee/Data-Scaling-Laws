@@ -54,8 +54,8 @@ if __name__ == '__main__':
                 ],
                 include_dirs=[
                     os.path.join(setup_dir, 'int4_kernel/include'),
-                    os.path.join(setup_dir, '/home/yujin-wa20/projects/cutlass/include'),
-                    os.path.join(setup_dir, '/home/yujin-wa20/projects/cutlass/tools/util/include')
+                    os.path.join(setup_dir, '/home/liyixuan23/cutlass/include'),
+                    os.path.join(setup_dir, '/home/liyixuan23/cutlass/tools/util/include')
                 ],
                 extra_compile_args={
                     'cxx': [],

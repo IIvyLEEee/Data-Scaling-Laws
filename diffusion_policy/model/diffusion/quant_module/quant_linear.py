@@ -55,7 +55,7 @@ class QuantLinear(nn.Module):
         if scale == 0:
             scale = torch.tensor(1.0, device=x.device, dtype=x.dtype)
         return scale
-            
+
     def forward(self, input):
         # 初始化比例因子
         if self.init and self.weight_delta is None:
@@ -79,7 +79,7 @@ class QuantLinear(nn.Module):
         quant_output = output * scaling_factor
         dequant_output = quant_output * self.output_delta
         return dequant_output
-    
+
 def test():
     quant_linear = QuantLinear(10, 10)
     input = torch.randn(10)
