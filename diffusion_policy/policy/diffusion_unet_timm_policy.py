@@ -76,6 +76,7 @@ class DiffusionUnetTimmPolicy(BaseImagePolicy):
             kernel_size=kernel_size,
             n_groups=n_groups,
             cond_predict_scale=cond_predict_scale,
+            quant_layer=False,
         )
 
         if load_path is not None:
@@ -86,6 +87,12 @@ class DiffusionUnetTimmPolicy(BaseImagePolicy):
 
         self.obs_encoder = obs_encoder
         self.model = model
+
+        self.sample_data: dict = {}
+        self.sample_data["xs"] = [[] for _ in range(num_inference_steps + 1)]
+        self.sample_data["ts"] = [[] for _ in range(num_inference_steps + 1)]
+        self.sample_data["cs"] = [[] for _ in range(num_inference_steps + 1)]
+
         self.noise_scheduler = noise_scheduler
         self.normalizer = LinearNormalizer()
         self.obs_feature_dim = obs_feature_dim
@@ -119,6 +126,11 @@ class DiffusionUnetTimmPolicy(BaseImagePolicy):
         self.hook_manager.register_hooks(self.model, name="conditional_unet1d")
         # -----------------------------------
 
+        # set seed manually
+        if generator is None:
+            generator = torch.Generator(device=condition_data.device)
+            generator.manual_seed(42)
+
         trajectory = torch.randn(
             size=condition_data.shape, 
             dtype=condition_data.dtype,
@@ -147,6 +159,10 @@ class DiffusionUnetTimmPolicy(BaseImagePolicy):
             end = time.time()
             logger.info(f"[2] model predict time: {end - start:.4f} seconds")
 
+            self.sample_data["xs"][int(t)].append(trajectory)
+            self.sample_data["ts"][int(t)].append(t)
+            self.sample_data["cs"][int(t)].append(cond)
+
             # 3. compute previous image: x_t -> x_t-1
             torch.cuda.synchronize()
             start = time.time()
@@ -171,10 +187,6 @@ class DiffusionUnetTimmPolicy(BaseImagePolicy):
         fixed_action_prefix: unnormalized action prefix
         result: must include "action" key
         """
-
-        # ---------- Hook register ----------
-        self.hook_manager.register_hooks(self.obs_encoder, name="obs_encoder")
-        # -----------------------------------
 
         assert 'past_action' not in obs_dict # not implemented yet
         # normalize input

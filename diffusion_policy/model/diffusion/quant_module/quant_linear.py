@@ -60,6 +60,8 @@ class QuantLinear(nn.Module):
         self.input_n_bits = 8
         self.input_n_levels = 2 ** (self.input_n_bits - 1) - 1
         self.input_delta = nn.Parameter(torch.full((1,), 0.0), requires_grad=False)
+        self.calibration = False
+        self.cali_p = 0.05
         self.init = True
 
         # 注册scale

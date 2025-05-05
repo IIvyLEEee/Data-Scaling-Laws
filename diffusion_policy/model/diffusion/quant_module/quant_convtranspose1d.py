@@ -88,6 +88,8 @@ class QuantConvTranspose1d(nn.Module):
 
         self.weight_delta = nn.Parameter(torch.full((in_channels,), 0.0), requires_grad=False)
         self.input_delta = nn.Parameter(torch.full((1,), 0.0), requires_grad=False)
+        self.calibration = False
+        self.cali_p = 0.05
         self.init = True
 
     def int8_init_scale(self, x: torch.Tensor, n_levels=127):

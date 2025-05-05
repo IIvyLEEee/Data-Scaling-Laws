@@ -582,6 +582,17 @@ def main(input, output, robot_config,
                             )
                             print(iter_idx, f"Submitted {len(this_target_poses)} steps of actions.")
 
+                        torch.save(
+                            policy.model,
+                            "quant_model/fp32_model.pth"
+                        )
+                        print("Saved fp32 model.")
+                        torch.save(
+                            policy.sample_data,
+                            "data/cali_data/sample_fp32_data.ckpt"
+                        )
+                        print("Saved fp32 sample data.")
+
                         # visualize
                         episode_id = env.replay_buffer.n_episodes
                         obs_left_img = obs['camera0_rgb'][-1]

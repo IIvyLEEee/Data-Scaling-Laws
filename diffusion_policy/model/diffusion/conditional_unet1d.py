@@ -35,12 +35,13 @@ class ConditionalResidualBlock1D(nn.Module):
             kernel_size=3,
             n_groups=8,
             cond_predict_scale=False,
+            quant_layer=False,
             ):
         super().__init__()
 
         self.blocks = nn.ModuleList([
-            Conv1dBlock(in_channels, out_channels, kernel_size, n_groups=n_groups),
-            Conv1dBlock(out_channels, out_channels, kernel_size, n_groups=n_groups),
+            Conv1dBlock(in_channels, out_channels, kernel_size, n_groups=n_groups, quant_layer=quant_layer),
+            Conv1dBlock(out_channels, out_channels, kernel_size, n_groups=n_groups, quant_layer=quant_layer),
         ])
 
         # FiLM modulation https://arxiv.org/abs/1709.07871
@@ -50,18 +51,27 @@ class ConditionalResidualBlock1D(nn.Module):
             cond_channels = out_channels * 2
         self.cond_predict_scale = cond_predict_scale
         self.out_channels = out_channels
-        self.cond_encoder = nn.Sequential(
-            nn.Mish(),
-            # nn.Linear(cond_dim, cond_channels),
-            QuantLinear(cond_dim, cond_channels),
-            Rearrange('batch t -> batch t 1'),
-        )
+        if quant_layer:
+            self.cond_encoder = nn.Sequential(
+                nn.Mish(),
+                QuantLinear(cond_dim, cond_channels),
+                Rearrange('batch t -> batch t 1'),
+            )
+        else:
+            self.cond_encoder = nn.Sequential(
+                nn.Mish(),
+                nn.Linear(cond_dim, cond_channels),
+                Rearrange('batch t -> batch t 1'),
+            )
 
         # make sure dimensions compatible
-        # self.residual_conv = nn.Conv1d(in_channels, out_channels, 1) \
-        #     if in_channels != out_channels else nn.Identity()
-        self.residual_conv = QuantConv1d(in_channels, out_channels, 1) \
-            if in_channels != out_channels else nn.Identity()
+        if quant_layer:
+            self.residual_conv = QuantConv1d(in_channels, out_channels, 1) \  
+                if in_channels != out_channels else nn.Identity()
+        else:
+            self.residual_conv = nn.Conv1d(in_channels, out_channels, 1) \
+                if in_channels != out_channels else nn.Identity()
+        
 
     def forward(self, x, cond):
         '''
@@ -96,25 +106,28 @@ class ConditionalUnet1D(nn.Module):
         kernel_size=3,
         n_groups=8,
         cond_predict_scale=False,
+        quant_layer=False,
         ):
         super().__init__()
         all_dims = [input_dim] + list(down_dims)
         start_dim = down_dims[0]
 
         dsed = diffusion_step_embed_dim
-        # diffusion_step_encoder = nn.Sequential(
-        #     SinusoidalPosEmb(dsed),
-        #     nn.Linear(dsed, dsed * 4),
-        #     nn.Mish(),
-        #     nn.Linear(dsed * 4, dsed),
-        # )
-
-        diffusion_step_encoder = nn.Sequential(
+        if quant_layer:
+            diffusion_step_encoder = nn.Sequential(
             SinusoidalPosEmb(dsed),
             QuantLinear(dsed, dsed * 4),
             nn.Mish(),
             QuantLinear(dsed * 4, dsed),
-        )
+            )
+        else:
+            diffusion_step_encoder = nn.Sequential(
+            SinusoidalPosEmb(dsed),
+            nn.Linear(dsed, dsed * 4),
+            nn.Mish(),
+            nn.Linear(dsed * 4, dsed),
+            )
+        
         cond_dim = dsed
         if global_cond_dim is not None:
             cond_dim += global_cond_dim
@@ -169,7 +182,7 @@ class ConditionalUnet1D(nn.Module):
                     dim_out, dim_out, cond_dim=cond_dim, 
                     kernel_size=kernel_size, n_groups=n_groups,
                     cond_predict_scale=cond_predict_scale),
-                Downsample1d(dim_out) if not is_last else nn.Identity()
+                Downsample1d(dim_out,, quant_layer=quant_layer) if not is_last else nn.Identity()
             ]))
             for j, sub_module in enumerate(down_modules[-1]):
                 self.hook_manager.register_hooks(sub_module, name=f"down_modules_{ind}_part_{j}")
@@ -186,17 +199,23 @@ class ConditionalUnet1D(nn.Module):
                     dim_in, dim_in, cond_dim=cond_dim,
                     kernel_size=kernel_size, n_groups=n_groups,
                     cond_predict_scale=cond_predict_scale),
-                Upsample1d(dim_in) if not is_last else nn.Identity()
+                Upsample1d(dim_in,, quant_layer=quant_layer) if not is_last else nn.Identity()
             ]))
 
             for j, sub_module in enumerate(up_modules[-1]):
                 self.hook_manager.register_hooks(sub_module, name=f"up_modules_{ind}_part_{j}")
         
-        final_conv = nn.Sequential(
-            Conv1dBlock(start_dim, start_dim, kernel_size=kernel_size),
-            # nn.Conv1d(start_dim, input_dim, 1),
-            QuantConv1d(start_dim, input_dim, 1),
-        )
+        if quant_layer:
+            final_conv = nn.Sequential(
+                Conv1dBlock(start_dim, start_dim, kernel_size=kernel_size, quant_layer=quant_layer),
+                # nn.Conv1d(start_dim, input_dim, 1),
+                QuantConv1d(start_dim, input_dim, 1),
+            )
+        else:
+            final_conv = nn.Sequential(
+                Conv1dBlock(start_dim, start_dim, kernel_size=kernel_size, quant_layer=quant_layer),
+                nn.Conv1d(start_dim, input_dim, 1),
+            )
         self.hook_manager.register_hooks(final_conv, name="final_conv")
 
         self.hook_manager.register_hooks(diffusion_step_encoder, name="diffusion_step_encoder")
