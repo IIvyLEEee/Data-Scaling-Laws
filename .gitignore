@@ -18,6 +18,9 @@ checkpoint
 *.ckpt
 weight_distributions_by_module/
 weight_ema_distributions_by_module/
+weight_int_8/
+ema_weight_int_8/
+[no_use]ema_weight_distributions_by_module/
 
 # dataset
 dataset

@@ -105,6 +105,7 @@ class TimmObsEncoder(ModuleAttrMixin):
         pretrained_cfg = timm.models.create_model(model_name).default_cfg
         pretrained_cfg["file"] = (
             r"/home/liyixuan23/.cache/huggingface/hub/vit_large_patch14_dinov2.bin"
+            # r"/home/acts00/Desktop/scaling-law/vit_model/vit_large_patch14_dinov2.bin"
         )
 
         if 'resnet' in model_name:

@@ -13,8 +13,12 @@ def merge_model_into_ckpt(cfg, new_ckpt_path, model_path, ema_model_path, device
     ckpt = torch.load(cfg.checkpoint.ckpt, map_location=device)
     # 2. 加载模型参数
     model = torch.load(model_path, map_location=device)
+    if not isinstance(model, dict):  # 如果加载的是模型实例
+        model = model.state_dict()
     print("model_path:", model_path)
     ema_model = torch.load(ema_model_path, map_location=device)
+    if not isinstance(ema_model, dict):  # 如果加载的是模型实例
+        ema_model = ema_model.state_dict()
     print("ema_model_path:", ema_model_path)
     # policy.load_state_dict(model)
     # 3. 将模型参数加载到policy中
@@ -23,6 +27,9 @@ def merge_model_into_ckpt(cfg, new_ckpt_path, model_path, ema_model_path, device
     torch.save(ckpt, new_ckpt_path)
     print("new ckpt save to:", new_ckpt_path)
 
+    print("ckpt keys:")
+    print(ckpt.keys())
+    
     print("model keys:")
     print(ckpt['state_dicts']['model'].keys())
     print("ema_model keys:")
@@ -41,9 +48,9 @@ def main(cfg: OmegaConf):
 
     merge_model_into_ckpt(
         cfg,
-        new_ckpt_path='checkpoint/calibrated_fp32_ema.ckpt',
-        model_path='quant_model/calibrated_fp32_model.pth',
-        ema_model_path='quant_model/calibrated_fp32_ema_model.pth',
+        new_ckpt_path='17-step-model/int8_quant.ckpt',
+        model_path='17-step-model/quantized_model.pth',
+        ema_model_path='17-step-model/quantized_model.pth',
     )
 
     print("ckpt模型合并完成！")

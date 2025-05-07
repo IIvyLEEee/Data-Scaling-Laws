@@ -4,12 +4,13 @@ import torch
 import numpy as np
 
 # 加载模型
-checkpoint = torch.load("/home/liyixuan23/Data-Scaling-Laws/checkpoint/latest.ckpt", map_location='cpu')
-weights = checkpoint['state_dicts']['ema_model']
+# checkpoint = torch.load("/home/liyixuan23/Data-Scaling-Laws/checkpoint/latest.ckpt", map_location='cpu')
+checkpoint = torch.load("/home/liyixuan23/Data-Scaling-Laws/17-step-model/int8_quant.ckpt", map_location='cpu')
+weights = checkpoint['state_dicts']['model']
 # weights = torch.load("/home/liyixuan23/Data-Scaling-Laws/quant_model/bf16_model.pth")
 
 # 设置基础输出目录
-base_output_dir = "ema_weight_distributions_by_module"
+base_output_dir = "weight_int_8"
 
 # 所有模块前缀
 module_prefixes = [

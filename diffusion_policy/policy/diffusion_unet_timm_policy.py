@@ -91,6 +91,7 @@ class DiffusionUnetTimmPolicy(BaseImagePolicy):
         self.sample_data: dict = {}
         self.sample_data["xs"] = [[] for _ in range(num_inference_steps + 1)]
         self.sample_data["ts"] = [[] for _ in range(num_inference_steps + 1)]
+        # self.sample_data["ls"] = [[] for _ in range(num_inference_steps + 1)]
         self.sample_data["cs"] = [[] for _ in range(num_inference_steps + 1)]
 
         self.noise_scheduler = noise_scheduler
@@ -139,8 +140,10 @@ class DiffusionUnetTimmPolicy(BaseImagePolicy):
     
         # set step values
         scheduler.set_timesteps(self.num_inference_steps)
+        print(scheduler.timesteps)
 
-        for t in scheduler.timesteps:
+        for idx, t in enumerate(scheduler.timesteps):
+            print(f"t: {t}, idx: {idx}")
             # 1. apply conditioning
             torch.cuda.synchronize()
             start = time.time()
@@ -154,14 +157,19 @@ class DiffusionUnetTimmPolicy(BaseImagePolicy):
             torch.cuda.synchronize()
             start = time.time()
             model_output = model(trajectory, t, 
-                local_cond=local_cond, global_cond=global_cond)
+                local_cond=local_cond, context=global_cond)
             torch.cuda.synchronize()
             end = time.time()
             logger.info(f"[2] model predict time: {end - start:.4f} seconds")
 
-            self.sample_data["xs"][int(t)].append(trajectory)
-            self.sample_data["ts"][int(t)].append(t)
-            self.sample_data["cs"][int(t)].append(cond)
+            print(f"num_inference_steps: {self.num_inference_steps}")
+            print(f"len(xs): {len(self.sample_data['xs'])}, t: {t}, int(t): {int(t)}")
+
+            # sample data for calibration
+            self.sample_data["xs"][idx].append(trajectory)
+            self.sample_data["ts"][idx].append(t)
+            # self.sample_data["ls"][idx].append(local_cond)
+            self.sample_data["cs"][idx].append(global_cond)
 
             # 3. compute previous image: x_t -> x_t-1
             torch.cuda.synchronize()

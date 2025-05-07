@@ -66,7 +66,7 @@ class ConditionalResidualBlock1D(nn.Module):
 
         # make sure dimensions compatible
         if quant_layer:
-            self.residual_conv = QuantConv1d(in_channels, out_channels, 1) \  
+            self.residual_conv = QuantConv1d(in_channels, out_channels, 1) \
                 if in_channels != out_channels else nn.Identity()
         else:
             self.residual_conv = nn.Conv1d(in_channels, out_channels, 1) \
@@ -182,7 +182,7 @@ class ConditionalUnet1D(nn.Module):
                     dim_out, dim_out, cond_dim=cond_dim, 
                     kernel_size=kernel_size, n_groups=n_groups,
                     cond_predict_scale=cond_predict_scale),
-                Downsample1d(dim_out,, quant_layer=quant_layer) if not is_last else nn.Identity()
+                Downsample1d(dim_out, quant_layer=quant_layer) if not is_last else nn.Identity()
             ]))
             for j, sub_module in enumerate(down_modules[-1]):
                 self.hook_manager.register_hooks(sub_module, name=f"down_modules_{ind}_part_{j}")
@@ -199,7 +199,7 @@ class ConditionalUnet1D(nn.Module):
                     dim_in, dim_in, cond_dim=cond_dim,
                     kernel_size=kernel_size, n_groups=n_groups,
                     cond_predict_scale=cond_predict_scale),
-                Upsample1d(dim_in,, quant_layer=quant_layer) if not is_last else nn.Identity()
+                Upsample1d(dim_in, quant_layer=quant_layer) if not is_last else nn.Identity()
             ]))
 
             for j, sub_module in enumerate(up_modules[-1]):

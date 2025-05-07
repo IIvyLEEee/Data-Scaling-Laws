@@ -61,7 +61,15 @@ from umi.real_world.spacemouse_shared_memory import Spacemouse
 from umi.common.pose_util import pose_to_mat, mat_to_pose
 from scipy.spatial.transform import Rotation as R
 
+import threading
+
 OmegaConf.register_new_resolver("eval", eval, replace=True)
+
+def save_model_async(model, sample_data):
+    print("Starting async save...")
+    torch.save(model, "quant_model/fp32_model.pth")
+    torch.save(sample_data, "data/cali_data/sample_fp32_data.ckpt")
+    print("Async save completed.")
 
 def solve_table_collision(ee_pose, gripper_width, height_threshold):
     finger_thickness = 25.5 / 1000
@@ -297,7 +305,9 @@ def main(input, output, robot_config,
                 del result
 
             print('Ready!')
-            if_first_time = True
+            if_first_time = True                                
+            thread = threading.Thread(target=save_model_async, args=(policy.model, policy.sample_data))
+            thread.start()
             while True:
                 # ========= human control loop ==========
                 print("Human in control!")
@@ -582,16 +592,16 @@ def main(input, output, robot_config,
                             )
                             print(iter_idx, f"Submitted {len(this_target_poses)} steps of actions.")
 
-                        torch.save(
-                            policy.model,
-                            "quant_model/fp32_model.pth"
-                        )
-                        print("Saved fp32 model.")
-                        torch.save(
-                            policy.sample_data,
-                            "data/cali_data/sample_fp32_data.ckpt"
-                        )
-                        print("Saved fp32 sample data.")
+                        # torch.save(
+                        #     policy.model,
+                        #     "quant_model/fp32_model.pth"
+                        # )
+                        # print("Saved fp32 model.")
+                        # torch.save(
+                        #     policy.sample_data,
+                        #     "data/cali_data/sample_fp32_data.ckpt"
+                        # )
+                        # print("Saved fp32 sample data.")
 
                         # visualize
                         episode_id = env.replay_buffer.n_episodes
