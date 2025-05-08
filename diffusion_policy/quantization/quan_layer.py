@@ -5,7 +5,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from typing import Union
 import int4_kernel as ik
-from diffusion_policy.quantization.quan_fwd import conv1d_int8_fwd, convtranspose1d_int8_fwd, linear_int8_fwd
+from diffusion_policy.quantization.quan_fwd import conv1d_int8_fwd, linear_int8_fwd
 
 logger = logging.getLogger(__name__)
 
@@ -188,12 +188,12 @@ class QuantModule(nn.Module):
                 dilation=org_module.dilation,
                 groups=org_module.groups,
             )
-            # self.fwd_func = F.conv1d
-            self.fwd_func = conv1d_int8_fwd
+            self.fwd_func = F.conv1d
+            # self.fwd_func = conv1d_int8_fwd
         else:
             self.fwd_kwargs = dict()
-            # self.fwd_func = F.linear
-            self.fwd_func = linear_int8_fwd
+            self.fwd_func = F.linear
+            # self.fwd_func = linear_int8_fwd
         self.weight = org_module.weight
         self.org_weight = org_module.weight.data.clone()
         if org_module.bias is not None:
@@ -209,18 +209,46 @@ class QuantModule(nn.Module):
 
         self.activation_function = StraightThrough()
 
-    def forward(self, input: torch.Tensor):
-        input = input.to(torch.bfloat16)
-        weight = weight.to(torch.bfloat16)
-        bias = self.bias
+    # def forward(self, input: torch.Tensor):
+    #     input = input.to(torch.bfloat16)
+    #     weight = self.weight.to(torch.bfloat16)
+    #     bias = self.bias
 
-        out, scale_x, scale_w = self.fwd_func(input, weight, bias, use_act_quant, use_weight_quant, **self.fwd_kwargs)
+    #     if self.fwd_func == F.conv1d:
+    #         self.fwd_func = conv1d_int8_fwd
+    #     elif self.fwd_func == F.linear:
+    #         self.fwd_func = linear_int8_fwd
+    #     else:
+    #         self.fwd_func = self.fwd_func
+
+    #     print(self.fwd_kwargs)
+    #     import ipdb; ipdb.set_trace()
+    #     out, scale_x, scale_w = self.fwd_func(input, weight, use_act_quant=self.use_act_quant, \
+    #                                          use_weight_quant=self.use_weight_quant, **self.fwd_kwargs)
+        
+    #     out = self.activation_function(out)
+
+    #     scale_out = scale_x * scale_w
+    #     out_dequant = out.to(torch.float32) * scale_out
+
+    #     return out_dequant
+
+    def forward(self, input: torch.Tensor):
+        if self.use_act_quant:
+            input = self.act_quantizer(input)
+        if self.use_weight_quant:
+            weight = self.weight_quantizer(self.weight)
+            bias = self.bias
+        else:
+            weight = self.org_weight
+            bias = self.org_bias
+
+        print(self.fwd_func)
+        import ipdb; ipdb.set_trace()
+        out = self.fwd_func(input, weight, bias, **self.fwd_kwargs)
         out = self.activation_function(out)
 
-        scale_out = scale_x * scale_w
-        out_dequant = out.to(torch.float32) * scale_out
-
-        return out_dequant
+        return out
 
     def set_quant_state(self, weight_quant: bool = False, act_quant: bool = False):
         self.use_weight_quant = weight_quant

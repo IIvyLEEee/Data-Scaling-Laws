@@ -58,6 +58,9 @@ class ConditionalResidualBlock1D(nn.Module):
                 Rearrange('batch t -> batch t 1'),
             )
         else:
+            print("cond_dim: ", cond_dim)
+            print("cond_channels: ", cond_channels)
+            print("out_channels: ", out_channels)
             self.cond_encoder = nn.Sequential(
                 nn.Mish(),
                 nn.Linear(cond_dim, cond_channels),
@@ -82,6 +85,7 @@ class ConditionalResidualBlock1D(nn.Module):
             out : [ batch_size x out_channels x horizon ]
         '''
         out = self.blocks[0](x)
+        import ipdb; ipdb.set_trace()
         embed = self.cond_encoder(cond)
         if self.cond_predict_scale:
             embed = embed.reshape(

@@ -99,9 +99,10 @@ class Sample:
 
         # cali_xs, cali_ts, cali_lcond, cali_cond = cali_data
         cali_xs, cali_ts, cali_cond = cali_data
-        qnn.set_quant_state(
-            True, False
-        )  # enable weight quantization, disable act quantization
+        # qnn.set_quant_state(
+        #     True, False
+        # )  # enable weight quantization, disable act quantization
+        qnn.set_quant_state(False, False)
         print("weight quantizer is being initialized")
         _ = qnn(
             cali_xs[0].to(self.device),
@@ -172,9 +173,9 @@ class Sample:
         #         m.delta = nn.Parameter(m.delta)
         torch.save(
             qnn.state_dict(),
-            "/home/liyixuan23/Data-Scaling-Laws/17-step-model/quantized_model.ckpt"
+            "/home/liyixuan23/Data-Scaling-Laws/17-step-model/quantized_model_2.ckpt"
         )
-        torch.save(qnn, "/home/liyixuan23/Data-Scaling-Laws/17-step-model/quantized_model.pth")
+        torch.save(qnn, "/home/liyixuan23/Data-Scaling-Laws/17-step-model/quantized_model_2.pth")
 
         model = qnn
         return model
