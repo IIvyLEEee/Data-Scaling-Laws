@@ -388,7 +388,7 @@ class TimmObsEncoder(ModuleAttrMixin):
         
         # concatenate all features
         result = torch.cat(features, dim=-1)
-
+        print(f"obs_encoder result shape: {result.shape}")
         return result
     
 

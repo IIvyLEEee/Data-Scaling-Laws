@@ -209,46 +209,53 @@ class QuantModule(nn.Module):
 
         self.activation_function = StraightThrough()
 
-    # def forward(self, input: torch.Tensor):
-    #     input = input.to(torch.bfloat16)
-    #     weight = self.weight.to(torch.bfloat16)
-    #     bias = self.bias
-
-    #     if self.fwd_func == F.conv1d:
-    #         self.fwd_func = conv1d_int8_fwd
-    #     elif self.fwd_func == F.linear:
-    #         self.fwd_func = linear_int8_fwd
-    #     else:
-    #         self.fwd_func = self.fwd_func
-
-    #     print(self.fwd_kwargs)
-    #     import ipdb; ipdb.set_trace()
-    #     out, scale_x, scale_w = self.fwd_func(input, weight, use_act_quant=self.use_act_quant, \
-    #                                          use_weight_quant=self.use_weight_quant, **self.fwd_kwargs)
-        
-    #     out = self.activation_function(out)
-
-    #     scale_out = scale_x * scale_w
-    #     out_dequant = out.to(torch.float32) * scale_out
-
-    #     return out_dequant
-
     def forward(self, input: torch.Tensor):
-        if self.use_act_quant:
-            input = self.act_quantizer(input)
-        if self.use_weight_quant:
-            weight = self.weight_quantizer(self.weight)
-            bias = self.bias
-        else:
-            weight = self.org_weight
-            bias = self.org_bias
+        input = input.to(torch.bfloat16)
+        weight = self.weight.to(torch.bfloat16)
+        bias = self.bias
 
-        print(self.fwd_func)
-        import ipdb; ipdb.set_trace()
-        out = self.fwd_func(input, weight, bias, **self.fwd_kwargs)
+        if self.fwd_func == F.conv1d:
+            self.fwd_func = conv1d_int8_fwd
+        elif self.fwd_func == F.linear:
+            self.fwd_func = linear_int8_fwd
+        else:
+            self.fwd_func = self.fwd_func
+
+        print(self.fwd_kwargs)
+        # import ipdb; ipdb.set_trace()
+        out, scale_x, scale_w = self.fwd_func(x_bf16=input, weight_bf16=weight, use_act_quant=self.use_act_quant, \
+                                             use_weight_quant=self.use_weight_quant, **self.fwd_kwargs)
+        
         out = self.activation_function(out)
 
-        return out
+        scale_out = scale_x * scale_w
+        out_dequant = out.to(torch.float32) * scale_out
+    
+        if bias is not None:
+            # import ipdb; ipdb.set_trace()
+            print(f"bias shape: {bias.shape}")
+            print(f"out_dequant shape: {out_dequant.shape}")
+            out_dequant = self.add_bias_broadcast(out_dequant, bias)
+            # out_dequant = out_dequant + bias
+
+        return out_dequant
+
+    # def forward(self, input: torch.Tensor):
+    #     if self.use_act_quant:
+    #         input = self.act_quantizer(input)
+    #     if self.use_weight_quant:
+    #         weight = self.weight_quantizer(self.weight)
+    #         bias = self.bias
+    #     else:
+    #         weight = self.org_weight
+    #         bias = self.org_bias
+
+    #     print(self.fwd_func)
+    #     # import ipdb; ipdb.set_trace()
+    #     out = self.fwd_func(input, weight, bias, **self.fwd_kwargs)
+    #     out = self.activation_function(out)
+
+        # return out
 
     def set_quant_state(self, weight_quant: bool = False, act_quant: bool = False):
         self.use_weight_quant = weight_quant
@@ -256,3 +263,20 @@ class QuantModule(nn.Module):
 
     def set_running_stat(self, running_stat: bool):
         self.act_quantizer.running_stat = running_stat
+
+    def add_bias_broadcast(self, out, bias):
+        """
+        自动将 bias reshape 成可广播到 out 的形状再相加。
+        """
+        if bias.ndim != 1:
+            raise ValueError("bias 应为 1D tensor")
+
+        # 在哪些维度能匹配 bias.shape？
+        for dim in range(out.ndim):
+            if out.shape[dim] == bias.shape[0]:
+                # reshape bias 以匹配该维度，其它位置为 1
+                shape = [1] * out.ndim
+                shape[dim] = bias.shape[0]
+                return out + bias.view(*shape)
+
+        raise ValueError(f"找不到与 bias.shape {bias.shape} 匹配的 out.shape {out.shape} 维度")

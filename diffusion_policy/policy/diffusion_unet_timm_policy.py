@@ -60,6 +60,8 @@ class DiffusionUnetTimmPolicy(BaseImagePolicy):
         action_horizon = shape_meta['action']['horizon']
         # get feature dim
         obs_feature_dim = np.prod(obs_encoder.output_shape())
+        # # import ipdb; ipdb.set_trace()
+        print(f"obs_feature_dim: {obs_feature_dim}")
 
 
         # create diffusion model
@@ -156,6 +158,7 @@ class DiffusionUnetTimmPolicy(BaseImagePolicy):
             # self.hook_manager.register_hooks(model, name="model of timestep %d" % t)
             torch.cuda.synchronize()
             start = time.time()
+            # # import ipdb; ipdb.set_trace()
             model_output = model(trajectory, t, 
                 local_cond=local_cond, context=global_cond)
             torch.cuda.synchronize()
@@ -209,7 +212,10 @@ class DiffusionUnetTimmPolicy(BaseImagePolicy):
         # condition through global features
         torch.cuda.synchronize()
         start = time.time()
+        # # import ipdb; ipdb.set_trace()
         global_cond = self.obs_encoder(nobs)
+        print(f"global_cond: {global_cond.shape}") # (B,global_cond_dim)
+        print(f"global_cond_dim: {global_cond.shape[1]}")
         torch.cuda.synchronize()
         end = time.time()
         logger.info(f"obs_encoder time: {end - start:.4f} seconds")

@@ -14,4 +14,6 @@ class SinusoidalPosEmb(nn.Module):
         emb = torch.exp(torch.arange(half_dim, device=device) * -emb)
         emb = x[:, None] * emb[None, :]
         emb = torch.cat((emb.sin(), emb.cos()), dim=-1)
+        print(f"emb shape: {emb.shape}")
+        print(f"dim: {self.dim}")
         return emb

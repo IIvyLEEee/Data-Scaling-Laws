@@ -11,8 +11,8 @@ from diffusion_policy.model.diffusion.conv1d_components import (
     Downsample1d, Upsample1d, Conv1dBlock)
 from diffusion_policy.model.diffusion.positional_embedding import SinusoidalPosEmb
 
-from diffusion_policy.model.diffusion.quant_module.quant_linear import QuantLinear
-from diffusion_policy.model.diffusion.quant_module.quant_conv1d import QuantConv1d
+# from diffusion_policy.model.diffusion.quant_module.quant_linear import QuantLinear
+# from diffusion_policy.model.diffusion.quant_module.quant_conv1d import QuantConv1d
 import hook_adder.hook_manager as hm
 
 logger = logging.getLogger(__name__)
@@ -47,33 +47,46 @@ class ConditionalResidualBlock1D(nn.Module):
         # FiLM modulation https://arxiv.org/abs/1709.07871
         # predicts per-channel scale and bias
         cond_channels = out_channels
+        # # import ipdb; ipdb.set_trace()
+        print("cond_dim: ", cond_dim)
+        print("cond_channels: ", cond_channels)
+        print("cond_predict_scale: ", cond_predict_scale)
         if cond_predict_scale:
             cond_channels = out_channels * 2
         self.cond_predict_scale = cond_predict_scale
         self.out_channels = out_channels
-        if quant_layer:
-            self.cond_encoder = nn.Sequential(
-                nn.Mish(),
-                QuantLinear(cond_dim, cond_channels),
-                Rearrange('batch t -> batch t 1'),
-            )
-        else:
-            print("cond_dim: ", cond_dim)
-            print("cond_channels: ", cond_channels)
-            print("out_channels: ", out_channels)
-            self.cond_encoder = nn.Sequential(
-                nn.Mish(),
-                nn.Linear(cond_dim, cond_channels),
-                Rearrange('batch t -> batch t 1'),
-            )
+        print("cond_channels: ", cond_channels)
+        # if quant_layer:
+        #     self.cond_encoder = nn.Sequential(
+        #         nn.Mish(),
+        #         QuantLinear(cond_dim, cond_channels),
+        #         Rearrange('batch t -> batch t 1'),
+        #     )
+        # else:
+        #     print("cond_dim: ", cond_dim)
+        #     print("cond_channels: ", cond_channels)
+        #     print("out_channels: ", out_channels)
+        #     self.cond_encoder = nn.Sequential(
+        #         nn.Mish(),
+        #         nn.Linear(cond_dim, cond_channels),
+        #         Rearrange('batch t -> batch t 1'),
+        #     )
+        self.cond_encoder = nn.Sequential(
+            nn.Mish(),
+            nn.Linear(cond_dim, cond_channels), # cond_dim=128, cond_channels=512
+                                                # weight is [512, 3248]
+            Rearrange('batch t -> batch t 1'),
+        )
 
         # make sure dimensions compatible
-        if quant_layer:
-            self.residual_conv = QuantConv1d(in_channels, out_channels, 1) \
-                if in_channels != out_channels else nn.Identity()
-        else:
-            self.residual_conv = nn.Conv1d(in_channels, out_channels, 1) \
-                if in_channels != out_channels else nn.Identity()
+        # if quant_layer:
+        #     self.residual_conv = QuantConv1d(in_channels, out_channels, 1) \
+        #         if in_channels != out_channels else nn.Identity()
+        # else:
+        #     self.residual_conv = nn.Conv1d(in_channels, out_channels, 1) \
+        #         if in_channels != out_channels else nn.Identity()
+        self.residual_conv = nn.Conv1d(in_channels, out_channels, 1) \
+            if in_channels != out_channels else nn.Identity()
         
 
     def forward(self, x, cond):
@@ -84,9 +97,9 @@ class ConditionalResidualBlock1D(nn.Module):
             returns:
             out : [ batch_size x out_channels x horizon ]
         '''
-        out = self.blocks[0](x)
-        import ipdb; ipdb.set_trace()
-        embed = self.cond_encoder(cond)
+        out = self.blocks[0](x)          # out is [1, 256, 16]   x is [1, 10, 16]
+        # # import ipdb; ipdb.set_trace()
+        embed = self.cond_encoder(cond)  # embed is [1, 256, 1]   cond is [1, 128]
         if self.cond_predict_scale:
             embed = embed.reshape(
                 embed.shape[0], 2, self.out_channels, 1)
@@ -117,24 +130,34 @@ class ConditionalUnet1D(nn.Module):
         start_dim = down_dims[0]
 
         dsed = diffusion_step_embed_dim
-        if quant_layer:
-            diffusion_step_encoder = nn.Sequential(
+        # if quant_layer:
+        #     diffusion_step_encoder = nn.Sequential(
+        #     SinusoidalPosEmb(dsed),
+        #     QuantLinear(dsed, dsed * 4),
+        #     nn.Mish(),
+        #     QuantLinear(dsed * 4, dsed),
+        #     )
+        # else:
+        #     diffusion_step_encoder = nn.Sequential(
+        #     SinusoidalPosEmb(dsed),
+        #     nn.Linear(dsed, dsed * 4),
+        #     nn.Mish(),
+        #     nn.Linear(dsed * 4, dsed),
+        #     )
+        diffusion_step_encoder = nn.Sequential(
             SinusoidalPosEmb(dsed),
-            QuantLinear(dsed, dsed * 4),
+            nn.Linear(dsed, dsed * 4), # (128, 512)  input[1, 128] --> output[1, 512]
             nn.Mish(),
-            QuantLinear(dsed * 4, dsed),
-            )
-        else:
-            diffusion_step_encoder = nn.Sequential(
-            SinusoidalPosEmb(dsed),
-            nn.Linear(dsed, dsed * 4),
-            nn.Mish(),
-            nn.Linear(dsed * 4, dsed),
-            )
+            nn.Linear(dsed * 4, dsed), # (512, 128)  input[1, 512] --> output[1, 128]
+        )
         
         cond_dim = dsed
+        print("cond_dim: ", cond_dim)
+        # # import ipdb; ipdb.set_trace()
+        print("global_cond_dim: ", global_cond_dim) 
         if global_cond_dim is not None:
             cond_dim += global_cond_dim
+        print("cond_dim: ", cond_dim)
 
         in_out = list(zip(all_dims[:-1], all_dims[1:]))
 
@@ -209,17 +232,22 @@ class ConditionalUnet1D(nn.Module):
             for j, sub_module in enumerate(up_modules[-1]):
                 self.hook_manager.register_hooks(sub_module, name=f"up_modules_{ind}_part_{j}")
         
-        if quant_layer:
-            final_conv = nn.Sequential(
-                Conv1dBlock(start_dim, start_dim, kernel_size=kernel_size, quant_layer=quant_layer),
-                # nn.Conv1d(start_dim, input_dim, 1),
-                QuantConv1d(start_dim, input_dim, 1),
-            )
-        else:
-            final_conv = nn.Sequential(
+        # if quant_layer:
+        #     final_conv = nn.Sequential(
+        #         Conv1dBlock(start_dim, start_dim, kernel_size=kernel_size, quant_layer=quant_layer),
+        #         # nn.Conv1d(start_dim, input_dim, 1),
+        #         QuantConv1d(start_dim, input_dim, 1),
+        #     )
+        # else:
+        #     final_conv = nn.Sequential(
+        #         Conv1dBlock(start_dim, start_dim, kernel_size=kernel_size, quant_layer=quant_layer),
+        #         nn.Conv1d(start_dim, input_dim, 1),
+        #     )
+        final_conv = nn.Sequential(
                 Conv1dBlock(start_dim, start_dim, kernel_size=kernel_size, quant_layer=quant_layer),
                 nn.Conv1d(start_dim, input_dim, 1),
-            )
+        )
+
         self.hook_manager.register_hooks(final_conv, name="final_conv")
 
         self.hook_manager.register_hooks(diffusion_step_encoder, name="diffusion_step_encoder")
@@ -247,7 +275,10 @@ class ConditionalUnet1D(nn.Module):
         output: (B,T,input_dim)
         """
         sample = einops.rearrange(sample, 'b h t -> b t h')
+        # # import ipdb; ipdb.set_trace()
+        print(f"global_cond: {global_cond}")
 
+        
         # 1. time
         timesteps = timestep
         if not torch.is_tensor(timesteps):
@@ -257,9 +288,11 @@ class ConditionalUnet1D(nn.Module):
             timesteps = timesteps[None].to(sample.device)
         # broadcast to batch dimension in a way that's compatible with ONNX/Core ML
         timesteps = timesteps.expand(sample.shape[0])
+        # tensor([45], device='cuda:0')
 
-        global_feature = self.diffusion_step_encoder(timesteps)
+        global_feature = self.diffusion_step_encoder(timesteps) # [1, 128] --> [1, 128]
 
+        # # import ipdb; ipdb.set_trace()
         if global_cond is not None:
             global_feature = torch.cat([
                 global_feature, global_cond
@@ -283,7 +316,8 @@ class ConditionalUnet1D(nn.Module):
             self.hook_manager.register_hooks(downsample, name=f"down_modules_{idx}_downsample")
             torch.cuda.synchronize()
             start = time.time()
-            x = resnet(x, global_feature)
+            # # import ipdb; ipdb.set_trace()
+            x = resnet(x, global_feature) # x is [1, 10, 16]    global_feature is [1, 128]
             torch.cuda.synchronize()
             end = time.time()
             logger.info(f"down_modules_{idx}_resnet time: {end - start:.4f}s")

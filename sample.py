@@ -99,16 +99,17 @@ class Sample:
 
         # cali_xs, cali_ts, cali_lcond, cali_cond = cali_data
         cali_xs, cali_ts, cali_cond = cali_data
-        # qnn.set_quant_state(
-        #     True, False
-        # )  # enable weight quantization, disable act quantization
-        qnn.set_quant_state(False, False)
+        qnn.set_quant_state(
+            True, False
+        )  # enable weight quantization, disable act quantization
+        # qnn.set_quant_state(False, False)
         print("weight quantizer is being initialized")
         _ = qnn(
             cali_xs[0].to(self.device),
             cali_ts[0].to(self.device),
+            local_cond=None,
             # cali_lcond[0].to(self.device),
-            cali_cond[0].to(self.device),
+            context=cali_cond[0].to(self.device),
         )
         print("weight quantizer has been initialized")
 
@@ -147,7 +148,7 @@ class Sample:
             # inds = np.random.choice(cali_xs.shape[0], 64, replace=False)
             # _ = qnn(cali_xs[:64].cuda(), cali_ts[:64].cuda())
             # _ = qnn(cali_xs[0].cuda(), cali_ts[0].cuda(), cali_lcond[0].cuda(), cali_cond[0].cuda())
-            _ = qnn(cali_xs[0].cuda(), cali_ts[0].cuda(), cali_cond[0].cuda())
+            _ = qnn(cali_xs[0].cuda(), cali_ts[0].cuda(), local_cond=None, context=cali_cond[0].cuda())
 
             qnn.set_running_stat(True)
             print(int(cali_xs.size(0)))
@@ -155,8 +156,9 @@ class Sample:
                 _ = qnn(
                     cali_xs[i].to(self.device),
                     cali_ts[i].to(self.device),
-                    # cali_lcond[i].to(self.device),
-                    cali_cond[i].to(self.device),
+                    local_cond=None,
+                    # cali_lcond[0].to(self.device),
+                    context=cali_cond[0].to(self.device),
                 )
                 print("in range")
                 print(cali_xs[i].abs().max(), cali_xs[i].abs().min())
@@ -177,6 +179,7 @@ class Sample:
         )
         torch.save(qnn, "/home/liyixuan23/Data-Scaling-Laws/17-step-model/quantized_model_2.pth")
 
+        print("quantized model is saved")
         model = qnn
         return model
 

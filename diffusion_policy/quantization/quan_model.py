@@ -26,7 +26,7 @@ class QuantModel(nn.Module):
         :param act_quant_params: quantization parameters like n_bits for activation quantizer
         """
         for name, child_module in module.named_children():
-            if isinstance(child_module, (nn.Conv2d, nn.Conv1d, nn.ConvTranspose1d, nn.Linear)): # nn.Conv1d
+            if isinstance(child_module, (nn.Conv2d, nn.Conv1d, nn.Linear)): # nn.Conv1d
                 setattr(module, name, QuantModule(child_module))
 
             else:
@@ -48,7 +48,9 @@ class QuantModel(nn.Module):
                 m.set_quant_state(weight_quant, act_quant)
 
     def forward(self, x, timesteps=None, local_cond = None, context=None):
-        return self.model(x, timesteps, global_cond=context)
+        # import ipdb; ipdb.set_trace()
+        print(f"global_cond: {context}")
+        return self.model(x, timesteps, local_cond=None, global_cond=context)
     
     def set_running_stat(self, running_stat: bool, sm_only=False):
         for m in self.model.modules():
