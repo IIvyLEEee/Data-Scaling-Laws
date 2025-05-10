@@ -197,7 +197,7 @@ logging:
   group: null
 
 checkpoint:
-  ckpt: "checkpoint/latest.ckpt"
+  ckpt: "checkpoint/bf16_model.ckpt"
   topk:
     monitor_key: train_loss
     mode: min

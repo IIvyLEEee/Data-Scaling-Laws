@@ -102,7 +102,6 @@ class Sample:
         qnn.set_quant_state(
             True, False
         )  # enable weight quantization, disable act quantization
-        # qnn.set_quant_state(False, False)
         print("weight quantizer is being initialized")
         _ = qnn(
             cali_xs[0].to(self.device),
@@ -175,12 +174,21 @@ class Sample:
         #         m.delta = nn.Parameter(m.delta)
         torch.save(
             qnn.state_dict(),
-            "/home/liyixuan23/Data-Scaling-Laws/17-step-model/quantized_model_2.ckpt"
+            "/home/liyixuan23/Data-Scaling-Laws/17-step-model/quantized_model_3.ckpt"
         )
-        torch.save(qnn, "/home/liyixuan23/Data-Scaling-Laws/17-step-model/quantized_model_2.pth")
+        torch.save(qnn, "/home/liyixuan23/Data-Scaling-Laws/17-step-model/quantized_model_3.pth")
 
+        # quantized_model_2 is with fake quant weight and act_quantizer.delta, all in float32
         print("quantized model is saved")
         model = qnn
+
+        # for name, module in model.named_children():
+        #     if isinstance(module, QuantModule):
+        #         print(name, " is being quantized")
+        #         aq = module.act_quantizer
+        #         wq = module.weight_quantizer
+
+
         return model
 
 

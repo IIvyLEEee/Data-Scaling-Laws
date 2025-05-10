@@ -53,9 +53,10 @@ class Weight_Quantizer(nn.Module):
         # print(f"x shape {x.shape} delta shape {self.delta.shape} zero shape {self.zero_point.shape}")
         x_int = round_ste(x / self.delta) + self.zero_point
         x_quant = torch.clamp(x_int, 0, self.n_levels - 1)
-        x_quant = torch.clamp(x_int, -self.n_levels - 1, self.n_levels)
-        x_dequant = (x_quant - self.zero_point) * self.delta
-        return x_dequant
+        x_quant = torch.clamp(x_int, -self.n_levels - 1, self.n_levels).to(torch.int8)
+        return x_quant, self.delta, self.zero_point
+        # x_dequant = (x_quant - self.zero_point) * self.delta
+        # return x_dequant
 
     def init_quantization_scale(self, x: torch.Tensor, channel_wise: bool = False):
         delta, zero_point = None, None
@@ -126,9 +127,10 @@ class Activation_Quantizer(nn.Module):
         # start quantization
         # print(f"x shape {x.shape} delta shape {self.delta.shape} zero shape {self.zero_point.shape}")
         x_int = round_ste(x / self.delta) + self.zero_point
-        x_quant = torch.clamp(x_int, -self.n_levels - 1, self.n_levels)
-        x_dequant = (x_quant - self.zero_point) * self.delta
-        return x_dequant
+        x_quant = torch.clamp(x_int, -self.n_levels - 1, self.n_levels).to(torch.int8)
+        return x_quant, self.delta, self.zero_point
+        # x_dequant = (x_quant - self.zero_point) * self.delta
+        # return x_dequant
 
     def act_momentum_update(self, x: torch.Tensor, act_range_momentum: float = 0.95):
         assert self.inited
@@ -240,6 +242,75 @@ class QuantModule(nn.Module):
 
         return out_dequant
 
+    ####    work for int8 eval on robot    ####
+    def forward(self, input: torch.Tensor):
+        if self.use_act_quant:
+            input, delta_x, zero_x = self.act_quantizer(input)
+            assert input.dtype == torch.int8
+            # assert zero_x == 0
+        else:
+            delta_x = 1.0
+            zero_x = 0
+        if self.use_weight_quant:
+            weight, delta_w, zero_w = self.weight_quantizer(self.weight)
+            assert weight.dtype == torch.int8
+            self.register_buffer("weight_int8", weight)
+            # assert zero_w == 0
+            # print(f"zero_w: {zero_w}")
+            bias = self.bias
+        else:
+            weight = self.org_weight
+            bias = self.org_bias
+            delta_w = 1.0
+
+        # print(self.fwd_func)
+        # import ipdb; ipdb.set_trace()
+        out = self.fwd_func(input, weight, bias, **self.fwd_kwargs)
+        out = self.activation_function(out)
+
+        # import ipdb; ipdb.set_trace()
+        delta_w = self.broadcast_to_match(out, delta_w)
+        dequant_out = out.to(torch.float32) * delta_w
+        dequant_out = dequant_out * delta_x
+
+        if bias is not None:
+            dequant_out = self.add_bias_broadcast(dequant_out, bias)
+
+        return dequant_out
+
+    # ####    work for real quant cutting    ####
+    # def forward(self, input: torch.Tensor):
+    #     if self.use_act_quant:
+    #         input, delta_x, zero_x = self.act_quantizer(input)
+    #         assert input.dtype == torch.int8
+    #         # assert zero_x == 0
+    #     else:
+    #         delta_x = 1.0
+    #         zero_x = 0
+    #     if self.use_weight_quant:
+    #         weight, delta_w, zero_w = self.weight_quantizer(self.weight)
+    #         assert weight.dtype == torch.int8
+    #         self.register_buffer("weight_int8", weight)
+    #         # assert zero_w == 0
+    #         # print(f"zero_w: {zero_w}")
+    #         bias = self.bias
+    #     else:
+    #         weight = self.org_weight
+    #         bias = self.org_bias
+    #         delta_w = 1.0
+
+    #     # print(self.fwd_func)
+    #     # import ipdb; ipdb.set_trace()
+    #     out = self.fwd_func(input.to(torch.float32), weight.to(torch.float32), bias, **self.fwd_kwargs)
+    #     out = self.activation_function(out)
+
+    #     # import ipdb; ipdb.set_trace()
+    #     delta_w = self.broadcast_to_match(out, delta_w)
+    #     dequant_out = out.to(torch.float32) * delta_w
+    #     dequant_out = dequant_out * delta_x
+    #     return dequant_out
+    
+    ####  original forward function  ####
     # def forward(self, input: torch.Tensor):
     #     if self.use_act_quant:
     #         input = self.act_quantizer(input)
@@ -255,7 +326,7 @@ class QuantModule(nn.Module):
     #     out = self.fwd_func(input, weight, bias, **self.fwd_kwargs)
     #     out = self.activation_function(out)
 
-        # return out
+    #     return out
 
     def set_quant_state(self, weight_quant: bool = False, act_quant: bool = False):
         self.use_weight_quant = weight_quant
@@ -280,3 +351,35 @@ class QuantModule(nn.Module):
                 return out + bias.view(*shape)
 
         raise ValueError(f"找不到与 bias.shape {bias.shape} 匹配的 out.shape {out.shape} 维度")
+
+    def broadcast_to_match(self, out, delta_w):
+        """
+        自动 reshape delta_w，使其可以广播乘到 out 上。
+        假设 delta_w 只有一个维度 > 1，并且它与 out 的某个维度相等。
+        """
+        out_shape = out.shape
+        dw_shape = list(delta_w.shape)
+
+        # 找到 delta_w 中非 1 的那个维度（即有效维度）
+        non_one_dims = [i for i, d in enumerate(dw_shape) if d != 1]
+
+        if len(non_one_dims) != 1:
+            raise ValueError("delta_w 必须只有一个维度大于1")
+
+        dw_dim = non_one_dims[0]
+        dw_size = dw_shape[dw_dim]
+
+        # 找到 out 中与 dw_size 相等的维度索引
+        matched = [i for i, d in enumerate(out_shape) if d == dw_size]
+
+        if not matched:
+            raise ValueError("delta_w 中有效维度未与 out 匹配")
+
+        # 构建 reshape 的目标形状
+        new_shape = [1] * len(out_shape)
+        new_shape[matched[0]] = dw_size
+
+        # reshape
+        delta_w_reshaped = delta_w.view(*new_shape)
+
+        return delta_w_reshaped
