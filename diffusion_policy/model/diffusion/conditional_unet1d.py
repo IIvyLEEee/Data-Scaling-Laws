@@ -316,7 +316,7 @@ class ConditionalUnet1D(nn.Module):
             self.hook_manager.register_hooks(downsample, name=f"down_modules_{idx}_downsample")
             torch.cuda.synchronize()
             start = time.time()
-            import ipdb; ipdb.set_trace()
+            # import ipdb; ipdb.set_trace()
             x = resnet(x, global_feature) # x is [1, 10, 16]    global_feature is [1, 128]
             torch.cuda.synchronize()
             end = time.time()

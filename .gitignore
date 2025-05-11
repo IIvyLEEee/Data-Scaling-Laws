@@ -18,6 +18,7 @@ checkpoint
 *.ckpt
 visualization/
 10-step-model/
+10-step-model/10-step-model.log
 17-step-model/
 10-step-new/
 
