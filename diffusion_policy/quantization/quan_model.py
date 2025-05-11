@@ -57,4 +57,12 @@ class QuantModel(nn.Module):
             if isinstance(m, QuantModule) and not sm_only:
                 m.set_running_stat(running_stat)
 
-
+    def load_state_dict(self, state_dict, strict=True):
+        """
+        Load the state dict into the model
+        :param state_dict: state dict to load
+        :param strict: whether to load the state dict strictly
+        """
+        # print("state_dict keys:", state_dict.keys())
+        # print("model keys:", self.model.state_dict().keys())
+        super().load_state_dict(state_dict, strict)

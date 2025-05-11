@@ -69,6 +69,10 @@ class Conv1dBlock(nn.Module):
             )
 
     def forward(self, x):
+        import ipdb; ipdb.set_trace()
+        print(self.block[1].input.dtype)
+        # print(self.block[2].weight.dtype)
+        # print(self.block[2].bias.dtype)
         return self.block(x)
 
 

@@ -13,27 +13,28 @@ def int8_replace(cfg, new_ckpt_path, device='cuda'):
     ckpt = torch.load(cfg.checkpoint.ckpt, map_location=device)
 
     # 2. 加载模型参数
-    model = torch.load("/home/liyixuan23/Data-Scaling-Laws/17-step-model/quantized_model_3.ckpt", map_location=device)
+    model = torch.load("/home/liyixuan23/Data-Scaling-Laws/17-step-model/rquant_model_8_wflat.ckpt", map_location=device)
     state_dict = model["state_dicts"] if "state_dicts" in model else model
     
     # 先将非 weight_int8 的权重转为 bfloat16
     for k, v in state_dict.items():
-        if not k.endswith("weight_int8") and isinstance(v, torch.Tensor):
+        if (not k.endswith("weight_flat") and not k.startswith("model.diffusion_step_encoder")) and isinstance(v, torch.Tensor):
             state_dict[k] = v.to(torch.bfloat16)
+            print(f"Replaced {k} with {state_dict[k].dtype}")
 
-    keys_to_replace = [k for k in state_dict if k.endswith("weight_int8")]
+    # keys_to_replace = [k for k in state_dict if k.endswith("weight_flat_8")]
 
-    for k in keys_to_replace:
-        weight_int8_value = state_dict[k]
-        print(f"{k} with {weight_int8_value.dtype}")
-        # 构造原始的 weight 名称
-        weight_key = k.replace("weight_int8", "weight")
+    # for k in keys_to_replace:
+    #     weight_int8_value = state_dict[k]
+    #     print(f"{k} with {weight_int8_value.dtype}")
+    #     # 构造原始的 weight 名称
+    #     weight_key = k.replace("weight_flat_8", "weight")
         
-        # 替换值
-        state_dict[weight_key] = weight_int8_value
-        print(f"Replaced {weight_key} with {state_dict[weight_key].dtype}")
-        # 删除原来的两个字段
-        del state_dict[k]  # 删除 weight_int8
+    #     # 替换值
+    #     state_dict[weight_key] = weight_int8_value
+    #     print(f"Replaced {weight_key} with {state_dict[weight_key].dtype}")
+    #     # 删除原来的两个字段
+    #     # del state_dict[k]  # 删除 weight_int8
     
     if not isinstance(state_dict, dict):  # 如果加载的是模型实例
         state_dict = state_dict.state_dict()
@@ -67,7 +68,7 @@ def main(cfg: OmegaConf):
 
     int8_replace(
         cfg,
-        new_ckpt_path='17-step-model/real_quant_int8_bf16.ckpt',
+        new_ckpt_path='17-step-model/rquant_model_8_wflat_16.ckpt',
     )
 
     print("ckpt模型替换完成！")

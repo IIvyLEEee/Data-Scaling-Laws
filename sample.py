@@ -174,9 +174,9 @@ class Sample:
         #         m.delta = nn.Parameter(m.delta)
         torch.save(
             qnn.state_dict(),
-            "/home/liyixuan23/Data-Scaling-Laws/17-step-model/quantized_model_3.ckpt"
+            "/home/liyixuan23/Data-Scaling-Laws/17-step-model/rquant_model_8_wflat.ckpt",
         )
-        torch.save(qnn, "/home/liyixuan23/Data-Scaling-Laws/17-step-model/quantized_model_3.pth")
+        torch.save(qnn, "/home/liyixuan23/Data-Scaling-Laws/17-step-model/rquant_model_8_wflat.pth")
 
         # quantized_model_2 is with fake quant weight and act_quantizer.delta, all in float32
         print("quantized model is saved")

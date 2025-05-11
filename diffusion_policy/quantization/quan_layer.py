@@ -46,7 +46,8 @@ class Weight_Quantizer(nn.Module):
 
     def forward(self, x: torch.Tensor):
         if self.inited is False:
-            self.delta, self.zero_point = self.init_quantization_scale(x, True)
+            delta, self.zero_point = self.init_quantization_scale(x, False)
+            self.delta = torch.nn.Parameter(delta)
             self.inited = True
 
         # start quantization
@@ -211,74 +212,38 @@ class QuantModule(nn.Module):
 
         self.activation_function = StraightThrough()
 
-    def forward(self, input: torch.Tensor):
-        input = input.to(torch.bfloat16)
-        weight = self.weight.to(torch.bfloat16)
-        bias = self.bias
+    # def forward(self, input: torch.Tensor):
+    #     input = input.to(torch.bfloat16)
+    #     weight = self.weight.to(torch.bfloat16)
+    #     bias = self.bias
 
-        if self.fwd_func == F.conv1d:
-            self.fwd_func = conv1d_int8_fwd
-        elif self.fwd_func == F.linear:
-            self.fwd_func = linear_int8_fwd
-        else:
-            self.fwd_func = self.fwd_func
+    #     if self.fwd_func == F.conv1d:
+    #         self.fwd_func = conv1d_int8_fwd
+    #     elif self.fwd_func == F.linear:
+    #         self.fwd_func = linear_int8_fwd
+    #     else:
+    #         self.fwd_func = self.fwd_func
 
-        print(self.fwd_kwargs)
-        # import ipdb; ipdb.set_trace()
-        out, scale_x, scale_w = self.fwd_func(x_bf16=input, weight_bf16=weight, use_act_quant=self.use_act_quant, \
-                                             use_weight_quant=self.use_weight_quant, **self.fwd_kwargs)
+    #     print(self.fwd_kwargs)
+    #     # import ipdb; ipdb.set_trace()
+    #     out, scale_x, scale_w = self.fwd_func(x_bf16=input, weight_bf16=weight, use_act_quant=self.use_act_quant, \
+    #                                          use_weight_quant=self.use_weight_quant, **self.fwd_kwargs)
         
-        out = self.activation_function(out)
+    #     out = self.activation_function(out)
 
-        scale_out = scale_x * scale_w
-        out_dequant = out.to(torch.float32) * scale_out
+    #     scale_out = scale_x * scale_w
+    #     out_dequant = out.to(torch.float32) * scale_out
     
-        if bias is not None:
-            # import ipdb; ipdb.set_trace()
-            print(f"bias shape: {bias.shape}")
-            print(f"out_dequant shape: {out_dequant.shape}")
-            out_dequant = self.add_bias_broadcast(out_dequant, bias)
-            # out_dequant = out_dequant + bias
+    #     if bias is not None:
+    #         # import ipdb; ipdb.set_trace()
+    #         print(f"bias shape: {bias.shape}")
+    #         print(f"out_dequant shape: {out_dequant.shape}")
+    #         out_dequant = self.add_bias_broadcast(out_dequant, bias)
+    #         # out_dequant = out_dequant + bias
 
-        return out_dequant
+    #     return out_dequant
 
     ####    work for int8 eval on robot    ####
-    def forward(self, input: torch.Tensor):
-        if self.use_act_quant:
-            input, delta_x, zero_x = self.act_quantizer(input)
-            assert input.dtype == torch.int8
-            # assert zero_x == 0
-        else:
-            delta_x = 1.0
-            zero_x = 0
-        if self.use_weight_quant:
-            weight, delta_w, zero_w = self.weight_quantizer(self.weight)
-            assert weight.dtype == torch.int8
-            self.register_buffer("weight_int8", weight)
-            # assert zero_w == 0
-            # print(f"zero_w: {zero_w}")
-            bias = self.bias
-        else:
-            weight = self.org_weight
-            bias = self.org_bias
-            delta_w = 1.0
-
-        # print(self.fwd_func)
-        # import ipdb; ipdb.set_trace()
-        out = self.fwd_func(input, weight, bias, **self.fwd_kwargs)
-        out = self.activation_function(out)
-
-        # import ipdb; ipdb.set_trace()
-        delta_w = self.broadcast_to_match(out, delta_w)
-        dequant_out = out.to(torch.float32) * delta_w
-        dequant_out = dequant_out * delta_x
-
-        if bias is not None:
-            dequant_out = self.add_bias_broadcast(dequant_out, bias)
-
-        return dequant_out
-
-    # ####    work for real quant cutting    ####
     # def forward(self, input: torch.Tensor):
     #     if self.use_act_quant:
     #         input, delta_x, zero_x = self.act_quantizer(input)
@@ -299,16 +264,67 @@ class QuantModule(nn.Module):
     #         bias = self.org_bias
     #         delta_w = 1.0
 
-    #     # print(self.fwd_func)
-    #     # import ipdb; ipdb.set_trace()
-    #     out = self.fwd_func(input.to(torch.float32), weight.to(torch.float32), bias, **self.fwd_kwargs)
+    #     if self.fwd_func == F.conv1d:
+    #         self.fwd_func = conv1d_int8_fwd
+    #     elif self.fwd_func == F.linear:
+    #         self.fwd_func = linear_int8_fwd
+    #     else:
+    #         self.fwd_func = self.fwd_func
+
+    #     out = self.fwd_func(input, weight, bias, **self.fwd_kwargs)
     #     out = self.activation_function(out)
 
     #     # import ipdb; ipdb.set_trace()
     #     delta_w = self.broadcast_to_match(out, delta_w)
     #     dequant_out = out.to(torch.float32) * delta_w
     #     dequant_out = dequant_out * delta_x
+
+    #     if bias is not None:
+    #         dequant_out = self.add_bias_broadcast(dequant_out, bias)
+
     #     return dequant_out
+
+    ####    work for real quant cutting    ####
+    def forward(self, input: torch.Tensor):
+        if self.use_act_quant:
+            input, delta_x, zero_x = self.act_quantizer(input)
+            assert input.dtype == torch.int8
+            # assert zero_x == 0
+        else:
+            delta_x = 1.0
+            zero_x = 0
+        if self.use_weight_quant:
+            weight, delta_w, zero_w = self.weight_quantizer(self.weight)
+            assert weight.dtype == torch.int8
+            weight_flat = self.weight.view(self.weight.shape[0], -1)
+            weight_flat, delta_w_f, _ = self.weight_quantizer(weight_flat)
+            # self.weight_flat = torch.nn.Parameter(weight_flat).require_grad_(False)
+            self.register_buffer("weight_flat", weight_flat)
+            assert delta_w_f == delta_w
+            assert weight_flat.dtype == torch.int8
+            # self.register_buffer("weight_int8", weight)
+            # self.weight = weight
+            # weight_flat_8 = weight.view(weight.shape[0], -1)
+            # self.register_buffer("weight_flat_8", weight_flat_8)
+            # self.register_buffer("weight_delta", delta_w)
+            # assert zero_w == 0
+            # print(f"zero_w: {zero_w}")
+            bias = self.bias
+        else:
+            weight = self.org_weight
+            bias = self.org_bias
+            delta_w = 1.0
+
+        # print(self.fwd_func)
+        # import ipdb; ipdb.set_trace()
+        out = self.fwd_func(input.to(torch.float32), weight.to(torch.float32), bias, **self.fwd_kwargs)
+        out = self.activation_function(out)
+
+        # import ipdb; ipdb.set_trace()
+        # delta_w = self.broadcast_to_match(out, delta_w)
+        dequant_out = out.to(torch.float32) * delta_w
+        dequant_out = dequant_out * delta_x
+        return dequant_out
     
     ####  original forward function  ####
     # def forward(self, input: torch.Tensor):
