@@ -17,6 +17,9 @@ vit_model
 checkpoint
 *.ckpt
 visualization/
+10-step-model/
+17-step-model/
+10-step-new/
 
 # dataset
 dataset

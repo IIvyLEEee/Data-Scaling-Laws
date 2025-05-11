@@ -62,6 +62,7 @@ from umi.common.pose_util import pose_to_mat, mat_to_pose
 from scipy.spatial.transform import Rotation as R
 
 import threading
+from diffusion_policy.quantization.quan_model import QuantModel
 
 OmegaConf.register_new_resolver("eval", eval, replace=True)
 
@@ -259,6 +260,13 @@ def main(input, output, robot_config,
             if cfg.training.use_ema:
                 policy = workspace.ema_model
             policy.num_inference_steps = 16 # DDIM inference iterations
+            policy.model = QuantModel(policy.model)
+            policy.model = torch.load("/home/acts00/Desktop/scalinglaw/data/checkpoints/pour_water/rquant_model_8_wflat.pth")
+            checkpoint = torch.load("/home/acts00/Desktop/scalinglaw/data/checkpoints/pour_water/rquant_model_8_wflat_16.ckpt")
+            checkpoint = checkpoint['state_dicts']['model']
+            policy.model.load_state_dict(checkpoint, strict=False)
+            
+            policy.model.set_quant_state(weight_quant=True, act_quant=True)
 
             # # load quant model
             # load_path = '/home/liyixuan23/Data-Scaling-Laws/diffusion_policy/model/diffusion/quant_model/quant_model.pth'
@@ -306,8 +314,8 @@ def main(input, output, robot_config,
 
             print('Ready!')
             if_first_time = True                                
-            thread = threading.Thread(target=save_model_async, args=(policy.model, policy.sample_data))
-            thread.start()
+            # thread = threading.Thread(target=save_model_async, args=(policy.model, policy.sample_data))
+            # thread.start()
             while True:
                 # ========= human control loop ==========
                 print("Human in control!")
@@ -602,6 +610,9 @@ def main(input, output, robot_config,
                         #     "data/cali_data/sample_fp32_data.ckpt"
                         # )
                         # print("Saved fp32 sample data.")
+                            
+                        # torch.save(policy.model, "quant_model/weight_delta.pth")
+                        # torch.save(policy.model.state_dict(), "quant_model/weight_delta.ckpt")
 
                         # visualize
                         episode_id = env.replay_buffer.n_episodes

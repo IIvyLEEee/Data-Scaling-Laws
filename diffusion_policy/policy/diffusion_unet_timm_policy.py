@@ -61,7 +61,7 @@ class DiffusionUnetTimmPolicy(BaseImagePolicy):
         # get feature dim
         obs_feature_dim = np.prod(obs_encoder.output_shape())
         # # import ipdb; ipdb.set_trace()
-        print(f"obs_feature_dim: {obs_feature_dim}")
+        # print(f"obs_feature_dim: {obs_feature_dim}")
 
 
         # create diffusion model
@@ -142,10 +142,10 @@ class DiffusionUnetTimmPolicy(BaseImagePolicy):
     
         # set step values
         scheduler.set_timesteps(self.num_inference_steps)
-        print(scheduler.timesteps)
+        # print(scheduler.timesteps)
 
         for idx, t in enumerate(scheduler.timesteps):
-            print(f"t: {t}, idx: {idx}")
+            # print(f"t: {t}, idx: {idx}")
             # 1. apply conditioning
             torch.cuda.synchronize()
             start = time.time()
@@ -165,8 +165,8 @@ class DiffusionUnetTimmPolicy(BaseImagePolicy):
             end = time.time()
             logger.info(f"[2] model predict time: {end - start:.4f} seconds")
 
-            print(f"num_inference_steps: {self.num_inference_steps}")
-            print(f"len(xs): {len(self.sample_data['xs'])}, t: {t}, int(t): {int(t)}")
+            # print(f"num_inference_steps: {self.num_inference_steps}")
+            # print(f"len(xs): {len(self.sample_data['xs'])}, t: {t}, int(t): {int(t)}")
 
             # sample data for calibration
             self.sample_data["xs"][idx].append(trajectory)
@@ -214,8 +214,8 @@ class DiffusionUnetTimmPolicy(BaseImagePolicy):
         start = time.time()
         # # import ipdb; ipdb.set_trace()
         global_cond = self.obs_encoder(nobs)
-        print(f"global_cond: {global_cond.shape}") # (B,global_cond_dim)
-        print(f"global_cond_dim: {global_cond.shape[1]}")
+        # print(f"global_cond: {global_cond.shape}") # (B,global_cond_dim)
+        # print(f"global_cond_dim: {global_cond.shape[1]}")
         torch.cuda.synchronize()
         end = time.time()
         logger.info(f"obs_encoder time: {end - start:.4f} seconds")
