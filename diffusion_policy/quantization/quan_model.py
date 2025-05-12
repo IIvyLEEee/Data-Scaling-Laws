@@ -50,12 +50,22 @@ class QuantModel(nn.Module):
     def forward(self, x, timesteps=None, local_cond = None, context=None):
         # import ipdb; ipdb.set_trace()
         # print(f"global_cond: {context}")
+        abit = self.model.a_bit
+        wbit = self.model.w_bit
+        self.model_sw_quant(wbit=wbit,abit=abit)
+        
         return self.model(x, timesteps, local_cond=None, global_cond=context)
     
     def set_running_stat(self, running_stat: bool, sm_only=False):
         for m in self.model.modules():
             if isinstance(m, QuantModule) and not sm_only:
                 m.set_running_stat(running_stat)
+
+    def model_sw_quant(self, wbit, abit):
+        for m in self.model.modules():
+            if isinstance(m, QuantModule):
+                m.switch_weight_quant(wbit)
+                m.switch_act_quant(abit)
 
     def load_state_dict(self, state_dict, strict: bool = True):
         return super().load_state_dict(state_dict, strict)

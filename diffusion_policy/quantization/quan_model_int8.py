@@ -3,7 +3,7 @@ import torch.nn as nn
 
 from diffusion_policy.quantization.quan_block import get_specials, BaseQuantBlock
 from diffusion_policy.quantization.quan_block import QuantPosEmbBlock
-from diffusion_policy.quantization.quan_layer_int4 import QuantModule, StraightThrough
+from diffusion_policy.quantization.quan_layer import QuantModule, StraightThrough
 from diffusion_policy.model.diffusion.conditional_unet1d import ConditionalUnet1D
 
 logger = logging.getLogger(__name__)

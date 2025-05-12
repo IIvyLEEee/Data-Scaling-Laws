@@ -190,6 +190,97 @@ class DiffusionUnetTimmPolicy(BaseImagePolicy):
         trajectory[condition_mask] = condition_data[condition_mask]        
 
         return trajectory
+    
+    ### switching quant bits by timestep
+    def conditional_sample_sw(self, 
+            condition_data,
+            condition_mask,
+            local_cond=None,
+            global_cond=None,
+            generator=None,
+            # keyword arguments to scheduler.step
+            **kwargs
+        ):
+        
+        model = self.model
+        scheduler = self.noise_scheduler
+
+        # ---------- Hook register ----------
+        self.hook_manager.register_hooks(self.model, name="conditional_unet1d")
+        # -----------------------------------
+
+        # set seed manually
+        if generator is None:
+            generator = torch.Generator(device=condition_data.device)
+            generator.manual_seed(42)
+
+        trajectory = torch.randn(
+            size=condition_data.shape, 
+            dtype=condition_data.dtype,
+            device=condition_data.device,
+            generator=generator)
+    
+        # set step values
+        scheduler.set_timesteps(self.num_inference_steps)
+        # print(scheduler.timesteps)
+
+        for idx, t in enumerate(scheduler.timesteps):
+            if idx < 11:
+                self.model.a_bit = 8
+                self.model.w_bit = 8
+
+            else:
+                self.model.a_bit = 8
+                self.model.w_bit = 4    
+            
+            logger.info(f"STEP {idx}, using w{self.model.w_bit}a{self.model.a_bit}")
+            # print(f"t: {t}, idx: {idx}")
+            # 1. apply conditioning
+            torch.cuda.synchronize()
+            start = time.time()
+            trajectory[condition_mask] = condition_data[condition_mask]
+            torch.cuda.synchronize()
+            end = time.time()
+            logger.info(f"[1] apply condition time: {end - start:.4f} seconds")
+
+            # 2. predict model output
+            # self.hook_manager.register_hooks(model, name="model of timestep %d" % t)
+            torch.cuda.synchronize()
+            start = time.time()
+            # # import ipdb; ipdb.set_trace()
+            model_output = model(trajectory, t, 
+                local_cond=local_cond, context=global_cond)
+            torch.cuda.synchronize()
+            end = time.time()
+            logger.info(f"[2] model predict time: {end - start:.4f} seconds")
+
+            # print(f"num_inference_steps: {self.num_inference_steps}")
+            # print(f"len(xs): {len(self.sample_data['xs'])}, t: {t}, int(t): {int(t)}")
+
+            # sample data for calibration
+            self.sample_data["xs"][idx].append(trajectory)
+            self.sample_data["ts"][idx].append(t)
+            # self.sample_data["ls"][idx].append(local_cond)
+            self.sample_data["cs"][idx].append(global_cond)
+
+            # 3. compute previous image: x_t -> x_t-1
+            torch.cuda.synchronize()
+            start = time.time()
+            trajectory = scheduler.step(
+                model_output, t, trajectory, 
+                generator=generator,
+                **kwargs
+                ).prev_sample
+            torch.cuda.synchronize()
+            end = time.time()
+            logger.info(f"[3] scheduler step time: {end - start:.4f} seconds")
+            
+
+        
+        # finally make sure conditioning is enforced
+        trajectory[condition_mask] = condition_data[condition_mask]        
+
+        return trajectory
 
 
     def predict_action(self, obs_dict: Dict[str, torch.Tensor], fixed_action_prefix: torch.Tensor=None) -> Dict[str, torch.Tensor]:

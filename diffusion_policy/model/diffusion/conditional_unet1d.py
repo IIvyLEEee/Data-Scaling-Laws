@@ -48,14 +48,14 @@ class ConditionalResidualBlock1D(nn.Module):
         # predicts per-channel scale and bias
         cond_channels = out_channels
         # # import ipdb; ipdb.set_trace()
-        print("cond_dim: ", cond_dim)
-        print("cond_channels: ", cond_channels)
-        print("cond_predict_scale: ", cond_predict_scale)
+        # print("cond_dim: ", cond_dim)
+        # print("cond_channels: ", cond_channels)
+        # print("cond_predict_scale: ", cond_predict_scale)
         if cond_predict_scale:
             cond_channels = out_channels * 2
         self.cond_predict_scale = cond_predict_scale
         self.out_channels = out_channels
-        print("cond_channels: ", cond_channels)
+        # print("cond_channels: ", cond_channels)
         # if quant_layer:
         #     self.cond_encoder = nn.Sequential(
         #         nn.Mish(),
@@ -97,6 +97,7 @@ class ConditionalResidualBlock1D(nn.Module):
             returns:
             out : [ batch_size x out_channels x horizon ]
         '''
+        
         out = self.blocks[0](x)          # out is [1, 256, 16]   x is [1, 10, 16]
         # # import ipdb; ipdb.set_trace()
         embed = self.cond_encoder(cond)  # embed is [1, 256, 1]   cond is [1, 128]
@@ -126,6 +127,8 @@ class ConditionalUnet1D(nn.Module):
         quant_layer=False,
         ):
         super().__init__()
+        self.w_bit: int = 8
+        self.a_bit: int = 8
         all_dims = [input_dim] + list(down_dims)
         start_dim = down_dims[0]
 
@@ -152,12 +155,12 @@ class ConditionalUnet1D(nn.Module):
         )
         
         cond_dim = dsed
-        print("cond_dim: ", cond_dim)
+        # print("cond_dim: ", cond_dim)
         # # import ipdb; ipdb.set_trace()
-        print("global_cond_dim: ", global_cond_dim) 
+        # print("global_cond_dim: ", global_cond_dim) 
         if global_cond_dim is not None:
             cond_dim += global_cond_dim
-        print("cond_dim: ", cond_dim)
+        # print("cond_dim: ", cond_dim)
 
         in_out = list(zip(all_dims[:-1], all_dims[1:]))
 
@@ -276,8 +279,9 @@ class ConditionalUnet1D(nn.Module):
         """
         sample = einops.rearrange(sample, 'b h t -> b t h')
         # # import ipdb; ipdb.set_trace()
-        print(f"global_cond: {global_cond}")
-
+        # print(f"global_cond: {global_cond}")
+        a_bit = self.a_bit
+        w_bit = self.w_bit
         
         # 1. time
         timesteps = timestep
@@ -314,76 +318,76 @@ class ConditionalUnet1D(nn.Module):
             self.hook_manager.register_hooks(resnet, name=f"down_modules_{idx}_resnet")
             self.hook_manager.register_hooks(resnet2, name=f"down_modules_{idx}_resnet2")
             self.hook_manager.register_hooks(downsample, name=f"down_modules_{idx}_downsample")
-            torch.cuda.synchronize()
-            start = time.time()
-            # import ipdb; ipdb.set_trace()
+            # torch.cuda.synchronize()
+            # start = time.time()
+            # # import ipdb; ipdb.set_trace()
             x = resnet(x, global_feature) # x is [1, 10, 16]    global_feature is [1, 128]
-            torch.cuda.synchronize()
-            end = time.time()
-            logger.info(f"down_modules_{idx}_resnet time: {end - start:.4f}s")
+            # torch.cuda.synchronize()
+            # end = time.time()
+            # logger.info(f"down_modules_{idx}_resnet time: {end - start:.4f}s")
             if idx == 0 and len(h_local) > 0:
                 x = x + h_local[0]
 
-            torch.cuda.synchronize()
-            start = time.time()
+            # torch.cuda.synchronize()
+            # start = time.time()
             x = resnet2(x, global_feature)
-            torch.cuda.synchronize()
-            end = time.time()
-            logger.info(f"down_modules_{idx}_resnet2 time: {end - start:.4f}s")
+            # torch.cuda.synchronize()
+            # end = time.time()
+            # logger.info(f"down_modules_{idx}_resnet2 time: {end - start:.4f}s")
 
             h.append(x)
 
-            torch.cuda.synchronize()
-            start = time.time()
+            # torch.cuda.synchronize()
+            # start = time.time()
             x = downsample(x)
-            torch.cuda.synchronize()
-            end = time.time()
-            logger.info(f"down_modules_{idx}_downsample time: {end - start:.4f}s")
+            # torch.cuda.synchronize()
+            # end = time.time()
+            # logger.info(f"down_modules_{idx}_downsample time: {end - start:.4f}s")
 
-        torch.cuda.synchronize()
-        start = time.time()
+        # torch.cuda.synchronize()
+        # start = time.time()
         for mid_module in self.mid_modules:
             self.hook_manager.register_hooks(mid_module, name=f"mid_modules")
             x = mid_module(x, global_feature)
-        torch.cuda.synchronize()
-        end = time.time()
-        logger.info(f"mid_modules time: {end - start:.4f}s")
+        # torch.cuda.synchronize()
+        # end = time.time()
+        # logger.info(f"mid_modules time: {end - start:.4f}s")
 
         for idx, (resnet, resnet2, upsample) in enumerate(self.up_modules):
             self.hook_manager.register_hooks(resnet, name=f"up_modules_{idx}_resnet")
             self.hook_manager.register_hooks(resnet2, name=f"up_modules_{idx}_resnet2")
             self.hook_manager.register_hooks(upsample, name=f"up_modules_{idx}_upsample")
             x = torch.cat((x, h.pop()), dim=1)
-            torch.cuda.synchronize()
-            start = time.time()
+            # torch.cuda.synchronize()
+            # start = time.time()
             x = resnet(x, global_feature)
-            torch.cuda.synchronize()
-            end = time.time()
-            logger.info(f"up_modules_{idx}_resnet time: {end - start:.4f}s")
+            # torch.cuda.synchronize()
+            # end = time.time()
+            # logger.info(f"up_modules_{idx}_resnet time: {end - start:.4f}s")
 
             if idx == len(self.up_modules) and len(h_local) > 0:
                 x = x + h_local[1]
             
-            torch.cuda.synchronize()
-            start = time.time()
+            # torch.cuda.synchronize()
+            # start = time.time()
             x = resnet2(x, global_feature)
-            torch.cuda.synchronize()
-            end = time.time()
-            logger.info(f"up_modules_{idx}_resnet2 time: {end - start:.4f}s")
+            # torch.cuda.synchronize()
+            # end = time.time()
+            # logger.info(f"up_modules_{idx}_resnet2 time: {end - start:.4f}s")
 
-            torch.cuda.synchronize()
-            start = time.time()
+            # torch.cuda.synchronize()
+            # start = time.time()
             x = upsample(x)
-            torch.cuda.synchronize()
-            end = time.time()
-            logger.info(f"up_modules_{idx}_upsample time: {end - start:.4f}s")
+            # torch.cuda.synchronize()
+            # end = time.time()
+            # logger.info(f"up_modules_{idx}_upsample time: {end - start:.4f}s")
 
-        torch.cuda.synchronize()
-        start = time.time()
+        # torch.cuda.synchronize()
+        # start = time.time()
         x = self.final_conv(x)
-        torch.cuda.synchronize()
-        end = time.time()
-        logger.info(f"final_conv time: {end - start:.4f}s")
+        # torch.cuda.synchronize()
+        # end = time.time()
+        # logger.info(f"final_conv time: {end - start:.4f}s")
         self.hook_manager.register_hooks(self.final_conv, name="final_conv")
         
         x = einops.rearrange(x, 'b t h -> b h t')

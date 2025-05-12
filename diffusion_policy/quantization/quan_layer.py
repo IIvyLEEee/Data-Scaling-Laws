@@ -5,7 +5,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from typing import Union
 import int4_kernel as ik
-from diffusion_policy.quantization.quan_fwd_real_only8 import conv1d_int8_fwd, linear_int8_fwd
+# from diffusion_policy.quantization.quan_fwd_real_only8 import conv1d_int8_fwd, linear_int8_fwd
 
 logger = logging.getLogger(__name__)
 
@@ -46,17 +46,18 @@ class Weight_Quantizer(nn.Module):
 
     def forward(self, x: torch.Tensor):
         if self.inited is False:
-            self.delta, self.zero_point = self.init_quantization_scale(x, False)
+            delta, self.zero_point = self.init_quantization_scale(x, False)
+            self.delta = torch.nn.Parameter(delta)
             self.inited = True
 
         # start quantization
         # print(f"x shape {x.shape} delta shape {self.delta.shape} zero shape {self.zero_point.shape}")
         x_int = round_ste(x / self.delta) + self.zero_point
         x_quant = torch.clamp(x_int, 0, self.n_levels - 1)
-        x_quant = torch.clamp(x_int, -self.n_levels - 1, self.n_levels).to(torch.int8)
-        return x_quant, self.delta, self.zero_point
-        # x_dequant = (x_quant - self.zero_point) * self.delta
-        # return x_dequant
+        x_quant = torch.clamp(x_int, -self.n_levels - 1, self.n_levels)
+        # return x_quant, self.delta, self.zero_point
+        x_dequant = (x_quant - self.zero_point) * self.delta
+        return x_dequant
 
     def init_quantization_scale(self, x: torch.Tensor, channel_wise: bool = False):
         delta, zero_point = None, None
@@ -127,10 +128,10 @@ class Activation_Quantizer(nn.Module):
         # start quantization
         # print(f"x shape {x.shape} delta shape {self.delta.shape} zero shape {self.zero_point.shape}")
         x_int = round_ste(x / self.delta) + self.zero_point
-        x_quant = torch.clamp(x_int, -self.n_levels - 1, self.n_levels).to(torch.int8)
-        return x_quant, self.delta, self.zero_point
-        # x_dequant = (x_quant - self.zero_point) * self.delta
-        # return x_dequant
+        x_quant = torch.clamp(x_int, -self.n_levels - 1, self.n_levels)
+        # return x_quant, self.delta, self.zero_point
+        x_dequant = (x_quant - self.zero_point) * self.delta
+        return x_dequant
 
     def act_momentum_update(self, x: torch.Tensor, act_range_momentum: float = 0.95):
         assert self.inited
@@ -244,80 +245,80 @@ class QuantModule(nn.Module):
     #     return out_dequant
 
     ####    work for int8 eval on robot    ####
-    def forward(self, input: torch.Tensor):
+    # def forward(self, input: torch.Tensor):
 
-        if self.fwd_func == F.conv1d:
+    #     if self.fwd_func == F.conv1d:
             
-            if (not self.use_act_quant) or (input.shape[1] * self.weight.shape[2] < 512):
-                input = input.to(torch.bfloat16)
-                weight = self.org_weight
-                if weight.dtype is not torch.bfloat16:
-                    weight = weight.to(torch.bfloat16)
-                # print(f"input: {input.dtype}")
-                # print(f"weight: {weight.dtype}")
-                # print(f"bias: {self.bias.dtype}")
-                out = self.fwd_func(input, weight, self.org_bias.to(torch.bfloat16), **self.fwd_kwargs)
-                dequant_out = self.activation_function(out).to(torch.float32)
-                # print(f"output: {dequant_out.dtype}")
+    #         if (not self.use_act_quant) or (input.shape[1] * self.weight.shape[2] < 512):
+    #             input = input.to(torch.bfloat16)
+    #             weight = self.org_weight
+    #             if weight.dtype is not torch.bfloat16:
+    #                 weight = weight.to(torch.bfloat16)
+    #             # print(f"input: {input.dtype}")
+    #             # print(f"weight: {weight.dtype}")
+    #             # print(f"bias: {self.bias.dtype}")
+    #             out = self.fwd_func(input, weight, self.org_bias.to(torch.bfloat16), **self.fwd_kwargs)
+    #             dequant_out = self.activation_function(out).to(torch.float32)
+    #             # print(f"output: {dequant_out.dtype}")
                 
-            else:
-                self.fwd_func = conv1d_int8_fwd
-                delta_x = self.act_quantizer.delta
-                input = round_ste(input / delta_x)
-                input = torch.clamp(input, -128, 127).to(torch.int8)
-                assert input.dtype == torch.int8
-                weight_flat = self.weight_flat
-                delta_w = self.weight_quantizer.delta
-                assert weight_flat.dtype == torch.int8
-                bias = self.bias
-                out = self.fwd_func(input, weight_flat, bias, **self.fwd_kwargs)
-                out = self.activation_function(out)
-                dequant_out = out.to(torch.float32) * delta_w * delta_x
-                if bias is not None:
-                    dequant_out = self.add_bias_broadcast(out, bias)
-                assert dequant_out.dtype == torch.float32
+    #         else:
+    #             self.fwd_func = conv1d_int8_fwd
+    #             delta_x = self.act_quantizer.delta
+    #             input = round_ste(input / delta_x)
+    #             input = torch.clamp(input, -128, 127).to(torch.int8)
+    #             assert input.dtype == torch.int8
+    #             weight_flat = self.weight_flat
+    #             delta_w = self.weight_quantizer.delta
+    #             assert weight_flat.dtype == torch.int8
+    #             bias = self.bias
+    #             out = self.fwd_func(input, weight_flat, bias, **self.fwd_kwargs)
+    #             out = self.activation_function(out)
+    #             dequant_out = out.to(torch.float32) * delta_w * delta_x
+    #             if bias is not None:
+    #                 dequant_out = self.add_bias_broadcast(out, bias)
+    #             assert dequant_out.dtype == torch.float32
 
-        elif self.fwd_func == F.linear and self.act_quantizer.delta is not None:
+    #     elif self.fwd_func == F.linear and self.act_quantizer.delta is not None:
             
-            if (not self.use_act_quant) or (input.shape[1] < 513):
-                input = input.to(torch.bfloat16)
-                weight = self.weight
-                if weight.dtype is not torch.bfloat16:
-                    weight = weight.to(torch.bfloat16)
-                out = self.fwd_func(input, weight, self.bias.to(torch.bfloat16), **self.fwd_kwargs)
-                dequant_out = self.activation_function(out).to(torch.float32)
+    #         if (not self.use_act_quant) or (input.shape[1] < 513):
+    #             input = input.to(torch.bfloat16)
+    #             weight = self.weight
+    #             if weight.dtype is not torch.bfloat16:
+    #                 weight = weight.to(torch.bfloat16)
+    #             out = self.fwd_func(input, weight, self.bias.to(torch.bfloat16), **self.fwd_kwargs)
+    #             dequant_out = self.activation_function(out).to(torch.float32)
 
-            else:
-                self.fwd_func = linear_int8_fwd
-                delta_x = self.act_quantizer.delta
-                input = round_ste(input / delta_x)
-                input = torch.clamp(input, -128, 127).to(torch.int8)
-                assert input.dtype == torch.int8
-                weight = self.weight_flat
-                delta_w = self.weight_quantizer.delta
-                assert weight.dtype == torch.int8
-                bias = self.bias
-                # print(f"before fwd input: {input.dtype}")
-                out = self.fwd_func(input, weight, bias, **self.fwd_kwargs)
-                out = self.activation_function(out)
-                dequant_out = out.to(torch.float32) * delta_w * delta_x
-                if bias is not None:
-                    dequant_out = self.add_bias_broadcast(out, bias)
-                assert dequant_out.dtype == torch.float32
+    #         else:
+    #             self.fwd_func = linear_int8_fwd
+    #             delta_x = self.act_quantizer.delta
+    #             input = round_ste(input / delta_x)
+    #             input = torch.clamp(input, -128, 127).to(torch.int8)
+    #             assert input.dtype == torch.int8
+    #             weight = self.weight_flat
+    #             delta_w = self.weight_quantizer.delta
+    #             assert weight.dtype == torch.int8
+    #             bias = self.bias
+    #             # print(f"before fwd input: {input.dtype}")
+    #             out = self.fwd_func(input, weight, bias, **self.fwd_kwargs)
+    #             out = self.activation_function(out)
+    #             dequant_out = out.to(torch.float32) * delta_w * delta_x
+    #             if bias is not None:
+    #                 dequant_out = self.add_bias_broadcast(out, bias)
+    #             assert dequant_out.dtype == torch.float32
             
-        else:
-            self.fwd_func = self.fwd_func
-            weight = self.weight
-            # print(self.fwd_func)
-            # print(input.dtype)
-            # print(weight.dtype)
-            # print(self.bias.dtype)
-            out = self.fwd_func(input, weight, self.bias, **self.fwd_kwargs)
-            dequant_out = self.activation_function(out).to(torch.float32)
-            # print(f"dequant_out with no replace: {dequant_out.dtype}")
-            # assert dequant_out.dtype == torch.float32
+    #     else:
+    #         self.fwd_func = self.fwd_func
+    #         weight = self.weight
+    #         # print(self.fwd_func)
+    #         # print(input.dtype)
+    #         # print(weight.dtype)
+    #         # print(self.bias.dtype)
+    #         out = self.fwd_func(input, weight, self.bias, **self.fwd_kwargs)
+    #         dequant_out = self.activation_function(out).to(torch.float32)
+    #         # print(f"dequant_out with no replace: {dequant_out.dtype}")
+    #         # assert dequant_out.dtype == torch.float32
 
-        return dequant_out
+    #     return dequant_out
 
     ### real quant eval work ###
     # def forward(self, input: torch.Tensor):
@@ -391,22 +392,22 @@ class QuantModule(nn.Module):
     #     return dequant_out
     
     ####  original forward function  ####
-    # def forward(self, input: torch.Tensor):
-    #     if self.use_act_quant:
-    #         input = self.act_quantizer(input)
-    #     if self.use_weight_quant:
-    #         weight = self.weight_quantizer(self.weight)
-    #         bias = self.bias
-    #     else:
-    #         weight = self.org_weight
-    #         bias = self.org_bias
+    def forward(self, input: torch.Tensor):
+        if self.use_act_quant:
+            input = self.act_quantizer(input)
+        if self.use_weight_quant:
+            weight = self.weight_quantizer(self.weight)
+            bias = self.bias
+        else:
+            weight = self.org_weight
+            bias = self.org_bias
 
-    #     print(self.fwd_func)
-    #     # import ipdb; ipdb.set_trace()
-    #     out = self.fwd_func(input, weight, bias, **self.fwd_kwargs)
-    #     out = self.activation_function(out)
+        # print(self.fwd_func)
+        # import ipdb; ipdb.set_trace()
+        out = self.fwd_func(input, weight, bias, **self.fwd_kwargs)
+        out = self.activation_function(out)
 
-    #     return out
+        return out
 
     def set_quant_state(self, weight_quant: bool = False, act_quant: bool = False):
         self.use_weight_quant = weight_quant
@@ -414,6 +415,16 @@ class QuantModule(nn.Module):
 
     def set_running_stat(self, running_stat: bool):
         self.act_quantizer.running_stat = running_stat
+
+    def switch_weight_quant(self, bits):
+        pre_bits = self.weight_quantizer.n_bits
+        self.weight_quantizer.n_bits = bits
+        print(f"switch weight from {pre_bits} to {self.weight_quantizer.n_bits}")
+
+    def switch_act_quant(self, bits):
+        pre_bits = self.act_quantizer.n_bits
+        self.act_quantizer.n_bits = bits
+        print(f"switch weight from {pre_bits} to {self.act_quantizer.n_bits}")
 
     def add_bias_broadcast(self, out, bias):
         """
