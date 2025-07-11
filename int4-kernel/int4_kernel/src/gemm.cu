@@ -80,3 +80,33 @@ void matmul_host_int8(
   auto status = gemmOp(arguments);
   ensure(status == cutlass::Status::kSuccess, cutlassGetStatusString(status));
 }
+
+// void matmul_host_fp32(
+//     const float *A, const float *B, uint32_t M, uint32_t N, uint32_t K,
+//     float *C) {
+//   using Gemm = cutlass::gemm::device::Gemm<
+//       float, 
+//       cutlass::layout::RowMajor, 
+//       float, 
+//       cutlass::layout::ColumnMajor,
+//       float, 
+//       cutlass::layout::RowMajor, 
+//       float,
+//       cutlass::arch::OpClassTensorOp, 
+//       cutlass::arch::Sm80
+//   >;
+
+//   Gemm gemmOp;
+
+//   using GemmCoord = cutlass::gemm::GemmCoord;
+//   typename Gemm::Arguments arguments{{static_cast<GemmCoord::Index>(M),
+//                                       static_cast<GemmCoord::Index>(N),
+//                                       static_cast<GemmCoord::Index>(K)},
+//                                      {A, K},
+//                                      {B, K},
+//                                      {C, N},
+//                                      {C, N},
+//                                      {1, 0}};
+//   auto status = gemmOp(arguments);
+//   ensure(status == cutlass::Status::kSuccess, cutlassGetStatusString(status));
+// }

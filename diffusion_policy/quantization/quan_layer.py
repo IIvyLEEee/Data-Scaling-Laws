@@ -192,6 +192,15 @@ class QuantModule(nn.Module):
             )
             self.fwd_func = F.conv1d
             # self.fwd_func = conv1d_int8_fwd
+        elif isinstance(org_module, nn.MultiheadAttention):
+            self.fwd_kwargs = dict(
+                num_heads=org_module.num_heads,
+                dropout=org_module.dropout,
+                bias=org_module.bias,
+                add_zero_attn=org_module.add_zero_attn,
+                batch_first=org_module.batch_first,
+            )
+            self.fwd_func = F.multi_head_attention_forward
         else:
             self.fwd_kwargs = dict()
             self.fwd_func = F.linear

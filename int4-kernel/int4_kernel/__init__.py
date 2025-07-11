@@ -46,6 +46,12 @@ def matmul_int8(A, B):
     B, B_shape_excl_last = flatten_last_dim_and_return_shape(B)
     return int4_kernel._CUDA.matmul_int8(A, B).view(*A_shape_excl_last, *B_shape_excl_last)
 
+# def matmul_fp32(A, B):
+#     # assert A.shape[-1] % 32 == 0, "A.shape[-1]: {} must be multiplication of 32".format(A.shape[-1])
+#     A, A_shape_excl_last = flatten_last_dim_and_return_shape(A)
+#     B, B_shape_excl_last = flatten_last_dim_and_return_shape(B)
+#     return int4_kernel._CUDA.matmul_fp32(A, B).view(*A_shape_excl_last, *B_shape_excl_last)
+
 def sym_quant(x, scale):
     assert x.dtype == scale.dtype == torch.bfloat16
     x, x_shape_excl_last = flatten_last_dim_and_return_shape(x)

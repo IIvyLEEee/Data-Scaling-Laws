@@ -19,3 +19,12 @@ void matmul_host_int8(
     uint32_t K,
     int32_t *C
 );
+
+// void matmul_host_fp32(
+//     const float *A,
+//     const float *B,
+//     uint32_t M,
+//     uint32_t N,
+//     uint32_t K,
+//     float *C
+// );

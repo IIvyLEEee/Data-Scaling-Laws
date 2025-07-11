@@ -19,16 +19,9 @@ class QuantModel(nn.Module):
         #self.quant_block_refactor(self.model)
 
     def quant_module_refactor(self, module: nn.Module):
-        """
-        Recursively replace the normal layers (conv2D, conv1D, Linear etc.) to QuantModule
-        :param module: nn.Module with nn.Conv2d, nn.Conv1d, or nn.Linear in its children
-        :param weight_quant_params: quantization parameters like n_bits for weight quantizer
-        :param act_quant_params: quantization parameters like n_bits for activation quantizer
-        """
         for name, child_module in module.named_children():
-            if isinstance(child_module, (nn.Conv2d, nn.Conv1d, nn.Linear)): # nn.Conv1d
-                setattr(module, name, QuantModule(child_module))
-
+            if isinstance(child_module, (nn.Linear)) and child_module.name == "linear1":
+                setattr(module, name, QuantLinear(child_module))
             else:
                 self.quant_module_refactor(child_module)
 

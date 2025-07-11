@@ -35,6 +35,22 @@ torch::Tensor matmul_int8(const torch::Tensor &A, const torch::Tensor &B) {
   return C;
 }
 
+// torch::Tensor matmul_fp32(const torch::Tensor &A, const torch::Tensor &B) {
+//   torch::checkAllContiguous("matmul_fp32", {{A, "A", 0}, {B, "B", 1}});
+//   torch::checkDeviceType("matmul_fp32", {A, B}, at::DeviceType::CUDA);
+
+//   torch::checkAllSameGPU("matmul_fp32", {{A, "A", 0}, {B, "B", 1}});
+//   uint32_t M = A.size(0);
+//   uint32_t N = B.size(0);
+//   uint32_t K = A.size(1);
+//   auto C = torch::empty({M, N}, torch::dtype(torch::kFloat).device(A.device()));
+
+//   matmul_host_fp32(A.data_ptr<float>(), B.data_ptr<float>(), M, N, K,
+//                    C.data_ptr<float>());
+
+//   return C;
+// }
+
 torch::Tensor sym_quant(const torch::Tensor &x, const torch::Tensor &scale) {
   torch::checkAllContiguous("sym_quant", {{x, "x", 0}, {scale, "scale", 1}});
   torch::checkDeviceType("sym_quant", {x, scale}, at::DeviceType::CUDA);
